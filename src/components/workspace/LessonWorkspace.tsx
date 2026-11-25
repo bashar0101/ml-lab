@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LessonContent } from "@/content/schema";
 import { getChapter, getLesson, lessons, lessonsInChapter } from "@/course/manifest";
 import { frameIndexOfTag, type Trace } from "@/engine/types";
@@ -26,6 +26,8 @@ interface LabState {
   params: unknown;
   data: unknown;
   trace: Trace<unknown>;
+  /** The params that produced `trace` (differs from `params` while the data is invalid). */
+  runParams: unknown;
   error: string | null;
 }
 
@@ -72,7 +74,13 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
     loadLessonModule(slug).then((m) => {
       if (!alive) return;
       setMod(m);
-      setLab({ params: m.defaultParams, data: m.defaultData, trace: m.run(m.defaultData, m.defaultParams), error: null });
+      setLab({
+        params: m.defaultParams,
+        data: m.defaultData,
+        trace: m.run(m.defaultData, m.defaultParams),
+        runParams: m.defaultParams,
+        error: null,
+      });
     });
     return () => {
       alive = false;
@@ -124,16 +132,34 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
   const updateLab = useCallback(
     (patch: { params?: unknown; data?: unknown }) => {
       if (!mod) return;
+      // Any edit stops playback, even when the data is invalid and the old run stays on screen.
+      dispatch({ type: "pause" });
       setLab((prev) => {
         if (!prev) return prev;
         const params = patch.params ?? prev.params;
         const data = patch.data ?? prev.data;
         const error = mod.validate(data);
-        return error ? { ...prev, params, data, error } : { params, data, error: null, trace: mod.run(data, params) };
+        return error
+          ? { ...prev, params, data, error }
+          : { params, data, error: null, trace: mod.run(data, params), runParams: params };
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [mod],
   );
+
+  // Keyboard shortcuts only apply while the workspace is on screen.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useRef(true);
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => {
+      inView.current = e.isIntersecting;
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useLessonKeys({
     next: () => (mode === "learn" ? goStep(step + 1) : dispatch({ type: "next" })),
@@ -153,7 +179,7 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
       }
     },
     toggleMode: () => switchMode(mode === "learn" ? "lab" : "learn"),
-  });
+  }, () => inView.current);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -166,10 +192,10 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
   const index = trace ? Math.min(player.index, trace.frames.length - 1) : 0;
   const frame = trace?.frames[index];
   const sceneData = mode === "lab" ? lab?.data : mod?.defaultData;
-  const params = mode === "lab" ? lab?.params : mod?.defaultParams;
+  const params = mode === "lab" ? lab?.runParams : mod?.defaultParams;
 
   return (
-    <div className={styles.workspace} data-mode={mode}>
+    <div ref={rootRef} className={styles.workspace} data-mode={mode}>
       <aside className={`${styles.tree} ${menuOpen ? styles.open : ""}`} aria-label={t("course.heading")}>
         <button type="button" className={`${styles.closeMenu} btn`} onClick={() => setMenuOpen(false)}>
           {t("menu.close")}
@@ -265,7 +291,7 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
           frame && (
             <>
               <div className={styles.now}>
-                <NowCard frame={frame} events={content.events} />
+                <NowCard frame={frame} events={content.events} playing={player.playing} />
               </div>
               <div className={styles.codeSlot}>
                 <CodePanel code={mod.code} active={frame.codeLine} />

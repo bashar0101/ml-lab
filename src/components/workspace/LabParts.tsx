@@ -12,12 +12,21 @@ import styles from "./lab.module.css";
 
 const TOO_BIG = 1e6;
 
-export function NowCard({ frame, events }: { frame: Frame<unknown>; events: LessonContent["events"] }) {
+export function NowCard({
+  frame,
+  events,
+  playing,
+}: {
+  frame: Frame<unknown>;
+  events: LessonContent["events"];
+  /** While playing, the text changes every frame: announcing each one would flood screen readers. */
+  playing: boolean;
+}) {
   const t = useT();
   const ev = events[frame.event];
   const fmt = (_k: string, v: number) => (!Number.isFinite(v) || Math.abs(v) > TOO_BIG ? t("stat.tooBig") : formatStat(v));
   return (
-    <div className={`${styles.card} ${styles.now}`} aria-live="polite">
+    <div className={`${styles.card} ${styles.now}`} aria-live={playing ? "off" : "polite"}>
       <h2 className={styles.sec}>{t("now.heading")}</h2>
       {ev ? (
         <>

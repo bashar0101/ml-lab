@@ -63,6 +63,29 @@ describe("LessonWorkspace, Lab mode", () => {
     expect(screen.getByText(`Step ${t.frames[i].metrics.iteration}: overshoot!`)).toBeVisible();
   });
 
+  it("the explanation is not announced on every frame while playing", async () => {
+    await openLab();
+    const live = () => screen.getByText("Current step").closest("[aria-live]")!;
+    expect(live()).toHaveAttribute("aria-live", "polite");
+    fireEvent.click(screen.getByRole("button", { name: "Play" }));
+    expect(live()).toHaveAttribute("aria-live", "off");
+    fireEvent.click(screen.getByRole("button", { name: "Pause" }));
+    expect(live()).toHaveAttribute("aria-live", "polite");
+  });
+
+  it("invalid data stops playback, and the step chip keeps the run's own step count", async () => {
+    await openLab();
+    fireEvent.click(screen.getByRole("button", { name: "Play" }));
+    advance(240);
+    expect(screen.getByText("3 / 122")).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: /Draw your own/ }));
+    advance(1200);
+    expect(screen.getByText("3 / 122")).toBeVisible();
+    fireEvent.change(screen.getByLabelText(/^Steps/), { target: { value: "100" } });
+    expect(screen.getByText(/\/ 40/)).toBeVisible();
+    expect(screen.queryByText(/\/ 100/)).toBeNull();
+  });
+
   it("switches the code tab to pseudocode", async () => {
     await openLab();
     fireEvent.click(screen.getByRole("button", { name: "Pseudocode" }));

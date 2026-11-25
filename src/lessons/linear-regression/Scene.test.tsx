@@ -47,6 +47,40 @@ describe("linear regression module", () => {
     }
   });
 
+  it("a steep (diverging) line is clipped, not bent: the drawn segment has the model's true slope", () => {
+    const t = mod.run(mod.defaultData, { ...mod.defaultParams, learningRate: 1.2 });
+    const i = t.frames.findIndex((f) => Math.abs(f.metrics.slope) > 100 && Number.isFinite(f.metrics.slope));
+    expect(i).toBeGreaterThan(0);
+    const { container } = wrap(<mod.Scene trace={t} index={i} data={mod.defaultData} reveal="all" />);
+    const nums = container.querySelector("[data-part=line]")!.getAttribute("d")!.match(/-?[\d.]+/g)!.map(Number);
+    const [x1, y1, x2, y2] = nums;
+    // plot maps x 0..10 → 62..360 and y 0..100 → 330..46
+    const toX = (px: number) => ((px - 62) / 298) * 10;
+    const toY = (py: number) => ((330 - py) / 284) * 100;
+    const drawnSlope = (toY(y2) - toY(y1)) / (toX(x2) - toX(x1));
+    expect(drawnSlope / t.frames[i].metrics.slope).toBeCloseTo(1, 2);
+  });
+
+  it("draw-your-own has a keyboard way to add and remove points", async () => {
+    const onData = vi.fn();
+    const labels = { presets: {}, params: { learningRate: { label: "Learning rate" }, steps: { label: "Steps" } } };
+    const data = { presetId: "custom", points: [{ x: 2, y: 30 }] };
+    wrap(<mod.LabControls params={mod.defaultParams} data={data} onParams={vi.fn()} onData={onData} labels={labels} />);
+    await userEvent.type(screen.getByLabelText("x"), "4.5");
+    await userEvent.type(screen.getByLabelText("y"), "60");
+    await userEvent.click(screen.getByRole("button", { name: "Add point" }));
+    expect(onData).toHaveBeenLastCalledWith({ presetId: "custom", points: [{ x: 2, y: 30 }, { x: 4.5, y: 60 }] });
+    await userEvent.click(screen.getByRole("button", { name: "Remove point (2, 30)" }));
+    expect(onData).toHaveBeenLastCalledWith({ presetId: "custom", points: [] });
+  });
+
+  it("the line and residuals don't swallow clicks meant for the drawing area", () => {
+    const t = mod.run(mod.defaultData, mod.defaultParams);
+    const { container } = wrap(<mod.Scene trace={t} index={5} data={mod.defaultData} reveal="all" />);
+    expect(container.querySelector("[data-part=line]")).toHaveAttribute("pointer-events", "none");
+    expect(container.querySelector("[data-part=residual]")).toHaveAttribute("pointer-events", "none");
+  });
+
   it("every frame's codeLine exists in both code tabs", () => {
     const t = mod.run(mod.defaultData, mod.defaultParams);
     const diverged = mod.run(mod.defaultData, { ...mod.defaultParams, learningRate: 50 });

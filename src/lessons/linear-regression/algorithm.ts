@@ -40,7 +40,9 @@ function meanStd(xs: number[]): { mean: number; std: number } {
 
 export function validateData(points: Point[]): LrDataError | null {
   if (points.length < 2) return "tooFew";
-  if (meanStd(points.map((p) => p.x)).std === 0) return "sameX";
+  // Compare the x values themselves: with 3+ equal values the computed std can be ~1e-16, not 0.
+  const x0 = points[0].x;
+  if (points.every((p) => Math.abs(p.x - x0) <= 1e-9 * Math.max(1, Math.abs(x0)))) return "sameX";
   return null;
 }
 
@@ -86,8 +88,8 @@ export function runLinearRegression(points: Point[], p: LrParams): Trace<LrState
   push(0, "init", "init", ["start"]);
 
   for (let i = 1; i <= p.steps; i++) {
-    push(i - 1, "predict", "predict");
-    push(i - 1, "error", "error");
+    push(i, "predict", "predict");
+    push(i, "error", "error");
 
     let gw = 0;
     let gb = 0;

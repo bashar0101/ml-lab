@@ -27,6 +27,8 @@ export type PlayerAction =
 
 export const SPEEDS = [0.25, 0.5, 1, 2, 4] as const;
 export const BASE_MS = 120;
+/** Upper bound on ticks for a playTo jump of up to ~2,000 frames. */
+export const PLAY_TO_MAX_TICKS = 20;
 
 const clamp = (i: number, length: number) => Math.max(0, Math.min(length - 1, Math.round(i)));
 
@@ -64,7 +66,10 @@ export function playerReducer(s: PlayerState, a: PlayerAction): PlayerState {
     case "tick": {
       if (!s.playing) return s;
       if (s.target !== null) {
-        const index = s.index + Math.sign(s.target - s.index);
+        // Ease out: cover a quarter of what is left each tick, so even long jumps take
+        // under PLAY_TO_MAX_TICKS ticks (about 2 s) instead of one tick per frame.
+        const left = s.target - s.index;
+        const index = s.index + Math.sign(left) * Math.max(1, Math.ceil(Math.abs(left) / 4));
         return index === s.target ? stopAt(s, index) : { ...s, index };
       }
       if (s.index >= s.length - 1) return { ...s, playing: false };
@@ -88,11 +93,13 @@ export function usePlayer(length: number): [PlayerState, Dispatch<PlayerAction>]
     target: null,
   });
 
+  // Story jumps (playTo) always run at 1×; the speed chips only affect Lab playback.
+  const guided = state.target !== null;
   useEffect(() => {
     if (!state.playing) return;
-    const id = setInterval(() => rawDispatch({ type: "tick" }), BASE_MS / state.speed);
+    const id = setInterval(() => rawDispatch({ type: "tick" }), guided ? BASE_MS : BASE_MS / state.speed);
     return () => clearInterval(id);
-  }, [state.playing, state.speed]);
+  }, [state.playing, state.speed, guided]);
 
   const dispatch: Dispatch<PlayerAction> = (a) => {
     if (a.type === "playTo" && prefersReducedMotion()) rawDispatch({ type: "seek", index: a.index });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { playerReducer, type PlayerState } from "./player";
+import { PLAY_TO_MAX_TICKS, playerReducer, type PlayerState } from "./player";
 
 const init = (length: number): PlayerState => ({ index: 0, length, playing: false, speed: 1, target: null });
 
@@ -11,10 +11,22 @@ describe("playerReducer", () => {
     expect(s).toMatchObject({ index: 3, playing: false, target: null });
   });
 
-  it("playTo backwards walks down", () => {
+  it("playTo arrives within PLAY_TO_MAX_TICKS however far the target is", () => {
+    let s = playerReducer({ ...init(122), index: 24 }, { type: "playTo", index: 121 });
+    let ticks = 0;
+    while (s.playing && ticks < 500) {
+      s = playerReducer(s, { type: "tick" });
+      ticks++;
+    }
+    expect(s.index).toBe(121);
+    expect(ticks).toBeLessThanOrEqual(PLAY_TO_MAX_TICKS);
+  });
+
+  it("playTo backwards moves down toward the target", () => {
     let s = playerReducer({ ...init(121), index: 10 }, { type: "playTo", index: 2 });
     s = playerReducer(s, { type: "tick" });
-    expect(s.index).toBe(9);
+    expect(s.index).toBeLessThan(10);
+    expect(s.index).toBeGreaterThan(2);
   });
 
   it("playTo the current index does not start playing", () => {

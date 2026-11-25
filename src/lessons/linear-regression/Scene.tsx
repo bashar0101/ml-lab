@@ -92,17 +92,18 @@ export function Scene({ trace, index, data, reveal, onData }: SceneProps<LrState
   const line = toLine(s);
   const predict = (x: number) => line.slope * x + line.intercept;
   const lineOk = Number.isFinite(line.slope) && Number.isFinite(line.intercept);
+  const segment = lineOk ? clipLine(line, xAxis.domain, yAxis.domain) : null;
   const onErrorFrame = frame.codeLine === "error";
 
   const editable = !!onData && data.presetId === "custom";
   function addPoint(e: MouseEvent<SVGRectElement>) {
     if (!editable) return;
     const svg = e.currentTarget.ownerSVGElement;
-    if (!svg) return;
-    const r = svg.getBoundingClientRect();
-    const px = ((e.clientX - r.left) / r.width) * W;
-    const py = ((e.clientY - r.top) / r.height) * H;
-    const p = fromSvg(px, py);
+    const ctm = svg?.getScreenCTM();
+    if (!svg || !ctm) return;
+    // Map through the SVG's own transform: correct however the viewBox is scaled or letterboxed.
+    const pt = new DOMPoint(e.clientX, e.clientY).matrixTransform(ctm.inverse());
+    const p = fromSvg(pt.x, pt.y);
     onData!({ ...data, points: [...data.points, { x: round1(p.x), y: round1(p.y) }] });
   }
   function removePoint(i: number) {
@@ -160,15 +161,17 @@ export function Scene({ trace, index, data, reveal, onData }: SceneProps<LrState
             <path
               key={`r${i}`}
               data-part="residual"
+              pointerEvents="none"
               className={onErrorFrame ? `${styles.residual} ${styles.residualStrong}` : styles.residual}
               d={`M${clampSvg(sx(p.x))} ${clampSvg(sy(p.y))}V${clampSvg(sy(predict(p.x)))}`}
             />
           ))}
-        {show("line") && lineOk && (
+        {show("line") && segment && (
           <path
             data-part="line"
             className={styles.line}
-            d={`M${clampSvg(sx(xAxis.domain[0]))} ${clampSvg(sy(predict(xAxis.domain[0])))}L${clampSvg(sx(xAxis.domain[1]))} ${clampSvg(sy(predict(xAxis.domain[1])))}`}
+            pointerEvents="none"
+            d={`M${sx(segment[0][0])} ${sy(segment[0][1])}L${sx(segment[1][0])} ${sy(segment[1][1])}`}
           />
         )}
       </g>
@@ -214,6 +217,36 @@ export function Scene({ trace, index, data, reveal, onData }: SceneProps<LrState
       {show("bowl") && current && <circle data-part="current" className={styles.current} cx={current[0]} cy={current[1]} r={7} />}
     </svg>
   );
+}
+
+/**
+ * The part of y = slope·x + intercept inside the plot (y padded by 5 %), in data units.
+ * Clipping keeps the true angle; clamping each end separately would bend a steep line.
+ */
+function clipLine(
+  line: { slope: number; intercept: number },
+  [x0, x1]: [number, number],
+  [y0, y1]: [number, number],
+): [[number, number], [number, number]] | null {
+  const pad = (y1 - y0) * 0.05;
+  const lo = y0 - pad;
+  const hi = y1 + pad;
+  const f = (x: number) => line.slope * x + line.intercept;
+  let a = x0;
+  let b = x1;
+  if (line.slope !== 0) {
+    const xa = (lo - line.intercept) / line.slope;
+    const xb = (hi - line.intercept) / line.slope;
+    a = Math.max(x0, Math.min(xa, xb));
+    b = Math.min(x1, Math.max(xa, xb));
+  } else if (line.intercept < lo || line.intercept > hi) {
+    return null;
+  }
+  if (!(a < b)) return null;
+  return [
+    [a, f(a)],
+    [b, f(b)],
+  ];
 }
 
 function round1(v: number): number {

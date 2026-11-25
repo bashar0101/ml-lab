@@ -39,6 +39,15 @@ describe("useLessonKeys", () => {
     expect(h.next).not.toHaveBeenCalled();
   });
 
+  it("does nothing while the lesson is off screen (e.g. reading the article)", () => {
+    const h = { next: vi.fn(), prev: vi.fn(), togglePlay: vi.fn(), replay: vi.fn(), toggleMode: vi.fn() };
+    renderHook(() => useLessonKeys(h, () => false));
+    fireEvent.keyDown(document.body, { key: " " });
+    fireEvent.keyDown(document.body, { key: "ArrowRight" });
+    expect(h.togglePlay).not.toHaveBeenCalled();
+    expect(h.next).not.toHaveBeenCalled();
+  });
+
   it("leaves Space alone on buttons so they still click", () => {
     const h = setup();
     const btn = document.body.appendChild(document.createElement("button"));

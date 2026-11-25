@@ -17,15 +17,19 @@ function isTyping(target: EventTarget | null): boolean {
 }
 
 /** ←/→, Space, R, L for the lesson workspace. Ignored while typing or with modifiers. */
-export function useLessonKeys(handlers: LessonKeyHandlers): void {
+export function useLessonKeys(handlers: LessonKeyHandlers, isActive: () => boolean = () => true): void {
   const ref = useRef(handlers);
+  const activeRef = useRef(isActive);
   useEffect(() => {
     ref.current = handlers;
+    activeRef.current = isActive;
   });
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || isTyping(e.target)) return;
+      // Off screen (e.g. reading the article below), Space must scroll and R/L must do nothing.
+      if (!activeRef.current()) return;
       const h = ref.current;
       switch (e.key) {
         case "ArrowRight":

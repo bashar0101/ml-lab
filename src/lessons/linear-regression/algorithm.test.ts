@@ -34,6 +34,9 @@ describe("runLinearRegression", () => {
     const t = runLinearRegression(PRESETS[0].points, LR_DEFAULTS);
     for (const f of t.frames) expect(Object.keys(f.metrics).sort()).toEqual(["intercept", "iteration", "loss", "slope"]);
     expect(t.frames[3].metrics.iteration).toBe(1);
+    // the guess and measure frames of the first step already belong to step 1
+    expect(t.frames[1].metrics.iteration).toBe(1);
+    expect(t.frames[2].metrics.iteration).toBe(1);
     expect(t.frames[0].metrics.loss).toBeCloseTo(lrLoss(PRESETS[0].points, -10, 20, 5, Math.sqrt(60 / 9)), 9);
   });
 
@@ -61,6 +64,8 @@ describe("validateData", () => {
     [[], "tooFew"],
     [[{ x: 1, y: 2 }], "tooFew"],
     [[{ x: 3, y: 1 }, { x: 3, y: 9 }], "sameX"],
+    [[{ x: 0.7, y: 20 }, { x: 0.7, y: 50 }, { x: 0.7, y: 80 }], "sameX"],
+    [[{ x: 0.3, y: 1 }, { x: 0.3, y: 2 }, { x: 0.3, y: 3 }, { x: 0.3, y: 4 }, { x: 0.3, y: 5 }, { x: 0.3, y: 6 }], "sameX"],
     [[{ x: 1, y: 1 }, { x: 2, y: 2 }], null],
   ])("validateData(%j) = %s", (pts, err) => {
     expect(validateData(pts as Point[])).toBe(err);

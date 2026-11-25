@@ -14,7 +14,7 @@ export const python: CodeLine[] = [
 
 export const pseudo: CodeLine[] = [
   { text: "scale x so its mean is 0 and spread is 1", key: "init" },
-  { text: "start with a random line: w = −10, b = 20", key: "init" },
+  { text: "start with a made-up line: w = −10, b = 20", key: "init" },
   { text: "repeat steps times:" },
   { text: "    guess ← w·x + b for every point", key: "predict" },
   { text: "    error ← guess − real value", key: "error" },
