@@ -1,0 +1,156 @@
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.sec {
+  margin-block: 0 8px;
+  font: 700 11px var(--font-ui);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.now {
+  border-inline-start: 4px solid var(--blue);
+}
+
+.nowTitle {
+  display: block;
+  color: var(--blue-ink);
+  font: 700 14px/1.35 var(--font-ui);
+}
+
+.nowBody {
+  margin-block-start: 4px;
+  font-size: 13.5px;
+}
+
+.codeHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.copy {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: 500 11px var(--font-ui);
+  cursor: pointer;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-block-end: 8px;
+}
+
+.tabs button {
+  flex: 1;
+  padding-block: 6px;
+  border: 1px solid var(--line-2);
+  border-radius: 8px;
+  background: var(--card);
+  font: 500 11.5px var(--font-ui);
+  cursor: pointer;
+}
+
+.tabs button[aria-pressed="true"] {
+  background: var(--peach);
+  border-color: var(--ink);
+}
+
+.code {
+  margin: 0;
+  padding-block: 8px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font: 12.5px/1.75 var(--font-ui);
+  overflow-x: auto;
+}
+
+.code div {
+  padding-inline: 12px;
+  white-space: pre;
+  border-inline-start: 3px solid transparent;
+}
+
+.code .hl {
+  background: var(--blue-soft);
+  border-inline-start-color: var(--blue);
+  font-weight: 600;
+}
+
+.error {
+  margin-block: 10px 0;
+  padding: 8px 10px;
+  border: 1px solid var(--red);
+  border-radius: 8px;
+  color: var(--red);
+  font-size: 13px;
+}
+
+.breakIt {
+  margin-block-start: 14px;
+  padding-block-start: 12px;
+  border-block-start: 1px dashed var(--line-2);
+  font-size: 13.5px;
+}
+
+.breakIt p {
+  margin-block: 0 8px;
+}
+
+.player {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-block-start: 10px;
+}
+
+.player :global(.btn) {
+  min-inline-size: 38px;
+  padding-inline: 10px;
+}
+
+.play {
+  min-inline-size: 46px;
+}
+
+.scrubber {
+  flex: 1;
+  min-inline-size: 120px;
+  accent-color: var(--ink);
+}
+
+.counter {
+  min-inline-size: 72px;
+  text-align: center;
+  font: 600 12px var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+
+.speeds {
+  display: flex;
+  gap: 4px;
+}
+
+.speeds button {
+  padding-block: 5px;
+  padding-inline: 8px;
+  border: 1px solid var(--line-2);
+  border-radius: 8px;
+  background: var(--card);
+  font: 500 11px var(--font-ui);
+  cursor: pointer;
+}
+
+.speeds button[aria-pressed="true"] {
+  background: var(--peach);
+  border-color: var(--ink);
+}

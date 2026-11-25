@@ -1,6 +1,7 @@
 .workspace {
   display: grid;
   grid-template-columns: 222px minmax(0, 1fr) 300px;
+  grid-template-areas: "side center right";
   gap: 12px;
   align-items: start;
   padding: 12px;
@@ -13,14 +14,21 @@
   padding: 14px;
 }
 
-.left {
+.tree,
+.labSide {
+  grid-area: side;
   position: sticky;
   inset-block-start: 68px;
 }
 
-.left > .card {
+.tree > .card {
   max-block-size: calc(100vh - 84px);
   overflow-y: auto;
+}
+
+/* In Lab the left column holds the data panel; the course tree stays in the phone menu. */
+.workspace[data-mode="lab"] .tree:not(.open) {
+  display: none;
 }
 
 .closeMenu,
@@ -29,6 +37,7 @@
 }
 
 .center {
+  grid-area: center;
   min-inline-size: 0;
 }
 
@@ -95,8 +104,11 @@
 }
 
 .right {
+  grid-area: right;
   position: sticky;
   inset-block-start: 68px;
+  display: grid;
+  gap: 12px;
 }
 
 .scrim {
@@ -106,9 +118,39 @@
 @media (max-width: 999px) {
   .workspace {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: none;
   }
 
-  .left {
+  .tree,
+  .labSide,
+  .center,
+  .right {
+    grid-area: auto;
+  }
+
+  .center {
+    order: 1;
+  }
+
+  /* Lab on phones: scene, explanation, controls, code. */
+  .right {
+    display: contents;
+  }
+
+  .right > * {
+    order: 2;
+  }
+
+  .labSide {
+    position: static;
+    order: 3;
+  }
+
+  .codeSlot {
+    order: 4;
+  }
+
+  .tree {
     position: fixed;
     inset-block: 0;
     inset-inline-start: 0;
@@ -123,16 +165,16 @@
     transition: transform 160ms ease, visibility 160ms;
   }
 
-  :global(html[dir="rtl"]) .left {
+  :global(html[dir="rtl"]) .tree {
     transform: translateX(105%);
   }
 
-  .left.open {
+  .tree.open {
     transform: none;
     visibility: visible;
   }
 
-  .left > .card {
+  .tree > .card {
     max-block-size: none;
   }
 
@@ -155,10 +197,6 @@
 
   .menuButton span {
     font-size: 11px;
-  }
-
-  .right {
-    position: static;
   }
 
   .h1 {

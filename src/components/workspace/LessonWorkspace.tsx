@@ -3,20 +3,30 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { LessonContent } from "@/content/schema";
 import { getChapter, getLesson, lessons, lessonsInChapter } from "@/course/manifest";
-import { frameIndexOfTag } from "@/engine/types";
+import { frameIndexOfTag, type Trace } from "@/engine/types";
 import { useT } from "@/i18n/ui-context";
 import { loadLessonModule } from "@/lessons/registry";
 import type { AnyLessonModule } from "@/lessons/types";
 import { formatHash, parseHash, type Mode } from "@/state/hash";
+import { useLessonKeys } from "@/state/keys";
 import { usePlayer } from "@/state/player";
 import { browserStorage, createProgressStore } from "@/state/progress";
 import { ModeSwitch, StatChips, StepRail } from "./bits";
 import { CourseTree } from "./CourseTree";
+import { CodePanel, LabPanel, NowCard } from "./LabParts";
 import styles from "./LessonWorkspace.module.css";
+import { Player } from "./Player";
 import { StoryCard, YouWillLearn } from "./StoryCard";
 
 function writeHash(h: string) {
   window.history.replaceState(window.history.state, "", h || window.location.pathname + window.location.search);
+}
+
+interface LabState {
+  params: unknown;
+  data: unknown;
+  trace: Trace<unknown>;
+  error: string | null;
 }
 
 export function LessonWorkspace({ slug, content }: { slug: string; content: LessonContent }) {
@@ -31,6 +41,7 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
   const [mod, setMod] = useState<AnyLessonModule | null>(null);
   const [mode, setMode] = useState<Mode>("learn");
   const [step, setStep] = useState(0);
+  const [lab, setLab] = useState<LabState | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [completed, setCompleted] = useState<ReadonlySet<string>>(() => new Set());
   const progress = useMemo(() => createProgressStore(typeof window === "undefined" ? null : browserStorage()), []);
@@ -58,7 +69,11 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
     if (h.mode === "learn") recordStep(h.step);
     else refreshCompleted();
     let alive = true;
-    loadLessonModule(slug).then((m) => alive && setMod(m));
+    loadLessonModule(slug).then((m) => {
+      if (!alive) return;
+      setMod(m);
+      setLab({ params: m.defaultParams, data: m.defaultData, trace: m.run(m.defaultData, m.defaultParams), error: null });
+    });
     return () => {
       alive = false;
     };
@@ -66,7 +81,7 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
   }, [slug]);
 
   const learnTrace = useMemo(() => (mod ? mod.run(mod.defaultData, mod.defaultParams) : null), [mod]);
-  const trace = learnTrace;
+  const trace = mode === "lab" ? (lab?.trace ?? null) : learnTrace;
   const [player, dispatch] = usePlayer(trace?.frames.length ?? 1);
 
   const tagIndex = useCallback(
@@ -105,6 +120,41 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
     [mode, step],
   );
 
+  /** Re-run on new data or params; invalid data shows a message and keeps the previous run. */
+  const updateLab = useCallback(
+    (patch: { params?: unknown; data?: unknown }) => {
+      if (!mod) return;
+      setLab((prev) => {
+        if (!prev) return prev;
+        const params = patch.params ?? prev.params;
+        const data = patch.data ?? prev.data;
+        const error = mod.validate(data);
+        return error ? { ...prev, params, data, error } : { params, data, error: null, trace: mod.run(data, params) };
+      });
+    },
+    [mod],
+  );
+
+  useLessonKeys({
+    next: () => (mode === "learn" ? goStep(step + 1) : dispatch({ type: "next" })),
+    prev: () => (mode === "learn" ? goStep(step - 1) : dispatch({ type: "prev" })),
+    togglePlay: () => {
+      if (mode === "lab") dispatch({ type: "toggle" });
+      else if (step < last) goStep(step + 1);
+      else switchMode("lab");
+    },
+    replay: () => {
+      if (mode === "lab") {
+        dispatch({ type: "first" });
+        dispatch({ type: "play" });
+      } else {
+        dispatch({ type: "seek", index: step > 0 ? tagIndex(step - 1) : 0 });
+        dispatch({ type: "playTo", index: tagIndex(step) });
+      }
+    },
+    toggleMode: () => switchMode(mode === "learn" ? "lab" : "learn"),
+  });
+
   useEffect(() => {
     if (!menuOpen) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
@@ -115,10 +165,12 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
   const reveal = useMemo(() => (mode === "lab" ? ("all" as const) : new Set(story[step].reveal)), [mode, story, step]);
   const index = trace ? Math.min(player.index, trace.frames.length - 1) : 0;
   const frame = trace?.frames[index];
+  const sceneData = mode === "lab" ? lab?.data : mod?.defaultData;
+  const params = mode === "lab" ? lab?.params : mod?.defaultParams;
 
   return (
     <div className={styles.workspace} data-mode={mode}>
-      <aside className={`${styles.left} ${menuOpen ? styles.open : ""}`} aria-label={t("course.heading")}>
+      <aside className={`${styles.tree} ${menuOpen ? styles.open : ""}`} aria-label={t("course.heading")}>
         <button type="button" className={`${styles.closeMenu} btn`} onClick={() => setMenuOpen(false)}>
           {t("menu.close")}
         </button>
@@ -127,6 +179,20 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
         </div>
       </aside>
       {menuOpen && <div className={styles.scrim} onClick={() => setMenuOpen(false)} aria-hidden="true" />}
+
+      {mode === "lab" && mod && lab && (
+        <aside className={styles.labSide}>
+          <LabPanel lab={content.lab} error={lab.error}>
+            <mod.LabControls
+              params={lab.params}
+              data={lab.data}
+              onParams={(p: unknown) => updateLab({ params: p })}
+              onData={(d: unknown) => updateLab({ data: d })}
+              labels={content.lab}
+            />
+          </LabPanel>
+        </aside>
+      )}
 
       <section className={`${styles.card} ${styles.center}`}>
         <div className={styles.head}>
@@ -158,8 +224,14 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
         <div className={styles.stage}>
           {mod && trace && frame ? (
             <>
-              <StatChips chips={mod.stats(frame, mod.defaultParams)} labels={content.stats} />
-              <mod.Scene trace={trace} index={index} data={mod.defaultData} reveal={reveal} />
+              <StatChips chips={mod.stats(frame, params)} labels={content.stats} />
+              <mod.Scene
+                trace={trace}
+                index={index}
+                data={sceneData}
+                reveal={reveal}
+                onData={mode === "lab" ? (d: unknown) => updateLab({ data: d }) : undefined}
+              />
             </>
           ) : (
             <div className={styles.skeleton} role="status">
@@ -168,12 +240,16 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
           )}
         </div>
 
-        {mode === "learn" && <StepRail rails={story.map((s) => s.rail)} step={step} onStep={goStep} />}
+        {mode === "learn" ? (
+          <StepRail rails={story.map((s) => s.rail)} step={step} onStep={goStep} />
+        ) : (
+          trace && <Player state={player} dispatch={dispatch} />
+        )}
       </section>
 
-      <aside className={`${styles.card} ${styles.right}`}>
-        {mode === "learn" && (
-          <>
+      <aside className={styles.right}>
+        {mode === "learn" ? (
+          <div className={styles.card}>
             <StoryCard
               step={story[step]}
               index={step}
@@ -183,7 +259,19 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
               onNext={() => (step < last ? goStep(step + 1) : switchMode("lab"))}
             />
             <YouWillLearn items={content.youWillLearn} step={step} total={story.length} />
-          </>
+          </div>
+        ) : (
+          mod &&
+          frame && (
+            <>
+              <div className={styles.now}>
+                <NowCard frame={frame} events={content.events} />
+              </div>
+              <div className={styles.codeSlot}>
+                <CodePanel code={mod.code} active={frame.codeLine} />
+              </div>
+            </>
+          )
         )}
       </aside>
     </div>
