@@ -1,0 +1,66 @@
+:root {
+  color-scheme: light;
+  --bg: #f1e9dd;
+  --panel: #f9f3ea;
+  --card: #fdf9f2;
+  --ink: #1d1b18;
+  --ink-2: #4a453e;
+  --muted: #7a7268;
+  --line: #dccfbe;
+  --line-2: #c4b7a5;
+  --green: #cfe3b2;
+  --green-2: #7fae55;
+  --peach: #fbdcbc;
+  --peach-2: #d0683a;
+  --lavender: #e3dbf0;
+  --lavender-line: #c9bce0;
+  --lavender-2: #6b4fb3;
+  --blue: #2c62d6;
+  --blue-ink: #1f47a0;
+  --blue-soft: #e3e9f8;
+  --red: #c0392b;
+  --dot: #e3d8c8;
+  --on-ink: #f7efe2;
+  --stage: #fcf8f0;
+
+  --ch-foundations: #d9a866;
+  --ch-classification: #5d9a4e;
+  --ch-trees: #7a5bc0;
+  --ch-patterns: #d0683a;
+  --ch-neural: #2f7fc4;
+  --ch-deep: #c9496b;
+
+  --font-ui: var(--font-mono), ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --font-display: var(--font-serif), Georgia, "Times New Roman", serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow-press: 0 2px 0 var(--ink);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #1b1916;
+  --panel: #23201c;
+  --card: #2a2622;
+  --ink: #f1e9dd;
+  --ink-2: #d3c9bb;
+  --muted: #a99f92;
+  --line: #3a352f;
+  --line-2: #575047;
+  --green: #3d5a2a;
+  --green-2: #9fcf74;
+  --peach: #5c4029;
+  --peach-2: #f0935f;
+  --lavender: #352d4b;
+  --lavender-line: #4d4268;
+  --lavender-2: #c4b2f0;
+  --blue: #7fa6ff;
+  --blue-ink: #a9c3ff;
+  --blue-soft: #26314d;
+  --red: #ff7a6b;
+  --dot: #2f2b26;
+  --on-ink: #1b1916;
+  --stage: #201d1a;
+}
