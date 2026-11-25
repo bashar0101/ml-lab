@@ -1,0 +1,115 @@
+.mode {
+  display: flex;
+  border: 1.5px solid var(--ink);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow-press);
+}
+
+.mode button {
+  border: 0;
+  background: var(--card);
+  padding-block: 8px;
+  padding-inline: 18px;
+  font: 600 12.5px var(--font-ui);
+  cursor: pointer;
+}
+
+.mode button[aria-pressed="true"] {
+  background: var(--green);
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-block: 10px 0;
+  padding-inline: 10px;
+}
+
+.stat {
+  min-inline-size: 92px;
+  padding-block: 4px;
+  padding-inline: 11px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  font: 700 14px var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat small {
+  display: block;
+  font: 500 9.5px var(--font-ui);
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.suffix {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.rail {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  margin-block-start: 10px;
+  padding: 0;
+  overflow-x: auto;
+}
+
+.rail li {
+  flex: 1;
+  min-inline-size: 76px;
+  position: relative;
+}
+
+.rail li + li::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 13px;
+  inset-inline-start: -50%;
+  inline-size: 100%;
+  block-size: 1px;
+  background: var(--line-2);
+}
+
+.rail button {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  inline-size: 100%;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: 500 10.5px var(--font-ui);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.rail b {
+  display: grid;
+  place-items: center;
+  inline-size: 27px;
+  block-size: 27px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-2);
+  background: var(--card);
+  color: var(--ink);
+}
+
+.rail button[data-done="true"] b {
+  border-color: var(--green-2);
+}
+
+.rail button[aria-current="step"] {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.rail button[aria-current="step"] b {
+  background: var(--green);
+  border-color: var(--ink);
+}

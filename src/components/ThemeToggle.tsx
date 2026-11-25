@@ -1,16 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { THEME_KEY, type Theme } from "@/state/theme";
 import styles from "./TopBar.module.css";
 
-export function ThemeToggle({ toLight, toDark }: { toLight: string; toDark: string }) {
-  const [theme, setTheme] = useState<Theme | null>(null);
+function subscribe(onChange: () => void) {
+  const obs = new MutationObserver(onChange);
+  obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => obs.disconnect();
+}
 
-  useEffect(() => {
-    const current = document.documentElement.getAttribute("data-theme");
-    setTheme(current === "dark" ? "dark" : "light");
-  }, []);
+const getTheme = (): Theme => (document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+
+export function ThemeToggle({ toLight, toDark }: { toLight: string; toDark: string }) {
+  // The server doesn't know the theme; the bootstrap script sets it before paint.
+  const theme = useSyncExternalStore<Theme | null>(subscribe, getTheme, () => null);
 
   function toggle() {
     const next: Theme = theme === "dark" ? "light" : "dark";
@@ -20,7 +24,6 @@ export function ThemeToggle({ toLight, toDark }: { toLight: string; toDark: stri
     } catch {
       // storage blocked: the theme still applies for this visit
     }
-    setTheme(next);
   }
 
   const label = theme === "dark" ? toLight : toDark;

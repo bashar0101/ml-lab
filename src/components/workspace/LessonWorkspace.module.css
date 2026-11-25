@@ -1,0 +1,171 @@
+.workspace {
+  display: grid;
+  grid-template-columns: 222px minmax(0, 1fr) 300px;
+  gap: 12px;
+  align-items: start;
+  padding: 12px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.left {
+  position: sticky;
+  inset-block-start: 68px;
+}
+
+.left > .card {
+  max-block-size: calc(100vh - 84px);
+  overflow-y: auto;
+}
+
+.closeMenu,
+.menuButton {
+  display: none;
+}
+
+.center {
+  min-inline-size: 0;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-block-end: 10px;
+}
+
+.eyebrow {
+  font: 500 11px var(--font-ui);
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.h1 {
+  margin: 0;
+  font: 400 34px/1.05 var(--font-display);
+}
+
+.tag {
+  border: 1px solid var(--ink);
+  border-radius: 20px;
+  padding-block: 3px;
+  padding-inline: 10px;
+  font: 600 11px var(--font-ui);
+  box-shadow: 0 1.5px 0 var(--ink);
+  white-space: nowrap;
+}
+
+.tag[data-tone="peach"] {
+  background: var(--peach);
+}
+
+.tag[data-tone="green"] {
+  background: var(--green);
+}
+
+.modeSlot {
+  margin-inline-start: auto;
+}
+
+.stage {
+  background: var(--stage) radial-gradient(var(--dot) 1px, transparent 1.2px) 0 0 / 18px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stage svg {
+  max-block-size: max(260px, calc(100vh - 360px));
+  margin-inline: auto;
+}
+
+.skeleton {
+  aspect-ratio: 780 / 425;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font: 500 12px var(--font-ui);
+}
+
+.right {
+  position: sticky;
+  inset-block-start: 68px;
+}
+
+.scrim {
+  display: none;
+}
+
+@media (max-width: 999px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .left {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 40;
+    inline-size: min(320px, 86vw);
+    padding: 12px;
+    background: var(--bg);
+    border-inline-end: 1px solid var(--line);
+    overflow-y: auto;
+    transform: translateX(-105%);
+    visibility: hidden;
+    transition: transform 160ms ease, visibility 160ms;
+  }
+
+  :global(html[dir="rtl"]) .left {
+    transform: translateX(105%);
+  }
+
+  .left.open {
+    transform: none;
+    visibility: visible;
+  }
+
+  .left > .card {
+    max-block-size: none;
+  }
+
+  .scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background: rgb(0 0 0 / 0.3);
+  }
+
+  .closeMenu,
+  .menuButton {
+    display: inline-flex;
+  }
+
+  .closeMenu {
+    margin-block-end: 10px;
+  }
+
+  .menuButton span {
+    font-size: 11px;
+  }
+
+  .right {
+    position: static;
+  }
+
+  .h1 {
+    font-size: 30px;
+  }
+
+  .stage svg {
+    max-block-size: none;
+  }
+}

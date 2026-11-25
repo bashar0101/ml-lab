@@ -1,0 +1,114 @@
+.card {
+  display: grid;
+  gap: 2px;
+}
+
+.eyebrow {
+  font: 500 11px var(--font-ui);
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.title {
+  margin-block: 8px;
+  font: 700 17px/1.3 var(--font-ui);
+}
+
+.body p {
+  margin-block: 0 10px;
+}
+
+.idea {
+  margin-block: 6px 10px;
+  padding-block: 10px;
+  padding-inline: 12px;
+  border: 1px solid var(--lavender-line);
+  border-radius: 10px;
+  background: var(--lavender);
+  font-size: 14px;
+}
+
+.idea small {
+  display: block;
+  font: 700 10px var(--font-ui);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--lavender-2);
+}
+
+.math {
+  margin-block-end: 12px;
+  padding-block: 8px;
+  padding-inline: 12px;
+  border: 1px dashed var(--line-2);
+  border-radius: 10px;
+}
+
+.math summary {
+  cursor: pointer;
+  font: 600 12px var(--font-ui);
+}
+
+.mathBody p {
+  margin-block: 8px 0;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.next {
+  flex: 1;
+}
+
+.learn {
+  margin-block-start: 14px;
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--line);
+}
+
+.learnHeading {
+  margin-block: 0 8px;
+  font: 700 11px var(--font-ui);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.learn ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.learn li {
+  display: flex;
+  gap: 8px;
+  color: var(--ink-2);
+}
+
+.learn li[data-done="true"] {
+  color: var(--ink);
+}
+
+.box {
+  flex: none;
+  display: grid;
+  place-items: center;
+  inline-size: 16px;
+  block-size: 16px;
+  margin-block-start: 2px;
+  border: 1.5px solid var(--line-2);
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+[data-done="true"] .box {
+  background: var(--green);
+  border-color: var(--ink);
+}
