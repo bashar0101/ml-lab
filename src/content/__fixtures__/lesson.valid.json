@@ -1,0 +1,33 @@
+{
+  "title": "Fixture Lesson",
+  "description": "A lesson used only by tests.",
+  "youWillLearn": ["One thing", "Another thing", "A third thing"],
+  "story": [
+    { "id": "a", "rail": "One", "title": "Step one", "body": "Body **one**.", "keyIdea": "Idea one.", "frameTag": "start", "reveal": ["points"] },
+    { "id": "b", "rail": "Two", "title": "Step two", "body": "Body two.", "keyIdea": "Idea two.", "frameTag": "start", "reveal": ["points"] },
+    { "id": "c", "rail": "Three", "title": "Step three", "body": "Body three.", "keyIdea": "Idea three.", "math": "`a = b`", "frameTag": "start", "reveal": [] },
+    { "id": "d", "rail": "Four", "title": "Step four", "body": "Body four.", "keyIdea": "Idea four.", "frameTag": "start", "reveal": [] },
+    { "id": "e", "rail": "Five", "title": "Step five", "body": "Body five.", "keyIdea": "Idea five.", "frameTag": "start", "reveal": [] },
+    { "id": "f", "rail": "Six", "title": "Step six", "body": "Body six.", "keyIdea": "Idea six.", "frameTag": "done", "reveal": [] }
+  ],
+  "events": { "init": { "title": "Start", "body": "Loss is {loss}." } },
+  "stats": { "loss": "LOSS" },
+  "lab": {
+    "breakIt": "Push it too far.",
+    "presets": { "a": "Preset A" },
+    "params": { "learningRate": { "label": "Learning rate", "hint": "How big each step is." } },
+    "errors": { "tooFew": "Add more points." }
+  },
+  "article": {
+    "sections": [
+      { "heading": "One", "body": "Text." },
+      { "heading": "Two", "body": "Text.", "table": { "headers": ["a", "b"], "rows": [["1", "2"]] } },
+      { "heading": "Three", "body": "Text." }
+    ],
+    "faq": [
+      { "q": "Q1?", "a": "A1." },
+      { "q": "Q2?", "a": "A2." },
+      { "q": "Q3?", "a": "A3." }
+    ]
+  }
+}

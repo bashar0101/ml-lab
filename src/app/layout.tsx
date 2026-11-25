@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { TopBar } from "@/components/TopBar";
+import { DEFAULT_LOCALE, loadUi } from "@/content/load";
+import { UiProvider } from "@/i18n/ui-context";
 import { themeBootstrapScript } from "@/state/theme";
 import "@/styles/globals.css";
 
@@ -13,27 +15,35 @@ const serif = Instrument_Serif({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "ML Lab",
-  description: "Learn machine learning by watching algorithms work, step by step.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const ui = await loadUi(DEFAULT_LOCALE);
+  return { title: ui["site.name"], description: ui["site.description"] };
+}
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const ui = await loadUi(DEFAULT_LOCALE);
   return (
-    <html lang="en" data-theme="light" className={`${mono.variable} ${serif.variable}`} suppressHydrationWarning>
+    <html
+      lang={DEFAULT_LOCALE}
+      data-theme="light"
+      className={`${mono.variable} ${serif.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
       </head>
       <body>
-        <TopBar
-          strings={{
-            home: "ML Lab home",
-            search: "Search lessons and ideas",
-            toLight: "Switch to light theme",
-            toDark: "Switch to dark theme",
-          }}
-        />
-        {children}
+        <UiProvider strings={ui}>
+          <TopBar
+            strings={{
+              home: ui["nav.home"],
+              search: ui["nav.search"],
+              toLight: ui["theme.toLight"],
+              toDark: ui["theme.toDark"],
+            }}
+          />
+          {children}
+        </UiProvider>
       </body>
     </html>
   );
