@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext } from "react";
 import type { UiStrings } from "@/content/schema";
+import { interpolate } from "@/engine/text";
 
 export type TFunction = (key: string, vars?: Record<string, string | number>) => string;
 
@@ -17,8 +18,7 @@ export function translate(strings: UiStrings, key: string, vars?: Record<string,
     if (process.env.NODE_ENV !== "production") console.warn(`Missing UI string: ${key}`);
     return key;
   }
-  if (!vars) return template;
-  return template.replace(/\{(\w+)\}/g, (m, k: string) => (k in vars ? String(vars[k]) : m));
+  return vars ? interpolate(template, vars, (_k, v) => String(v)) : template;
 }
 
 export function useT(): TFunction {
