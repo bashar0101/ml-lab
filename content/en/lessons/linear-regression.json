@@ -1,0 +1,182 @@
+{
+  "title": "Linear Regression",
+  "description": "Watch a computer fit a straight line to data, one small step at a time, and see what \"training\" really means. Free and interactive.",
+  "youWillLearn": [
+    "What a model is: a rule that turns an input into a guess",
+    "How to measure how wrong a guess is (the loss)",
+    "How a computer improves by stepping downhill on the loss",
+    "Why a learning rate that is too big breaks everything"
+  ],
+  "story": [
+    {
+      "id": "problem",
+      "rail": "The problem",
+      "title": "Can hours predict a score?",
+      "body": "Nine students told us how many hours they studied and what they scored on the exam. Your friend plans to study **6.5 hours**. What score should they expect?",
+      "keyIdea": "A **model** is just a rule that turns an input (hours) into a guess (score).",
+      "frameTag": "start",
+      "reveal": ["points"]
+    },
+    {
+      "id": "first-guess",
+      "rail": "First guess",
+      "title": "Start with a bad line",
+      "body": "The simplest rule is a straight line: *score = slope × hours + start*. The computer does not know the right slope yet, so it begins with a made-up line. This one even slopes the wrong way. That is fine.",
+      "keyIdea": "Every learner starts out wrong. Learning is what happens next.",
+      "math": "The line is `guess = w·x + b`. The two numbers **w** (slope) and **b** (height) are all the model knows. Training means choosing them.",
+      "frameTag": "start",
+      "reveal": ["points", "line"]
+    },
+    {
+      "id": "measure",
+      "rail": "Measure",
+      "title": "How wrong is it?",
+      "body": "Each red stick is one mistake: the gap between the line's guess and the real score. Square every gap, so big mistakes count a lot and negatives can't cancel positives, then take the average. That single number is the **loss**.",
+      "keyIdea": "Learning means making the loss smaller.",
+      "math": "`loss = mean((guess − y)²)`, the *mean squared error*.",
+      "frameTag": "start",
+      "reveal": ["points", "line", "residuals"]
+    },
+    {
+      "id": "one-step",
+      "rail": "One step",
+      "title": "Roll downhill",
+      "body": "On the right is the loss for **every possible line**. Each spot on that bowl is one choice of slope and height, and its height is how wrong that line would be. Our line is the orange dot. The computer feels which way is downhill and takes one small step.",
+      "keyIdea": "The direction of steepest uphill is called the **gradient**. Step the other way.",
+      "math": "`w ← w − lr · ∂loss/∂w` and `b ← b − lr · ∂loss/∂b`, where **lr** is the learning rate: how big each step is.",
+      "frameTag": "first-update",
+      "reveal": ["points", "line", "residuals", "bowl", "path"]
+    },
+    {
+      "id": "repeat",
+      "rail": "Repeat",
+      "title": "Step, step, step",
+      "body": "Do it again: guess, measure, step. The first steps are big because the bowl is steep. As the dot nears the bottom, the slope flattens and the steps shrink on their own.",
+      "keyIdea": "Nobody told the computer the answer. It only followed the slope.",
+      "frameTag": "update-8",
+      "reveal": ["points", "line", "bowl", "path"]
+    },
+    {
+      "id": "result",
+      "rail": "The result",
+      "title": "It found the line",
+      "body": "After 40 small steps the dot sits at the bottom of the bowl and the line runs right through the data. Its slope is about **5.5 points per hour**, so 6.5 hours of study predicts a score of about **72**.",
+      "keyIdea": "Neural networks learn exactly like this, just with millions of numbers instead of two.",
+      "frameTag": "done",
+      "reveal": ["points", "line", "bowl", "path"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Start: a made-up line",
+      "body": "The slope and height are guesses. The loss is {loss}. Press play to start training."
+    },
+    "predict": {
+      "title": "Step {iteration}: guess",
+      "body": "Use the current line to guess a score for every point."
+    },
+    "error": {
+      "title": "Step {iteration}: measure the mistakes",
+      "body": "Each red stick is one error: guess minus the real score. Together they say which way to move the line."
+    },
+    "update": {
+      "title": "Step {iteration}: move downhill",
+      "body": "The slope and height took a small step downhill. The loss is now {loss}."
+    },
+    "overshoot": {
+      "title": "Step {iteration}: overshoot!",
+      "body": "The step was so big it jumped across the bowl and landed higher up. The loss went **up** to {loss}. A smaller learning rate fixes this."
+    },
+    "diverged": {
+      "title": "It blew up",
+      "body": "Each step overshot further than the last, until the numbers became enormous. Training stopped. Lower the learning rate below 1.0 and try again."
+    },
+    "done": {
+      "title": "Done: {iteration} steps taken",
+      "body": "The line's slope is {slope} and the loss is {loss}. Try another dataset, or push the learning rate higher."
+    }
+  },
+  "stats": {
+    "step": "STEP",
+    "loss": "LOSS",
+    "slope": "SLOPE"
+  },
+  "lab": {
+    "breakIt": "Drag the learning rate above **1.0** and press play. Every step now overshoots more than it fixes, so the dot bounces higher up the bowl and the loss grows until it blows up. Then try **One outlier** and watch a single bad point drag the whole line.",
+    "presets": {
+      "study-hours": "Study hours",
+      "house-prices": "House prices",
+      "outlier": "One outlier"
+    },
+    "params": {
+      "learningRate": {
+        "label": "Learning rate",
+        "hint": "How big each step downhill is."
+      },
+      "steps": {
+        "label": "Steps",
+        "hint": "How many times to guess, measure and step."
+      }
+    },
+    "errors": {
+      "tooFew": "Add at least two points to fit a line.",
+      "sameX": "All points are in one column, so there is no slope to find. Spread them out sideways."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is linear regression?",
+        "body": "Linear regression finds the straight line that best fits a set of points, so you can predict one number from another: a score from hours studied, a price from a size, a temperature from a date.\n\nThe line has two numbers: a **slope** (how much the output changes for each unit of input) and a **starting height**. Finding good values for those two numbers from examples is the whole job, and it is the simplest example of what machine learning means by *training a model*."
+      },
+      {
+        "heading": "How the computer finds the line",
+        "body": "It repeats four moves. **Guess**: use the current line to predict every point. **Measure**: compare the guesses with the real values and average the squared gaps; this is the loss. **Find downhill**: work out which small change to the slope and height would lower the loss fastest. **Step**: change them a little in that direction.\n\nEach repeat lowers the loss a bit. When the steps stop making a difference, the line has settled at the bottom of the loss bowl."
+      },
+      {
+        "heading": "The math, step by step",
+        "body": "First, the inputs are rescaled so their average is 0 and their spread is 1: `x = (hours − mean) / std`. This makes the bowl round, so one step size suits both numbers.\n\nWith `n` points, the model guesses `ŷ = w·x + b` and the loss is `L = (1/n) Σ (ŷ − y)²`.\n\nThe gradient tells us how the loss changes when each number changes: `∂L/∂w = (2/n) Σ (ŷ − y)·x` and `∂L/∂b = (2/n) Σ (ŷ − y)`.\n\nEach step moves against the gradient: `w ← w − lr·∂L/∂w` and `b ← b − lr·∂L/∂b`. In this lesson, with rescaled inputs, any learning rate below 1.0 settles at the bottom; exactly 1.0 bounces forever; above 1.0 blows up."
+      },
+      {
+        "heading": "When to use it, and when not to",
+        "body": "Linear regression is fast, easy to explain and a good first try. It struggles when the real pattern is curved or when a few extreme points dominate.",
+        "table": {
+          "headers": ["Situation", "Works?", "Why"],
+          "rows": [
+            ["Output rises steadily with input", "Yes", "A straight line is the right shape"],
+            ["Curved pattern (growth, saturation)", "Poorly", "A straight line cannot bend; add curved features or use another model"],
+            ["A few wild outliers", "Poorly", "Squaring the errors makes far-away points pull very hard"],
+            ["You need to explain the prediction", "Yes", "The slope says exactly how much each unit of input adds"],
+            ["Predicting far outside the data", "Risky", "The line keeps going forever, even where reality doesn't"]
+          ]
+        }
+      },
+      {
+        "heading": "Common mistakes",
+        "body": "**A learning rate that is too big** makes training bounce and blow up, as the lab shows. **Forgetting to rescale inputs** makes the bowl a long narrow valley, where no single step size works well. **Trusting the line outside the data**: a student who studies 30 hours will not score 200. **Ignoring outliers**: one bad point can tilt the whole line, so look at your data before fitting it."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Why square the errors instead of just adding them?",
+        "a": "Positive and negative errors would cancel out, so a terrible line could score zero. Squaring makes every error positive and punishes big mistakes more than small ones. It also gives a smooth bowl, which makes the downhill direction easy to compute."
+      },
+      {
+        "q": "What does the learning rate do?",
+        "a": "It sets the size of each step downhill. Too small and training crawls; too big and each step jumps over the bottom of the bowl. Try both in the lab."
+      },
+      {
+        "q": "Why rescale x before training?",
+        "a": "Without rescaling, the slope and the height live on very different scales, so the bowl becomes a long thin valley. One step size is then too big in one direction and too small in the other. Rescaling makes the bowl round."
+      },
+      {
+        "q": "Isn't there a formula for the best line?",
+        "a": "Yes. For linear regression you can solve for the best line directly (the *least squares* formula), and the line in this lesson ends up at the same place. We use gradient descent because it is how almost every other model, including neural networks, is trained."
+      },
+      {
+        "q": "Is this machine learning or statistics?",
+        "a": "Both. Linear regression is a classic statistics tool, and training it by gradient descent is the core idea of machine learning. That is why it is lesson 1."
+      }
+    ]
+  }
+}
