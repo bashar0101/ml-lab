@@ -1,0 +1,17 @@
+.prose {
+  max-inline-size: 720px;
+  margin-inline: auto;
+  padding-block: 56px;
+  padding-inline: 18px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.prose h1 {
+  margin-block: 0 18px;
+  font: 400 clamp(40px, 6vw, 60px) / 1.05 var(--font-display);
+}
+
+.prose p {
+  margin-block: 0 14px;
+}

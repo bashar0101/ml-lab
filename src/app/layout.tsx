@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Footer } from "@/components/Footer";
 import { TopBar } from "@/components/TopBar";
 import { DEFAULT_LOCALE, loadUi } from "@/content/load";
 import { UiProvider } from "@/i18n/ui-context";
@@ -44,6 +45,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
           {children}
+          <Footer name={ui["site.name"]} line={ui["home.footer"]} about={ui["nav.about"]} />
         </UiProvider>
       </body>
     </html>

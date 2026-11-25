@@ -1,0 +1,18 @@
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  align-items: baseline;
+  justify-content: center;
+  margin-block-start: 24px;
+  padding-block: 28px;
+  padding-inline: 18px;
+  border-block-start: 1px solid var(--line);
+  font: 500 12px var(--font-ui);
+  color: var(--muted);
+}
+
+.name {
+  font: 400 20px var(--font-display);
+  color: var(--ink);
+}
