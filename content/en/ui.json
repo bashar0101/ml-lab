@@ -130,6 +130,8 @@
   "notFound.body": "This page does not exist. Let's roll back downhill.",
   "notFound.home": "Back to the start",
 
+  "lr.axis.x": "x",
+  "lr.axis.y": "y",
   "lr.axis.hours": "hours studied",
   "lr.axis.score": "exam score",
   "lr.axis.size": "size (m²)",

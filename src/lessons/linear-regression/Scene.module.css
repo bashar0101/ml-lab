@@ -1,0 +1,100 @@
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  font-family: var(--font-ui);
+}
+
+.axis path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+}
+
+.axis text,
+.caption {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.drawArea {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.point {
+  fill: var(--peach);
+  stroke: var(--ink);
+  stroke-width: 1.7;
+  transition: cx 120ms ease, cy 120ms ease;
+}
+
+.removable {
+  cursor: pointer;
+}
+
+.removable:hover {
+  fill: var(--red);
+}
+
+.line {
+  stroke: var(--blue);
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+  transition: d 120ms linear;
+}
+
+.residual {
+  stroke: var(--red);
+  stroke-width: 1.6;
+  stroke-dasharray: 4 3;
+  opacity: 0.55;
+}
+
+.residualStrong {
+  opacity: 1;
+  stroke-width: 2.2;
+}
+
+.cell {
+  stroke: var(--line-2);
+  stroke-width: 0.7;
+  fill-opacity: 0.9;
+}
+
+.h0 {
+  fill: color-mix(in srgb, var(--green) 100%, var(--peach));
+}
+.h1 {
+  fill: color-mix(in srgb, var(--green) 60%, var(--peach));
+}
+.h2 {
+  fill: color-mix(in srgb, var(--green) 20%, var(--peach));
+}
+.h3 {
+  fill: color-mix(in srgb, var(--peach) 75%, var(--lavender));
+}
+.h4 {
+  fill: color-mix(in srgb, var(--peach) 35%, var(--lavender));
+}
+.h5 {
+  fill: var(--lavender);
+}
+
+.path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+
+.pathDot {
+  fill: var(--ink);
+}
+
+.current {
+  fill: var(--peach-2);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
