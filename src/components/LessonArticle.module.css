@@ -1,0 +1,122 @@
+.article {
+  max-inline-size: 760px;
+  margin-inline: auto;
+  padding-block: 32px 64px;
+  padding-inline: 18px;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.crumbs {
+  font: 500 12px var(--font-ui);
+  color: var(--muted);
+}
+
+.crumbs a {
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  text-decoration: underline;
+}
+
+.section {
+  margin-block-start: 34px;
+}
+
+.section h2 {
+  margin-block: 0 10px;
+  font: 400 30px/1.15 var(--font-display);
+}
+
+.section p {
+  margin-block: 0 12px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  margin-block: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+}
+
+.tableWrap table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tableWrap th,
+.tableWrap td {
+  padding-block: 9px;
+  padding-inline: 12px;
+  text-align: start;
+  border-block-end: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.tableWrap th {
+  font: 700 11px var(--font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tableWrap tr:last-child td {
+  border-block-end: 0;
+}
+
+.faq {
+  margin-block: 8px;
+  padding-block: 10px;
+  padding-inline: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+}
+
+.faq summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.faq p {
+  margin-block: 8px 0;
+}
+
+.next {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  border: 1.5px solid var(--ink);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: var(--shadow-press);
+}
+
+.nextLabel {
+  font: 500 11px var(--font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.nextTitle {
+  font: 400 26px/1.2 var(--font-display);
+  text-decoration: none;
+}
+
+.soon {
+  font: 500 11px var(--font-ui);
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  padding-inline: 6px;
+  vertical-align: middle;
+}
+
+.updated {
+  margin-block-start: 40px;
+  font: 500 12px var(--font-ui);
+  color: var(--muted);
+}

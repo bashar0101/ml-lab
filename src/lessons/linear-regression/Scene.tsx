@@ -40,7 +40,7 @@ function niceDomain(values: number[], count = 5): { domain: [number, number]; ti
   }
   const step = niceStep(hi - lo, count);
   const domain: [number, number] = [Math.floor(lo / step) * step, Math.ceil(hi / step) * step];
-  if (domain[0] === lo) domain[0] -= step;
+  if (domain[0] === lo && lo !== 0) domain[0] -= step;
   if (domain[1] === hi) domain[1] += step;
   const ticks: number[] = [];
   for (let v = domain[0]; v <= domain[1] + step / 2; v += step) ticks.push(Math.round(v * 1e6) / 1e6);
@@ -52,7 +52,9 @@ function axes(data: LrData) {
     const t = (d: [number, number], s: number) => Array.from({ length: Math.round((d[1] - d[0]) / s) + 1 }, (_, i) => d[0] + i * s);
     return { x: { domain: CUSTOM_DOMAIN.x, ticks: t(CUSTOM_DOMAIN.x, 2) }, y: { domain: CUSTOM_DOMAIN.y, ticks: t(CUSTOM_DOMAIN.y, 20) } };
   }
-  return { x: niceDomain(data.points.map((p) => p.x)), y: niceDomain(data.points.map((p) => p.y)) };
+  const ys = data.points.map((p) => p.y);
+  // Non-negative quantities (scores, prices) start at 0 so early wrong guesses stay on screen.
+  return { x: niceDomain(data.points.map((p) => p.x)), y: niceDomain(Math.min(...ys) >= 0 ? [0, ...ys] : ys) };
 }
 
 /** 0..1 height → one of six theme-aware colour bands. */

@@ -108,7 +108,9 @@
   position: sticky;
   inset-block-start: 68px;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
+  min-inline-size: 0;
 }
 
 .scrim {

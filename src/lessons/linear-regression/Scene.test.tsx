@@ -36,6 +36,17 @@ describe("linear regression module", () => {
     expect(screen.getByRole("img", { name: ui["lr.scene.label"] })).toBeInTheDocument();
   });
 
+  it("the first, wrong-way guess is drawn inside the plot (y axis starts at 0 for non-negative data)", () => {
+    const t = mod.run(mod.defaultData, mod.defaultParams);
+    const { container } = wrap(<mod.Scene trace={t} index={0} data={mod.defaultData} reveal={new Set(["points", "line"])} />);
+    const d = container.querySelector("[data-part=line]")!.getAttribute("d")!;
+    const ys = [...d.matchAll(/[ML][\d.-]+ ([\d.-]+)/g)].map((m) => Number(m[1]));
+    for (const y of ys) {
+      expect(y).toBeGreaterThanOrEqual(46);
+      expect(y).toBeLessThanOrEqual(330);
+    }
+  });
+
   it("every frame's codeLine exists in both code tabs", () => {
     const t = mod.run(mod.defaultData, mod.defaultParams);
     const diverged = mod.run(mod.defaultData, { ...mod.defaultParams, learningRate: 50 });
