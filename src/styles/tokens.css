@@ -25,10 +25,12 @@
 
   --ch-foundations: #d9a866;
   --ch-classification: #5d9a4e;
+  --ch-evaluation: #2a9d8f;
   --ch-trees: #7a5bc0;
   --ch-patterns: #d0683a;
   --ch-neural: #2f7fc4;
   --ch-deep: #c9496b;
+  --ch-generative: #5c6b73;
 
   --font-ui: var(--font-mono), ui-monospace, "Cascadia Mono", Consolas, monospace;
   --font-display: var(--font-serif), Georgia, "Times New Roman", serif;

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Markdownish } from "@/components/Markdownish";
 import type { LessonContent, UiStrings } from "@/content/schema";
-import { getChapter, getLesson, nextLesson } from "@/course/manifest";
+import { getChapter, getLesson, nextLesson, nextLiveLesson } from "@/course/manifest";
 import { translate } from "@/i18n/translate";
 import styles from "./LessonArticle.module.css";
 
@@ -12,6 +12,7 @@ export function LessonArticle({ slug, content, ui }: { slug: string; content: Le
   const entry = getLesson(slug)!;
   const chapter = getChapter(entry.chapter);
   const next = nextLesson(slug);
+  const nextLive = next?.status === "soon" ? nextLiveLesson(slug) : undefined;
 
   return (
     <article className={styles.article}>
@@ -81,6 +82,14 @@ export function LessonArticle({ slug, content, ui }: { slug: string; content: Le
               </span>
             )}
           </div>
+          {nextLive && (
+            <div className={styles.next}>
+              <span className={styles.nextLabel}>{t("article.nextAvailable")}</span>
+              <Link href={`/lessons/${nextLive.slug}/`} className={styles.nextTitle}>
+                {t(`lesson.${nextLive.slug}.title`)} →
+              </Link>
+            </div>
+          )}
         </section>
       )}
 

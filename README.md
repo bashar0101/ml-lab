@@ -36,7 +36,7 @@ Use it to:
 <details>
 <summary><b>The whole home page</b></summary>
 
-![The full ML Lab home page: hero, how every lesson works, the six chapters, every lesson and questions](docs/images/home-full.png)
+![The full ML Lab home page: hero, how every lesson works, the eight chapters, every lesson and questions](docs/images/home-full.png)
 
 </details>
 
@@ -50,16 +50,18 @@ Use it to:
   - a code panel in **Python** and **pseudocode** with the line that just ran highlighted
 - **Real algorithms, not canned videos:** each algorithm is a pure TypeScript function that records a trace of frames; the picture is a replay of that trace. The math is tested against NumPy. The convolutional and recurrent networks use small weights trained offline with NumPy (the browser recomputes every activation from them), and the attention lesson uses hand-set weights, stated openly in the lesson.
 - **"Break it" moments:** every lesson shows a failure on purpose (for example, a learning rate that is too big blows up training).
-- **Course structure:** 14 lessons in 6 chapters, all live:
+- **Course structure:** 40 lessons in 8 chapters, ordered like a university machine-learning course (Stanford CS229, MIT 6.036, the Ng ML and Deep Learning specializations). 14 are live (★); the rest are listed as "coming soon":
 
   | Chapter | Lessons |
   |---|---|
-  | 01 Foundations | Linear Regression, Gradient Descent |
-  | 02 Classification | Logistic Regression, k-Nearest Neighbors, Support Vector Machine |
-  | 03 Trees & Forests | Decision Tree, Random Forest |
-  | 04 Finding Patterns | K-Means Clustering, Principal Component Analysis |
-  | 05 Neural Networks | Neural Network, Backpropagation |
-  | 06 Deep Learning | Convolutional Neural Network, Recurrent Neural Network, Attention & Transformers |
+  | 01 Foundations | Linear Regression ★, Gradient Descent ★, Feature Scaling, Polynomial Regression & Overfitting, Regularization (Ridge & Lasso) |
+  | 02 Classification | Perceptron, Logistic Regression ★, Naive Bayes, k-Nearest Neighbors ★, Support Vector Machine ★, The Kernel Trick |
+  | 03 Evaluating Models | Train/Test Split & Cross-Validation, Bias & Variance, Confusion Matrix, Precision & Recall, ROC Curves & AUC |
+  | 04 Trees & Ensembles | Decision Tree ★, Random Forest ★, AdaBoost, Gradient Boosting |
+  | 05 Unsupervised Learning | K-Means Clustering ★, Hierarchical Clustering, DBSCAN, Gaussian Mixture Models (EM), Principal Component Analysis ★, t-SNE |
+  | 06 Neural Networks | Neural Network ★, Backpropagation ★, Softmax & Multi-class Classification, Dropout & Early Stopping, Optimizers: Momentum & Adam, Batch Normalization |
+  | 07 Deep Learning | Convolutional Neural Network ★, Recurrent Neural Network ★, LSTM & GRU, Word Embeddings, Attention & Transformers ★ |
+  | 08 Generative Models & RL | Autoencoders, Generative Adversarial Networks, Diffusion Models, Reinforcement Learning (Q-Learning) |
 - **Search:** press **Ctrl K** (or **/**) to search every lesson, story step, article section and FAQ, then jump straight to that step.
 - **Share previews:** every lesson has its own Open Graph image, so links show a proper card in chats and social posts.
 - **Progress tracking** saved in your own browser; no sign-up.
@@ -104,7 +106,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Deploying
 
-`npm run build` produces a fully static site in `out/`. Upload that folder to any static host (Vercel, Netlify, GitHub Pages, Cloudflare Pages, …). Set `NEXT_PUBLIC_SITE_URL` to your domain when building so the sitemap and canonical links are correct.
+**Vercel (recommended):** import the GitHub repository at [vercel.com/new](https://vercel.com/new). Vercel detects Next.js; keep the defaults (build command `npm run build`). During the build the site uses Vercel's production domain for the sitemap, canonical links and share images. When you add a custom domain, set the environment variable `NEXT_PUBLIC_SITE_URL` (for example `https://example.com`) and redeploy.
+
+**Anywhere else:** `npm run build` produces a fully static site in `out/`. Upload that folder to any static host (Netlify, GitHub Pages, Cloudflare Pages, …) and set `NEXT_PUBLIC_SITE_URL` to your domain when building.
 
 ## Project Structure
 
