@@ -32,10 +32,11 @@ export interface CartOptions {
   features?: (node: TreeNode) => Feature[];
 }
 
+/** Every event also carries the tree as built so far (live array: copy it to keep it). */
 export type CartEvent =
-  | { kind: "scan"; node: TreeNode; candidates: Candidate[] }
-  | { kind: "split"; node: TreeNode }
-  | { kind: "leaf"; node: TreeNode };
+  | { kind: "scan"; node: TreeNode; candidates: Candidate[]; nodes: TreeNode[] }
+  | { kind: "split"; node: TreeNode; nodes: TreeNode[] }
+  | { kind: "leaf"; node: TreeNode; nodes: TreeNode[] };
 
 const EPS = 1e-12;
 const value = (p: LabeledPoint, f: Feature) => (f === 0 ? p.x : p.y);
@@ -101,14 +102,14 @@ export function growTree(points: LabeledPoint[], opts: CartOptions, onEvent?: (e
     const node = nodes[q];
     const tooSmall = node.indices.length < 2 * opts.minLeaf;
     if (node.depth >= opts.maxDepth || node.gini === 0 || tooSmall) {
-      onEvent?.({ kind: "leaf", node });
+      onEvent?.({ kind: "leaf", node, nodes });
       continue;
     }
     const features = opts.features?.(node) ?? [0, 1];
     const found = bestSplit(points, node.indices, features, opts.minLeaf, k);
-    onEvent?.({ kind: "scan", node, candidates: found?.perFeature ?? [] });
+    onEvent?.({ kind: "scan", node, candidates: found?.perFeature ?? [], nodes });
     if (!found || found.best.gain <= EPS) {
-      onEvent?.({ kind: "leaf", node });
+      onEvent?.({ kind: "leaf", node, nodes });
       continue;
     }
     const { feature: f, threshold: t } = found.best;
@@ -128,7 +129,7 @@ export function growTree(points: LabeledPoint[], opts: CartOptions, onEvent?: (e
     nodes.push(make(nodes.length, node.depth + 1, leftIdx, lb));
     node.right = nodes.length;
     nodes.push(make(nodes.length, node.depth + 1, rightIdx, rb));
-    onEvent?.({ kind: "split", node });
+    onEvent?.({ kind: "split", node, nodes });
   }
   return nodes;
 }
