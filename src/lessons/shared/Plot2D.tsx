@@ -134,7 +134,7 @@ export function ClassMarker({
   const cls = [styles.marker, styles[CLASS_STYLE[c]], dim ? styles.dim : "", ring ? styles.ring : "", onClick ? styles.removable : ""]
     .filter(Boolean)
     .join(" ");
-  const common = { "data-part": "point", "data-class": c, className: cls, onClick };
+  const common = { "data-part": "point", "data-class": c, "data-wrong": ring ? "true" : undefined, className: cls, onClick };
   if (c === 0) return <circle {...common} cx={x} cy={y} r={r} />;
   if (c === 1) return <rect {...common} x={x - r * 0.9} y={y - r * 0.9} width={r * 1.8} height={r * 1.8} rx={1.5} />;
   const h = r * 1.15;

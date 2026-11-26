@@ -28,7 +28,7 @@ export const chapters: Chapter[] = [
 export const lessons: LessonEntry[] = [
   { slug: "linear-regression", chapter: "foundations", minutes: 8, level: "beginner", status: "live" },
   { slug: "gradient-descent", chapter: "foundations", minutes: 10, level: "beginner", status: "live" },
-  { slug: "logistic-regression", chapter: "classification", minutes: 10, level: "beginner", status: "soon" },
+  { slug: "logistic-regression", chapter: "classification", minutes: 10, level: "beginner", status: "live" },
   { slug: "k-nearest-neighbors", chapter: "classification", minutes: 8, level: "beginner", status: "soon" },
   { slug: "support-vector-machine", chapter: "classification", minutes: 12, level: "intermediate", status: "soon" },
   { slug: "decision-tree", chapter: "trees", minutes: 10, level: "beginner", status: "soon" },

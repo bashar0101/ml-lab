@@ -16,6 +16,7 @@ export interface LogState {
   std: [number, number];
   /** Predicted probability of class 1 for every point, in data order. */
   probs: number[];
+  threshold: number;
 }
 
 export const LOG_DEFAULTS: LogParams = { learningRate: 0.5, steps: 60, threshold: 0.5 };
@@ -96,7 +97,7 @@ export function runLogistic(points: LabeledPoint[], p: LogParams): Trace<LogStat
   const push = (step: number, codeLine: string, event: string, tags: string[] = []) => {
     const m = measure();
     frames.push({
-      state: { step, w: [...w], b, mean, std, probs: m.probs },
+      state: { step, w: [...w], b, mean, std, probs: m.probs, threshold: p.threshold },
       codeLine,
       event,
       tags,

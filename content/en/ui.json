@@ -81,6 +81,10 @@
   "lab.pointX": "x",
   "lab.pointY": "y",
   "lab.addPoint": "Add point",
+  "lab.drawClass": "Class of new points",
+  "lab.classA": "Class A",
+  "lab.classB": "Class B",
+  "lab.classC": "Class C",
   "lab.points": "Your points",
   "lab.removePoint": "Remove point ({x}, {y})",
 
@@ -166,5 +170,11 @@
   "gd.optimizer.momentum": "Momentum",
   "gd.optimizer.adam": "Adam",
   "gd.compare": "Compare all three",
-  "gd.clickHint": "Click the map to choose where to start."
+  "gd.clickHint": "Click the map to choose where to start.",
+
+  "log.scene.label": "Two kinds of points with the model's probability shaded behind them and its decision line on the left, and the squashing S-curve on the right.",
+  "log.scene.sigmoid": "score squashed into a probability",
+  "log.scene.score": "score z = w·x + b",
+  "log.axis.x": "hours studied",
+  "log.axis.y": "hours slept"
 }
