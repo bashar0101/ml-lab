@@ -44,7 +44,7 @@ Use it to:
   - a code panel in **Python** and **pseudocode** with the line that just ran highlighted
 - **Real algorithms, not canned videos:** each algorithm is a pure TypeScript function that records a trace of frames; the picture is a replay of that trace. The math is tested against NumPy.
 - **"Break it" moments:** every lesson shows a failure on purpose (for example, a learning rate that is too big blows up training).
-- **Course structure:** 14 lessons in 6 chapters, from linear regression to attention and transformers. Lessons 1–9 are live (Linear Regression, Gradient Descent, Logistic Regression, k-Nearest Neighbors, Support Vector Machine, Decision Tree, Random Forest, K-Means, PCA); the rest are marked "coming soon".
+- **Course structure:** 14 lessons in 6 chapters, from linear regression to attention and transformers. Lessons 1–11 are live (Linear Regression, Gradient Descent, Logistic Regression, k-Nearest Neighbors, Support Vector Machine, Decision Tree, Random Forest, K-Means, PCA, Neural Network, Backpropagation); the rest are marked "coming soon".
 - **Progress tracking** saved in your own browser; no sign-up.
 - **Shareable links** to any step or to the Lab (`#step-3`, `#lab`).
 - **Light and dark themes**, keyboard shortcuts (←/→, Space, R, L), screen-reader friendly, and a phone layout.
