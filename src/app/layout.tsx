@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { TopBar } from "@/components/TopBar";
 import { DEFAULT_LOCALE, loadUi } from "@/content/load";
 import { UiProvider } from "@/i18n/ui-context";
+import { ogImage } from "@/og/images";
 import { SITE_URL } from "@/site";
 import { themeBootstrapScript } from "@/state/theme";
 import "@/styles/globals.css";
@@ -19,7 +20,13 @@ const serif = Instrument_Serif({
 
 export async function generateMetadata(): Promise<Metadata> {
   const ui = await loadUi(DEFAULT_LOCALE);
-  return { metadataBase: new URL(SITE_URL), title: ui["site.name"], description: ui["site.description"] };
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: ui["site.name"],
+    description: ui["site.description"],
+    openGraph: { siteName: ui["site.name"], type: "website", images: [ogImage("site", ui["site.tagline"])] },
+    twitter: { card: "summary_large_image" },
+  };
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
