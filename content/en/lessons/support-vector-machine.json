@@ -54,8 +54,8 @@
       "id": "supports",
       "rail": "Supports",
       "title": "Only a few points matter",
-      "body": "When training settles, the boundary is built only from the points that pushed at least once: the **support vectors** (blue circles). Points that never pushed don't appear in the formula at all, so deleting them would leave the street exactly where it is. Most support vectors sit on the edges of the street or inside it; a few pushed early on and have since been left safely behind.",
-      "keyIdea": "The model is a weighted sum over its support vectors and nothing else.",
+      "body": "The street's formula is a weighted sum over the circled points only: the **support vectors**, the points that pushed at some moment during training. At the exact SVM solution they would be precisely the points on the edges of the street or inside it. This quick training method gets close, so a few circled points pushed early on and have since been left behind.",
+      "keyIdea": "The boundary is built from the support vectors; the other points never enter its formula.",
       "frameTag": "done",
       "reveal": [
         "points",

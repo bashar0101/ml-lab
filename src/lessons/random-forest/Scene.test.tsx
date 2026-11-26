@@ -56,10 +56,10 @@ describe("random forest module", () => {
     expect(onParams).toHaveBeenLastCalledWith({ ...mod.defaultParams, seed: mod.defaultParams.seed + 1 });
   });
 
-  it("stats: trees, training accuracy, out-of-bag accuracy (null before any tree)", () => {
+  it("stats: trees, training accuracy, out-of-bag accuracy (not yet before any tree)", () => {
     const t = mod.run(mod.defaultData, mod.defaultParams);
     expect(mod.stats(t.frames[0], mod.defaultParams).map((s) => s.labelKey)).toEqual(["trees", "accuracy", "oob"]);
-    expect(mod.stats(t.frames[0], mod.defaultParams)[2].value).toBeNull();
+    expect(mod.stats(t.frames[0], mod.defaultParams)[2].value).toBeUndefined();
     expect(mod.stats(t.frames.at(-1)!, mod.defaultParams)[2].value).not.toBeNull();
   });
 });

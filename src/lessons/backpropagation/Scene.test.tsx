@@ -58,7 +58,7 @@ describe("backpropagation module", () => {
   it("stats: prediction, loss of the example, last/first gradient ratio (only once training)", () => {
     const t = mod.run(mod.defaultData, mod.defaultParams);
     expect(mod.stats(t.frames[0], mod.defaultParams).map((s) => s.labelKey)).toEqual(["prediction", "loss", "ratio"]);
-    expect(mod.stats(t.frames[0], mod.defaultParams)[2].value).toBeNull();
+    expect(mod.stats(t.frames[0], mod.defaultParams)[2].value).toBeUndefined();
     expect(mod.stats(t.frames.at(-2)!, mod.defaultParams)[2].value).not.toBeNull();
   });
 });

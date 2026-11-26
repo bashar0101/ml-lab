@@ -24,7 +24,7 @@ export function NowCard({
 }) {
   const t = useT();
   const ev = events[frame.event];
-  const fmt = (_k: string, v: number) => (!Number.isFinite(v) || Math.abs(v) > TOO_BIG ? t("stat.tooBig") : formatStat(v));
+  const fmt = (_k: string, v: number) => (Number.isNaN(v) ? t("stat.pending") : !Number.isFinite(v) || Math.abs(v) > TOO_BIG ? t("stat.tooBig") : formatStat(v));
   return (
     <div className={`${styles.card} ${styles.now}`} aria-live={playing ? "off" : "polite"}>
       <h2 className={styles.sec}>{t("now.heading")}</h2>

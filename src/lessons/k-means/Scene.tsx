@@ -19,19 +19,30 @@ const CHART = { x0: 470, y0: 60, x1: 750, y1: 320 };
 const DOMAIN: [number, number] = [0, 10];
 const round1 = (v: number) => Math.round(v * 10) / 10;
 
-/** Cluster markers: colour *and* a number, so clusters are told apart without colour. */
+/** Cluster markers: each cluster gets its own colour *and* its own shape. */
 function ClusterPoint({ x, y, c, onClick }: { x: number; y: number; c: number | null; onClick?(): void }) {
-  return (
-    <circle
-      data-part="point"
-      data-cluster={c ?? undefined}
-      className={`${styles.point} ${c === null ? styles.unassigned : styles[`k${c}`]}`}
-      cx={x}
-      cy={y}
-      r={5.5}
-      onClick={onClick}
-    />
-  );
+  const common = {
+    "data-part": "point",
+    "data-cluster": c ?? undefined,
+    className: `${styles.point} ${c === null ? styles.unassigned : styles[`k${c}`]}`,
+    onClick,
+  };
+  const r = 5.5;
+  const poly = (pts: [number, number][]) => <polygon {...common} points={pts.map(([dx, dy]) => `${x + dx},${y + dy}`).join(" ")} />;
+  switch (c) {
+    case 1:
+      return <rect {...common} x={x - r} y={y - r} width={2 * r} height={2 * r} rx={1.5} />;
+    case 2:
+      return poly([[0, -r - 1], [r + 1, r], [-r - 1, r]]);
+    case 3:
+      return poly([[0, -r - 1.5], [r + 1.5, 0], [0, r + 1.5], [-r - 1.5, 0]]);
+    case 4:
+      return poly([[0, r + 1], [r + 1, -r], [-r - 1, -r]]);
+    case 5:
+      return poly(Array.from({ length: 6 }, (_, k) => [r * 1.1 * Math.cos((k * Math.PI) / 3), r * 1.1 * Math.sin((k * Math.PI) / 3)] as [number, number]));
+    default:
+      return <circle {...common} cx={x} cy={y} r={r} />;
+  }
 }
 
 export function Scene({ trace, index, data, reveal, onData, stale }: SceneProps<KMeansState, KMeansData>) {

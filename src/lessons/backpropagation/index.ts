@@ -15,9 +15,9 @@ const backpropagation: LessonModule<BackpropState, BackpropParams, BackpropData>
   LabControls,
   code: { python, pseudo },
   stats: (frame) => [
-    { labelKey: "prediction", value: frame.state.shownForward >= frame.state.net.W.length ? Number(frame.metrics.prediction.toFixed(3)) : null },
-    { labelKey: "loss", value: frame.event === "init" || frame.event === "forward" ? null : Number(frame.metrics.loss.toFixed(3)) },
-    { labelKey: "ratio", value: frame.metrics.ratio !== undefined && Number.isFinite(frame.metrics.ratio) ? Number(frame.metrics.ratio.toPrecision(3)) : null, suffix: "×" },
+    { labelKey: "prediction", value: frame.state.shownForward >= frame.state.net.W.length ? frame.metrics.prediction : undefined },
+    { labelKey: "loss", value: frame.event === "init" || frame.event === "forward" ? undefined : frame.metrics.loss },
+    { labelKey: "ratio", value: frame.metrics.ratio !== undefined && Number.isFinite(frame.metrics.ratio) ? frame.metrics.ratio : undefined, suffix: "×" },
   ],
 };
 

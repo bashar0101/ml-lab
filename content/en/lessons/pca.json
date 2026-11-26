@@ -120,6 +120,10 @@
     "done": {
       "title": "Done",
       "body": "Share of the spread kept: {explained}. Try the round cloud and the two stripes."
+    },
+    "keep": {
+      "title": "Keep both directions",
+      "body": "Nothing is squashed: the points are only described along the new axes, so all of the spread is kept."
     }
   },
   "stats": {

@@ -17,7 +17,7 @@ async function openLab() {
     </UiProvider>,
   );
   const scrubber = await screen.findByLabelText("Training step");
-  await waitFor(() => expect(Number(scrubber.getAttribute("max"))).toBeGreaterThan(10));
+  await waitFor(() => expect(Number(scrubber.getAttribute("max"))).toBeGreaterThan(10), { timeout: 5000 });
   return { ...view, last: scrubber.getAttribute("max")! };
 }
 

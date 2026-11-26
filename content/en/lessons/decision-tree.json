@@ -15,7 +15,10 @@
       "body": "You've probably played *twenty questions*: guess the answer by asking yes/no questions. A decision tree does the same with data. Each point is described by two numbers, **x** and **y**, and belongs to one of two classes. Which questions should we ask?",
       "keyIdea": "A decision tree is a flowchart of yes/no questions, learned from examples.",
       "frameTag": "start",
-      "reveal": ["points", "tree"]
+      "reveal": [
+        "points",
+        "tree"
+      ]
     },
     {
       "id": "best-question",
@@ -25,7 +28,11 @@
       "keyIdea": "Purity is measured by **Gini impurity**: 0 = all one class, 0.5 = a perfect 50/50 mix.",
       "math": "`gini = 1 − Σ pₖ²`, where `pₖ` is the share of class k in a half. A split's score is the size-weighted average of the two halves' Gini.",
       "frameTag": "first-scan",
-      "reveal": ["points", "candidates", "tree"]
+      "reveal": [
+        "points",
+        "candidates",
+        "tree"
+      ]
     },
     {
       "id": "split",
@@ -34,7 +41,12 @@
       "body": "The question with the lowest Gini wins. It becomes the root of the tree, and it cuts the plane into two boxes. Points answering *yes* go left in the tree, *no* go right. Each box is coloured by its majority class.",
       "keyIdea": "Every question cuts along one feature, so every boundary is straight and parallel to an axis.",
       "frameTag": "first-split",
-      "reveal": ["points", "regions", "splits", "tree"]
+      "reveal": [
+        "points",
+        "regions",
+        "splits",
+        "tree"
+      ]
     },
     {
       "id": "split-again",
@@ -43,7 +55,13 @@
       "body": "Each box is a smaller version of the same problem, so the tree repeats the recipe inside it: find the best question for just those points, and split. Level by level the boxes get smaller and purer.",
       "keyIdea": "The same simple step, repeated, builds a complex shape.",
       "frameTag": "depth-2",
-      "reveal": ["points", "regions", "splits", "candidates", "tree"]
+      "reveal": [
+        "points",
+        "regions",
+        "splits",
+        "candidates",
+        "tree"
+      ]
     },
     {
       "id": "stop",
@@ -52,7 +70,12 @@
       "body": "A box stops splitting when it is pure, when it has too few points, or when the tree reaches its **maximum depth** (3 here). The final boxes are **leaves**: a new point is classified by asking the questions from the top until it lands in one.",
       "keyIdea": "Limits on depth and leaf size keep the tree from memorising noise.",
       "frameTag": "done",
-      "reveal": ["points", "regions", "splits", "tree"]
+      "reveal": [
+        "points",
+        "regions",
+        "splits",
+        "tree"
+      ]
     },
     {
       "id": "boxes",
@@ -61,7 +84,12 @@
       "body": "The coloured boxes are the tree's whole model of the world. Curved shapes, like these moons, get approximated by staircases of boxes. Trees are easy to read and need no scaling of the data, but they can be jumpy: move a few points and the tree can change completely.",
       "keyIdea": "Easy to explain, fast, but unstable. The next lesson fixes that with a forest of trees.",
       "frameTag": "done",
-      "reveal": ["points", "regions", "splits", "tree"]
+      "reveal": [
+        "points",
+        "regions",
+        "splits",
+        "tree"
+      ]
     }
   ],
   "events": {
@@ -79,7 +107,7 @@
     },
     "leaf": {
       "title": "A leaf",
-      "body": "This box stops here: it is pure, too small, or at the maximum depth."
+      "body": "This box stops here: it is pure, too small to split, at the maximum depth, or no question would make its halves purer."
     },
     "done": {
       "title": "The finished tree",
@@ -128,10 +156,22 @@
         "heading": "Overfitting and how to stop it",
         "body": "Left alone, a tree keeps splitting until every leaf is pure, which on noisy data means memorising individual points. Common brakes: a **maximum depth**, a **minimum number of points per leaf**, a minimum gain for a split, or growing fully and **pruning** back afterwards.",
         "table": {
-          "headers": ["Setting", "Small value", "Large value"],
+          "headers": [
+            "Setting",
+            "Small value",
+            "Large value"
+          ],
           "rows": [
-            ["Max depth", "Simple, may underfit", "Detailed, may overfit"],
-            ["Min points per leaf", "Islands around single points", "Broad, smoother boxes"]
+            [
+              "Max depth",
+              "Simple, may underfit",
+              "Detailed, may overfit"
+            ],
+            [
+              "Min points per leaf",
+              "Islands around single points",
+              "Broad, smoother boxes"
+            ]
           ]
         }
       },

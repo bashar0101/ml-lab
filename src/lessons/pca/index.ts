@@ -5,7 +5,7 @@ import { pseudo, python } from "./code";
 import { LabControls } from "./LabControls";
 import { Scene, type PcaData } from "./Scene";
 
-const finite = (v: number, digits = 2) => (Number.isFinite(v) ? Number(v.toFixed(digits)) : null);
+const finite = (v: number, digits = 2) => (Number.isFinite(v) ? Number(v.toFixed(digits)) : undefined);
 
 const pca: LessonModule<PcaState, PcaParams, PcaData> = {
   slug: "pca",

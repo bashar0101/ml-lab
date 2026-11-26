@@ -116,7 +116,7 @@
     "changed": "MOVED"
   },
   "lab": {
-    "breakIt": "Pick **Moons** with **k = 2**: k-means cuts straight across them and puts about a fifth of the points in the wrong moon, because it only knows round blobs. Pick **Uneven** and press **New random start** a few times: some starts split the big loose group in two and lump a small group in with one half. Then set **k = 6** on **Three groups**: it happily splits real groups to use up all its centres.",
+    "breakIt": "Pick **Moons** with **k = 2**: k-means cuts straight across them and puts a quarter or more of the points in the wrong moon, because it only knows round blobs. Pick **Uneven** and press **New random start** a few times: some starts split the big loose group in two and lump a small group in with one half. Then set **k = 6** on **Three groups**: it happily splits real groups to use up all its centres.",
     "presets": {
       "three-blobs": "Three groups",
       "blobs": "Two groups",

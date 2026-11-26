@@ -15,7 +15,9 @@
       "body": "In the last lesson one decision tree learned to classify points, but it was jumpy: move a few points and it can change completely. A **random forest** grows many trees, each a little different, and lets them vote. Individual mistakes tend to cancel out.",
       "keyIdea": "Many imperfect, different models voting together beat one model.",
       "frameTag": "start",
-      "reveal": ["points"]
+      "reveal": [
+        "points"
+      ]
     },
     {
       "id": "bootstrap",
@@ -25,7 +27,11 @@
       "keyIdea": "Same data, different random samples, different trees.",
       "math": "The chance a point is never drawn in `n` draws is `(1 − 1/n)ⁿ ≈ e⁻¹ ≈ 37 %`.",
       "frameTag": "first-sample",
-      "reveal": ["points", "sample", "thumbs"]
+      "reveal": [
+        "points",
+        "sample",
+        "thumbs"
+      ]
     },
     {
       "id": "random-questions",
@@ -34,7 +40,11 @@
       "body": "A second dose of randomness: at every node, the tree may only ask about **one randomly chosen feature**, x or y. This stops every tree from asking the same strong first question, so the trees really disagree. Here is the first tree's map on its own.",
       "keyIdea": "Different samples plus different questions make trees that make different mistakes.",
       "frameTag": "first-tree",
-      "reveal": ["points", "tree", "thumbs"]
+      "reveal": [
+        "points",
+        "tree",
+        "thumbs"
+      ]
     },
     {
       "id": "vote",
@@ -43,7 +53,11 @@
       "body": "With five trees, every spot gets five votes. The shading shows the share of trees voting for each class: strong colour where they agree, pale where they are split. The small maps on the right are the individual trees: each one is blocky and odd in its own way.",
       "keyIdea": "The forest's answer is the majority vote; the vote share works as a confidence.",
       "frameTag": "five-trees",
-      "reveal": ["points", "forest", "thumbs"]
+      "reveal": [
+        "points",
+        "forest",
+        "thumbs"
+      ]
     },
     {
       "id": "many",
@@ -52,7 +66,11 @@
       "body": "After fifteen trees the map is smoother than any single tree's staircase, and the islands around noisy points have mostly been voted away. Adding trees never makes a forest overfit more; it just makes the vote steadier, at the cost of more computing.",
       "keyIdea": "Averaging many high-variance models lowers the variance. This is called **bagging**.",
       "frameTag": "done",
-      "reveal": ["points", "forest", "thumbs"]
+      "reveal": [
+        "points",
+        "forest",
+        "thumbs"
+      ]
     },
     {
       "id": "oob",
@@ -61,7 +79,11 @@
       "body": "Every point was left out by about a third of the trees. Ask only *those* trees to classify it, and you get an honest guess for a point they never saw. Averaged over all points this is the **out-of-bag accuracy** (OOB): a test score without setting aside any data.",
       "keyIdea": "Training accuracy flatters; out-of-bag accuracy tells the truth.",
       "frameTag": "done",
-      "reveal": ["points", "forest", "thumbs"]
+      "reveal": [
+        "points",
+        "forest",
+        "thumbs"
+      ]
     }
   ],
   "events": {
@@ -70,7 +92,7 @@
       "body": "Press play to grow the trees one by one."
     },
     "sample": {
-      "title": "Tree {trees}: draw a bootstrap sample",
+      "title": "Tree {tree}: draw a bootstrap sample",
       "body": "Badges show points drawn more than once; faded points weren't drawn for this tree."
     },
     "grow": {
@@ -128,11 +150,23 @@
         "heading": "Out-of-bag evaluation",
         "body": "Each bootstrap sample leaves out about 37 % of the points. For every point, the trees that didn't see it can classify it as if it were new. The share of points they get right is the **out-of-bag accuracy**, a fair estimate of how the forest does on unseen data, for free.",
         "table": {
-          "headers": ["Setting", "Effect of raising it"],
+          "headers": [
+            "Setting",
+            "Effect of raising it"
+          ],
           "rows": [
-            ["Number of trees", "Steadier, smoother votes; never more overfitting; slower"],
-            ["Max depth", "Each tree fits more detail; the vote averages the noise away"],
-            ["Features per question", "More features = trees more alike = less benefit from voting"]
+            [
+              "Number of trees",
+              "Steadier, smoother votes; never more overfitting; slower"
+            ],
+            [
+              "Max depth",
+              "Each tree fits more detail; the vote averages the noise away"
+            ],
+            [
+              "Features per question",
+              "More features = trees more alike = less benefit from voting"
+            ]
           ]
         }
       },

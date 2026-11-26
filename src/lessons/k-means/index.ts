@@ -17,7 +17,7 @@ const kMeans: LessonModule<KMeansState, KMeansParams, KMeansData> = {
   stats: (frame) => [
     { labelKey: "iteration", value: frame.metrics.iteration },
     { labelKey: "inertia", value: Math.round(frame.metrics.inertia * 10) / 10 },
-    { labelKey: "changed", value: frame.event === "init" ? null : frame.metrics.changed },
+    { labelKey: "changed", value: frame.event === "init" ? undefined : frame.metrics.changed },
   ],
 };
 

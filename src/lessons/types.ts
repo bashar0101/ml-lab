@@ -33,8 +33,8 @@ export interface LabControlsProps<P, D> {
 
 export interface StatChip {
   labelKey: string;
-  /** null renders as "too big". */
-  value: number | null;
+  /** null renders as "too big"; undefined means "not yet" and renders as a dash. */
+  value: number | null | undefined;
   /** Optional suffix such as "/ 40". */
   suffix?: string;
 }

@@ -3,6 +3,7 @@ import type { CodeLine } from "../types";
 export const python: CodeLine[] = [
   { text: "def kmeans(X, k=3, max_iter=20):" },
   { text: "    centres = X[rng.permutation(len(X))[:k]]   # random start", key: "init" },
+  { text: "    # or k-means++: pick each next centre far from the others", key: "init" },
   { text: "    assign = None" },
   { text: "    for _ in range(max_iter):" },
   { text: "        d = ((X[:, None] - centres) ** 2).sum(axis=2)", key: "assign" },
