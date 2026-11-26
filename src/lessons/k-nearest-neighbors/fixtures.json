@@ -1,0 +1,822 @@
+{
+ "points": [
+  [
+   2.0,
+   3.0,
+   0
+  ],
+  [
+   3.1,
+   2.2,
+   0
+  ],
+  [
+   2.6,
+   4.4,
+   0
+  ],
+  [
+   4.0,
+   3.1,
+   0
+  ],
+  [
+   3.5,
+   5.2,
+   1
+  ],
+  [
+   1.8,
+   2.5,
+   0
+  ],
+  [
+   6.5,
+   6.0,
+   1
+  ],
+  [
+   7.2,
+   5.1,
+   1
+  ],
+  [
+   5.9,
+   7.3,
+   1
+  ],
+  [
+   4.8,
+   4.2,
+   0
+  ],
+  [
+   6.1,
+   4.9,
+   1
+  ],
+  [
+   8.0,
+   7.0,
+   1
+  ]
+ ],
+ "cases": [
+  {
+   "query": [
+    5.0,
+    5.0
+   ],
+   "k": 1,
+   "metric": "euclidean",
+   "prediction": 0,
+   "votes": [
+    1,
+    0
+   ],
+   "nearest": [
+    9
+   ]
+  },
+  {
+   "query": [
+    5.0,
+    5.0
+   ],
+   "k": 1,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    1,
+    0
+   ],
+   "nearest": [
+    9
+   ]
+  },
+  {
+   "query": [
+    5.0,
+    5.0
+   ],
+   "k": 5,
+   "metric": "euclidean",
+   "prediction": 1,
+   "votes": [
+    2,
+    3
+   ],
+   "nearest": [
+    9,
+    10,
+    4,
+    6,
+    3
+   ]
+  },
+  {
+   "query": [
+    5.0,
+    5.0
+   ],
+   "k": 5,
+   "metric": "manhattan",
+   "prediction": 1,
+   "votes": [
+    1,
+    4
+   ],
+   "nearest": [
+    9,
+    10,
+    4,
+    7,
+    6
+   ]
+  },
+  {
+   "query": [
+    5.0,
+    5.0
+   ],
+   "k": 15,
+   "metric": "euclidean",
+   "prediction": 0,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    9,
+    10,
+    4,
+    6,
+    3,
+    7,
+    8,
+    2,
+    1,
+    0,
+    11,
+    5
+   ]
+  },
+  {
+   "query": [
+    5.0,
+    5.0
+   ],
+   "k": 15,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    9,
+    10,
+    4,
+    7,
+    6,
+    3,
+    2,
+    8,
+    1,
+    0,
+    11,
+    5
+   ]
+  },
+  {
+   "query": [
+    3.0,
+    3.0
+   ],
+   "k": 1,
+   "metric": "euclidean",
+   "prediction": 0,
+   "votes": [
+    1,
+    0
+   ],
+   "nearest": [
+    1
+   ]
+  },
+  {
+   "query": [
+    3.0,
+    3.0
+   ],
+   "k": 1,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    1,
+    0
+   ],
+   "nearest": [
+    1
+   ]
+  },
+  {
+   "query": [
+    3.0,
+    3.0
+   ],
+   "k": 5,
+   "metric": "euclidean",
+   "prediction": 0,
+   "votes": [
+    5,
+    0
+   ],
+   "nearest": [
+    1,
+    0,
+    3,
+    5,
+    2
+   ]
+  },
+  {
+   "query": [
+    3.0,
+    3.0
+   ],
+   "k": 5,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    5,
+    0
+   ],
+   "nearest": [
+    1,
+    0,
+    3,
+    5,
+    2
+   ]
+  },
+  {
+   "query": [
+    3.0,
+    3.0
+   ],
+   "k": 15,
+   "metric": "euclidean",
+   "prediction": 0,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    1,
+    0,
+    3,
+    5,
+    2,
+    9,
+    4,
+    10,
+    6,
+    7,
+    8,
+    11
+   ]
+  },
+  {
+   "query": [
+    3.0,
+    3.0
+   ],
+   "k": 15,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    1,
+    0,
+    3,
+    5,
+    2,
+    4,
+    9,
+    10,
+    7,
+    6,
+    8,
+    11
+   ]
+  },
+  {
+   "query": [
+    4.5,
+    4.8
+   ],
+   "k": 1,
+   "metric": "euclidean",
+   "prediction": 0,
+   "votes": [
+    1,
+    0
+   ],
+   "nearest": [
+    9
+   ]
+  },
+  {
+   "query": [
+    4.5,
+    4.8
+   ],
+   "k": 1,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    1,
+    0
+   ],
+   "nearest": [
+    9
+   ]
+  },
+  {
+   "query": [
+    4.5,
+    4.8
+   ],
+   "k": 5,
+   "metric": "euclidean",
+   "prediction": 0,
+   "votes": [
+    3,
+    2
+   ],
+   "nearest": [
+    9,
+    4,
+    10,
+    3,
+    2
+   ]
+  },
+  {
+   "query": [
+    4.5,
+    4.8
+   ],
+   "k": 5,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    3,
+    2
+   ],
+   "nearest": [
+    9,
+    4,
+    10,
+    3,
+    2
+   ]
+  },
+  {
+   "query": [
+    4.5,
+    4.8
+   ],
+   "k": 15,
+   "metric": "euclidean",
+   "prediction": 0,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    9,
+    4,
+    10,
+    3,
+    2,
+    6,
+    7,
+    8,
+    1,
+    0,
+    5,
+    11
+   ]
+  },
+  {
+   "query": [
+    4.5,
+    4.8
+   ],
+   "k": 15,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    9,
+    4,
+    10,
+    3,
+    2,
+    7,
+    6,
+    8,
+    1,
+    0,
+    5,
+    11
+   ]
+  },
+  {
+   "query": [
+    7.0,
+    7.0
+   ],
+   "k": 1,
+   "metric": "euclidean",
+   "prediction": 1,
+   "votes": [
+    0,
+    1
+   ],
+   "nearest": [
+    11
+   ]
+  },
+  {
+   "query": [
+    7.0,
+    7.0
+   ],
+   "k": 1,
+   "metric": "manhattan",
+   "prediction": 1,
+   "votes": [
+    0,
+    1
+   ],
+   "nearest": [
+    11
+   ]
+  },
+  {
+   "query": [
+    7.0,
+    7.0
+   ],
+   "k": 5,
+   "metric": "euclidean",
+   "prediction": 1,
+   "votes": [
+    0,
+    5
+   ],
+   "nearest": [
+    11,
+    6,
+    8,
+    7,
+    10
+   ]
+  },
+  {
+   "query": [
+    7.0,
+    7.0
+   ],
+   "k": 5,
+   "metric": "manhattan",
+   "prediction": 1,
+   "votes": [
+    0,
+    5
+   ],
+   "nearest": [
+    11,
+    8,
+    6,
+    7,
+    10
+   ]
+  },
+  {
+   "query": [
+    7.0,
+    7.0
+   ],
+   "k": 15,
+   "metric": "euclidean",
+   "prediction": 1,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    11,
+    6,
+    8,
+    7,
+    10,
+    9,
+    4,
+    3,
+    2,
+    1,
+    0,
+    5
+   ]
+  },
+  {
+   "query": [
+    7.0,
+    7.0
+   ],
+   "k": 15,
+   "metric": "manhattan",
+   "prediction": 1,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    11,
+    8,
+    6,
+    7,
+    10,
+    9,
+    4,
+    3,
+    2,
+    1,
+    0,
+    5
+   ]
+  },
+  {
+   "query": [
+    4.2,
+    5.5
+   ],
+   "k": 1,
+   "metric": "euclidean",
+   "prediction": 1,
+   "votes": [
+    0,
+    1
+   ],
+   "nearest": [
+    4
+   ]
+  },
+  {
+   "query": [
+    4.2,
+    5.5
+   ],
+   "k": 1,
+   "metric": "manhattan",
+   "prediction": 1,
+   "votes": [
+    0,
+    1
+   ],
+   "nearest": [
+    4
+   ]
+  },
+  {
+   "query": [
+    4.2,
+    5.5
+   ],
+   "k": 5,
+   "metric": "euclidean",
+   "prediction": 1,
+   "votes": [
+    2,
+    3
+   ],
+   "nearest": [
+    4,
+    9,
+    2,
+    10,
+    6
+   ]
+  },
+  {
+   "query": [
+    4.2,
+    5.5
+   ],
+   "k": 5,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    3,
+    2
+   ],
+   "nearest": [
+    4,
+    9,
+    10,
+    3,
+    2
+   ]
+  },
+  {
+   "query": [
+    4.2,
+    5.5
+   ],
+   "k": 15,
+   "metric": "euclidean",
+   "prediction": 1,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    4,
+    9,
+    2,
+    10,
+    6,
+    3,
+    8,
+    7,
+    0,
+    1,
+    5,
+    11
+   ]
+  },
+  {
+   "query": [
+    4.2,
+    5.5
+   ],
+   "k": 15,
+   "metric": "manhattan",
+   "prediction": 1,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    4,
+    9,
+    10,
+    3,
+    2,
+    6,
+    7,
+    8,
+    1,
+    0,
+    11,
+    5
+   ]
+  },
+  {
+   "query": [
+    5.5,
+    3.5
+   ],
+   "k": 1,
+   "metric": "euclidean",
+   "prediction": 0,
+   "votes": [
+    1,
+    0
+   ],
+   "nearest": [
+    9
+   ]
+  },
+  {
+   "query": [
+    5.5,
+    3.5
+   ],
+   "k": 1,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    1,
+    0
+   ],
+   "nearest": [
+    9
+   ]
+  },
+  {
+   "query": [
+    5.5,
+    3.5
+   ],
+   "k": 5,
+   "metric": "euclidean",
+   "prediction": 1,
+   "votes": [
+    2,
+    3
+   ],
+   "nearest": [
+    9,
+    10,
+    3,
+    7,
+    4
+   ]
+  },
+  {
+   "query": [
+    5.5,
+    3.5
+   ],
+   "k": 5,
+   "metric": "manhattan",
+   "prediction": 1,
+   "votes": [
+    2,
+    3
+   ],
+   "nearest": [
+    9,
+    3,
+    10,
+    7,
+    6
+   ]
+  },
+  {
+   "query": [
+    5.5,
+    3.5
+   ],
+   "k": 15,
+   "metric": "euclidean",
+   "prediction": 0,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    9,
+    10,
+    3,
+    7,
+    4,
+    6,
+    1,
+    2,
+    0,
+    8,
+    5,
+    11
+   ]
+  },
+  {
+   "query": [
+    5.5,
+    3.5
+   ],
+   "k": 15,
+   "metric": "manhattan",
+   "prediction": 0,
+   "votes": [
+    6,
+    6
+   ],
+   "nearest": [
+    9,
+    3,
+    10,
+    7,
+    6,
+    1,
+    4,
+    2,
+    0,
+    8,
+    5,
+    11
+   ]
+  }
+ ]
+}
