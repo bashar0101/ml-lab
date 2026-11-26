@@ -1,0 +1,181 @@
+{
+  "title": "Neural Network",
+  "description": "See how a small neural network turns straight lines into curved borders: neurons, layers, a forward pass, and training by gradient descent.",
+  "youWillLearn": [
+    "What a single artificial neuron computes",
+    "How a layer of neurons combines simple lines into curves",
+    "How one point travels through the network (the forward pass)",
+    "Why a network needs enough neurons for the shape it must draw"
+  ],
+  "story": [
+    {
+      "id": "one-neuron",
+      "rail": "One neuron",
+      "title": "One neuron is logistic regression",
+      "body": "Remember logistic regression from lesson 3: a weighted sum of the inputs, squashed by a curve. That is exactly one **artificial neuron**. On the right, the two circles on the left are the inputs (x and y), and the lines are the weights. One neuron can only draw a straight border, and these rings need a curved one.",
+      "keyIdea": "A neuron = weighted sum + activation. Alone, it draws a straight line.",
+      "math": "`neuron(x) = act(w₁·x₁ + w₂·x₂ + b)`, where `act` is tanh, ReLU or the sigmoid.",
+      "frameTag": "start",
+      "reveal": ["points", "network"]
+    },
+    {
+      "id": "layer",
+      "rail": "Layer",
+      "title": "A layer of neurons",
+      "body": "Put several neurons side by side: a **hidden layer**. Each one looks at the inputs with its own weights, so each draws its own straight line. Blue connections are positive weights, red dashed ones negative; thicker means bigger. The output neuron then combines the hidden neurons' answers.",
+      "keyIdea": "Many simple neurons, each with its own line, combined by the next layer.",
+      "frameTag": "start",
+      "reveal": ["points", "network"]
+    },
+    {
+      "id": "follow",
+      "rail": "Follow a point",
+      "title": "Follow one point in",
+      "body": "Take one point (circled). Its two numbers become the values of the input neurons. That is where every prediction starts.",
+      "keyIdea": "The network only ever sees numbers.",
+      "frameTag": "forward-input",
+      "reveal": ["points", "network", "values", "probe"]
+    },
+    {
+      "id": "forward",
+      "rail": "Forward pass",
+      "title": "Layer by layer to an answer",
+      "body": "Each hidden neuron multiplies the inputs by its weights, adds them up and squashes the result; the colour shows the value (peach negative, lavender positive). The output neuron does the same with the hidden values and squashes to a probability. This trip from left to right is the **forward pass**. The weights are still random, so the answer is a guess.",
+      "keyIdea": "Forward pass: inputs → hidden layer(s) → output probability.",
+      "math": "Layer by layer: `a⁽ˡ⁺¹⁾ = act(W⁽ˡ⁾·a⁽ˡ⁾ + b⁽ˡ⁾)`, with a sigmoid at the output.",
+      "frameTag": "forward-output",
+      "reveal": ["points", "network", "values", "probe"]
+    },
+    {
+      "id": "train",
+      "rail": "Train",
+      "title": "Learn every weight at once",
+      "body": "Training is the same gradient descent as before, now applied to **every** weight in the network at once: make predictions, measure the log-loss, nudge all weights downhill. The shading shows the network's probability everywhere; watch the border bend as it learns. How the network works out each weight's slope is lesson 11.",
+      "keyIdea": "Same recipe as lesson 1, just many more numbers to tune.",
+      "frameTag": "train-half",
+      "reveal": ["points", "network", "shade"]
+    },
+    {
+      "id": "result",
+      "rail": "Curved border",
+      "title": "Curves from straight pieces",
+      "body": "After training, the hidden neurons' lines are combined into a closed, curved border around the inner ring. With more neurons and more layers, networks can draw almost any shape. That is why the same idea scales up to recognising images and text.",
+      "keyIdea": "Hidden neurons let a network bend its border; more neurons, more bends.",
+      "frameTag": "done",
+      "reveal": ["points", "network", "shade"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "A network with random weights",
+      "body": "Press play to follow one point through it, then train."
+    },
+    "input": {
+      "title": "Forward pass: inputs",
+      "body": "The circled point's two numbers enter the input neurons."
+    },
+    "hidden": {
+      "title": "Forward pass: a hidden layer",
+      "body": "Each neuron: weighted sum of the layer before, then the activation."
+    },
+    "output": {
+      "title": "Forward pass: output",
+      "body": "The output neuron squashes its sum into a probability for this point."
+    },
+    "train": {
+      "title": "Training: epoch {epoch}",
+      "body": "Loss {loss}; fraction of points on the right side {accuracy}."
+    },
+    "diverged": {
+      "title": "The weights blew up",
+      "body": "The learning rate is too high for this network. Lower it and try again."
+    },
+    "done": {
+      "title": "Trained for {epoch} epochs",
+      "body": "Final loss {loss}; fraction correct {accuracy}."
+    }
+  },
+  "stats": {
+    "epoch": "EPOCH",
+    "loss": "LOSS",
+    "accuracy": "ACCURACY"
+  },
+  "lab": {
+    "breakIt": "On **Rings**, set **1 hidden layer** with **1 neuron**: a single hidden neuron can only draw a straight border, so the network can't wrap around the inner ring. Add neurons one at a time and watch the border bend. Then switch to **ReLU**: its borders are made of straight pieces with sharp corners.",
+    "presets": {
+      "circles": "Rings",
+      "moons": "Moons",
+      "xor": "Checkerboard",
+      "blobs": "Two groups",
+      "overlap": "Overlapping"
+    },
+    "params": {
+      "layers": {
+        "label": "Hidden layers",
+        "hint": "How many layers of neurons between input and output."
+      },
+      "neurons": {
+        "label": "Neurons per layer",
+        "hint": "More neurons, more lines to combine."
+      },
+      "learningRate": {
+        "label": "Learning rate",
+        "hint": "Step size for every weight."
+      },
+      "epochs": {
+        "label": "Epochs",
+        "hint": "How many passes over all the points."
+      }
+    },
+    "errors": {
+      "tooFew": "Add at least four points.",
+      "oneClass": "Add points of both classes."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is a neural network?",
+        "body": "A neural network is many simple units, **neurons**, connected in layers. Each neuron computes a weighted sum of its inputs plus a bias and passes it through an **activation function**. The first layer receives the data; the last layer produces the answer; the layers in between are **hidden layers**.\n\nA network with one sigmoid output neuron and no hidden layer is logistic regression. Hidden layers are what make networks powerful: they let the model build new features out of the inputs and combine them."
+      },
+      {
+        "heading": "Why activations matter",
+        "body": "Without an activation function, stacking layers would be pointless: a weighted sum of weighted sums is still one weighted sum, and the border would stay straight. The non-linear activation (tanh, ReLU, sigmoid) is what lets hidden neurons bend the border.",
+        "table": {
+          "headers": ["Activation", "Output range", "Notes"],
+          "rows": [
+            ["tanh", "−1 to 1", "Smooth, centred at 0; good for small networks"],
+            ["ReLU", "0 or more", "Fast, the default in deep learning; borders made of straight pieces"],
+            ["Sigmoid", "0 to 1", "Classic; learns slowly in deep stacks (see lesson 11)"]
+          ]
+        }
+      },
+      {
+        "heading": "How big should it be?",
+        "body": "More neurons and layers can draw more complicated borders, but they also need more data and can overfit: wrap borders around noise just like a deep decision tree. In practice people start small, add capacity until the network fits the training data, then use more data or regularisation to keep it honest."
+      },
+      {
+        "heading": "Training",
+        "body": "All weights start small and random (if they all started equal, every neuron would learn the same thing). Training repeats: forward pass for the data, log-loss, the gradient of the loss with respect to every weight, a small step downhill. Computing those gradients efficiently is **backpropagation**, the next lesson."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Is this how the brain works?",
+        "a": "Only loosely. Artificial neurons were inspired by real ones, but they are simple maths, and real brains learn very differently."
+      },
+      {
+        "q": "Why start with random weights?",
+        "a": "If every weight started the same, every hidden neuron would compute the same thing and receive the same updates, so they would stay identical forever. Randomness breaks that symmetry."
+      },
+      {
+        "q": "Why scale the inputs?",
+        "a": "Inputs on very different scales make some weights matter far more than others and slow training down. Here x and y are rescaled to mean 0 and spread 1 before entering the network."
+      },
+      {
+        "q": "How many layers is deep learning?",
+        "a": "There is no strict line, but deep networks have many hidden layers, often dozens or hundreds. The ideas in this lesson are the same at any size."
+      }
+    ]
+  }
+}

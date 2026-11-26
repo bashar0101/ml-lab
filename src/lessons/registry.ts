@@ -11,6 +11,7 @@ const modules: Record<string, () => Promise<{ default: AnyLessonModule }>> = {
   "random-forest": () => import("./random-forest"),
   "k-means": () => import("./k-means"),
   pca: () => import("./pca"),
+  "neural-network": () => import("./neural-network"),
 };
 
 export function hasLessonModule(slug: string): boolean {
