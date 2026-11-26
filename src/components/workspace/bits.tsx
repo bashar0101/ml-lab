@@ -32,7 +32,8 @@ export function StatChips({ chips, labels }: { chips: StatChip[]; labels: Record
       {chips.map((c) => (
         <div key={c.labelKey} className={styles.stat}>
           <small>{labels[c.labelKey] ?? c.labelKey}</small>
-          <span>
+          {/* Numbers read left to right in every language (keeps "-2" and "1 / 40" intact in Arabic). */}
+          <span dir="ltr">
             {c.value === undefined ? t("stat.pending") : c.value === null ? t("stat.tooBig") : formatStat(c.value)}
             {c.suffix && typeof c.value === "number" ? <span className={styles.suffix}> {c.suffix}</span> : null}
           </span>

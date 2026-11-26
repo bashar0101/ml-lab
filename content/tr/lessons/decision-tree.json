@@ -1,0 +1,162 @@
+{
+  "title": "Karar Ağacı",
+  "description": "Bir karar ağacının verilerinizle yirmi soru oynamasını izleyin: en iyi evet/hayır sorusunu seç, böl ve tekrarla. Ücretsiz ve etkileşimli.",
+  "youWillLearn": [
+    "Bir model evet/hayır soruları sorarak nasıl sınıflandırabilir",
+    "Gini safsızlığı bir soruyu nasıl puanlar",
+    "Ağaçlar düzlemi neden kutulara böler",
+    "Büyümeyi ne zaman durdurmalı, durdurmazsanız ne olur"
+  ],
+  "story": [
+    {
+      "id": "questions",
+      "rail": "20 soru",
+      "title": "Yirmi soru oyna",
+      "body": "Muhtemelen *yirmi soru* oynamışsınızdır: evet/hayır soruları sorarak cevabı tahmin etmek. Bir karar ağacı verilerle aynısını yapar. Her nokta iki sayıyla, **x** ve **y** ile tanımlanır ve iki sınıftan birine aittir. Hangi soruları sormalıyız?",
+      "keyIdea": "Bir karar ağacı, örneklerden öğrenilmiş evet/hayır sorularından oluşan bir akış şemasıdır.",
+      "frameTag": "start",
+      "reveal": ["points", "tree"]
+    },
+    {
+      "id": "best-question",
+      "rail": "En iyi soru",
+      "title": "Hangi soru en iyisi?",
+      "body": "Bir soru *\"x, 4.3'ten küçük mü?\"* gibi görünür. Ağaç her özellik için olası her kesimi dener ve oluşacak iki yarıyı puanlar. Kesikli çizgiler **x** için en iyi kesim ve **y** için en iyi kesimdir. İyi bir soru her yarıyı mümkün olduğunca *saf* bırakır: çoğunlukla tek bir sınıf.",
+      "keyIdea": "Saflık **Gini safsızlığı** ile ölçülür: 0 = hepsi tek sınıf, 0.5 = kusursuz 50/50 karışım.",
+      "math": "`gini = 1 − Σ pₖ²`; burada `pₖ` bir yarıdaki k sınıfının payıdır. Bir bölmenin puanı, iki yarının Gini değerlerinin boyutla ağırlıklandırılmış ortalamasıdır.",
+      "frameTag": "first-scan",
+      "reveal": ["points", "candidates", "tree"]
+    },
+    {
+      "id": "split",
+      "rail": "Böl",
+      "title": "Sor: düzlemi böl",
+      "body": "En düşük Gini'ye sahip soru kazanır. Ağacın kökü olur ve düzlemi iki kutuya böler. *Evet* cevabı veren noktalar ağaçta sola, *hayır* verenler sağa gider. Her kutu çoğunluk sınıfının rengine boyanır.",
+      "keyIdea": "Her soru tek bir özellik boyunca keser, bu yüzden her sınır düzdür ve bir eksene paraleldir.",
+      "frameTag": "first-split",
+      "reveal": ["points", "regions", "splits", "tree"]
+    },
+    {
+      "id": "split-again",
+      "rail": "Yine böl",
+      "title": "Sonra her kutunun içinde yeniden sor",
+      "body": "Her kutu aynı problemin daha küçük bir hâlidir, bu yüzden ağaç tarifi onun içinde tekrarlar: yalnızca o noktalar için en iyi soruyu bul ve böl. Seviye seviye kutular küçülür ve saflaşır.",
+      "keyIdea": "Aynı basit adım, tekrarlandıkça karmaşık bir şekil inşa eder.",
+      "frameTag": "depth-2",
+      "reveal": ["points", "regions", "splits", "candidates", "tree"]
+    },
+    {
+      "id": "stop",
+      "rail": "Ne zaman dur",
+      "title": "Ne zaman duracağını bilmek",
+      "body": "Bir kutu saf olduğunda, çok az noktası kaldığında ya da ağaç **maksimum derinliğine** (burada 3) ulaştığında bölünmeyi bırakır. Son kutular **yapraklar**dır: yeni bir nokta, birine düşene kadar en üstten başlayarak sorular sorularak sınıflandırılır.",
+      "keyIdea": "Derinlik ve yaprak boyutu sınırları ağacın gürültüyü ezberlemesini önler.",
+      "frameTag": "done",
+      "reveal": ["points", "regions", "splits", "tree"]
+    },
+    {
+      "id": "boxes",
+      "rail": "Kutular",
+      "title": "Kutulardan bir harita",
+      "body": "Renkli kutular, ağacın dünyaya dair modelinin tamamıdır. Bu hilaller gibi eğri şekiller, kutulardan merdivenlerle yaklaşık olarak çizilir. Ağaçların okunması kolaydır ve verilerin ölçeklenmesine gerek yoktur, ama oynak olabilirler: birkaç noktayı taşırsanız ağaç tamamen değişebilir.",
+      "keyIdea": "Açıklaması kolay, hızlı ama kararsız. Sonraki ders bunu bir ağaç ormanıyla düzeltir.",
+      "frameTag": "done",
+      "reveal": ["points", "regions", "splits", "tree"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Tek bir kutu tüm noktaları tutuyor",
+      "body": "Henüz soru sorulmadı. Ağacı büyütmek için oynat'a basın."
+    },
+    "scan": {
+      "title": "En iyi soru aranıyor",
+      "body": "x ve y boyunca her kesim puanlanır; kesikli çizgiler her özellik için Gini değeriyle birlikte en iyi kesimdir."
+    },
+    "split": {
+      "title": "Böl",
+      "body": "En iyi soru bu kutuyu ikiye böler. Ağaçta şimdi {nodes} düğüm var; noktaların {accuracy} kadarı kendi sınıfının kutusunda."
+    },
+    "leaf": {
+      "title": "Bir yaprak",
+      "body": "Bu kutu burada durur: saftır, bölünemeyecek kadar küçüktür, maksimum derinliktedir ya da hiçbir soru yarılarını daha saf yapmaz."
+    },
+    "done": {
+      "title": "Bitmiş ağaç",
+      "body": "{leaves} yaprak, derinlik {depth}, doğru sınıflandırılan eğitim noktalarının oranı {accuracy}."
+    }
+  },
+  "stats": {
+    "depth": "DERİNLİK",
+    "leaves": "YAPRAKLAR",
+    "accuracy": "DOĞRULUK"
+  },
+  "lab": {
+    "breakIt": "**Örtüşen**'de **Maksimum derinlik 8** ve **Yaprak başına en az nokta 1** yapın: ağaç her nokta kendi saf kutusuna oturana kadar bölmeye devam eder ve gürültünün etrafına minik adalar oyar. Artık bu noktalarda kusursuz, yenilerinde kötüdür. Sonra **Dama tahtası**'nı deneyin: en iyi ilk soru bir kenardan yalnızca biraz traşlar, çünkü ortadan geçen her kesim iki yarıyı da hâlâ yarı yarıya bırakır.",
+    "presets": {
+      "blobs": "İki grup",
+      "overlap": "Örtüşen",
+      "moons": "Hilaller",
+      "three-blobs": "Üç grup",
+      "xor": "Dama tahtası"
+    },
+    "params": {
+      "maxDepth": {
+        "label": "Maksimum derinlik",
+        "hint": "Ağacın art arda kaç soru sorabileceği."
+      },
+      "minLeaf": {
+        "label": "Yaprak başına en az nokta",
+        "hint": "Bir bölmeye yalnızca iki yarı da en az bu kadar nokta tutuyorsa izin verilir."
+      }
+    },
+    "errors": {
+      "tooFew": "En az iki nokta ekleyin."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Karar ağacı nedir?",
+        "body": "Bir karar ağacı, bir akış şeması gibi, özellikler hakkında bir dizi evet/hayır sorusu sorarak sınıflandırır. Her iç düğüm *x < 4.3?* gibi bir soru, her dal bir cevap, her yaprak da son bir sınıf tutar.\n\nAğaç tepeden açgözlü biçimde öğrenilir: her düğümde, o düğüme ulaşan noktalar arasında sınıfları en iyi ayıran soruyu seçer, sonra her dalın içinde tekrarlar."
+      },
+      {
+        "heading": "Bir soruyu Gini safsızlığıyla puanlamak",
+        "body": "**Gini safsızlığı** bir grubun ne kadar karışık olduğunu ölçer: `1 − Σ pₖ²`. Saf bir grup 0 puan alır; eşit iki sınıflı bir karışım 0.5 alır. Bir soruyu puanlamak için her yarının Gini'sini hesaplayın ve boyuta göre ağırlıklandırarak ortalamasını alın. En iyi soru en düşük ağırlıklı Gini'yi (en büyük *kazancı*) verir. Entropi popüler bir alternatif puandır ve genellikle çok benzer bölmeler seçer."
+      },
+      {
+        "heading": "Aşırı öğrenme ve nasıl durdurulur",
+        "body": "Kendi hâline bırakılan bir ağaç her yaprak saf olana kadar bölmeye devam eder; gürültülü verilerde bu, tek tek noktaları ezberlemek demektir. Yaygın frenler: bir **maksimum derinlik**, **yaprak başına en az nokta sayısı**, bir bölme için en az kazanç ya da ağacı tamamen büyütüp sonra **budamak**.",
+        "table": {
+          "headers": ["Ayar", "Küçük değer", "Büyük değer"],
+          "rows": [
+            ["Maksimum derinlik", "Basit, eksik öğrenebilir", "Ayrıntılı, aşırı öğrenebilir"],
+            ["Yaprak başına en az nokta", "Tek noktaların etrafında adalar", "Geniş, daha pürüzsüz kutular"]
+          ]
+        }
+      },
+      {
+        "heading": "Güçlü ve zayıf yanları",
+        "body": "Ağaçların açıklaması kolaydır (soruları okuyabilirsiniz), her ölçekteki özelliklerle ve karışık türlerle çalışırlar ve hızlıdırlar. Zayıf yanları: sınırları eksenlere hizalı merdivenlerdir ve **kararsızdırlar**: verideki küçük bir değişiklik çok farklı bir ağaç üretebilir. Birçok ağacı birleştirmek (rastgele ormanlar, gradyan artırma) bunun çoğunu düzeltir ve tablo biçimli veriler için en başarılı yöntemlerden biridir."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Sınırlar neden hep yatay ya da dikey?",
+        "a": "Her soru tek bir özelliği bir eşikle sınar, bu yüzden her kesim bir eksene diktir. Çapraz sınırlar birçok küçük adım gerektirir."
+      },
+      {
+        "q": "Açgözlü seçim her zaman en iyisi mi?",
+        "a": "Hayır. Her adımda en iyi soruyu seçmek, genel olarak en iyi ağacı garanti etmez. Dama tahtası veri kümesi bunu gösterir: iki soru birlikte onu neredeyse kusursuz ayırsa da en iyi ilk soru saflığı zar zor artırır."
+      },
+      {
+        "q": "Özelliklerimi ölçeklemem gerekir mi?",
+        "a": "Hayır. Bir eşik, özellik metre de olsa milimetre de olsa aynı çalışır; k-NN veya SVM'lerden farklı olarak."
+      },
+      {
+        "q": "Ağaçlar sayı tahmin edebilir mi?",
+        "a": "Evet. Regresyon ağaçları her yaprağa noktalarının ortalama değerini koyar ve Gini yerine varyansı azaltan bölmeleri seçer."
+      }
+    ]
+  }
+}

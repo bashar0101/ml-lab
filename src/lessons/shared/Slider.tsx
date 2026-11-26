@@ -34,7 +34,7 @@ export function Slider({
       <label htmlFor={id} className={styles.label}>
         {label}
       </label>
-      <output className={styles.value} aria-hidden="true">
+      <output className={styles.value} aria-hidden="true" dir="ltr">
         {format(value)}
       </output>
       <input

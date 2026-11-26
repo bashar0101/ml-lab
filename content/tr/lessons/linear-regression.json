@@ -1,0 +1,182 @@
+{
+  "title": "Doğrusal Regresyon",
+  "description": "Bir bilgisayarın verilere küçük adımlarla düz bir doğru oturtmasını izleyin ve “eğitim”in gerçekte ne demek olduğunu görün. Ücretsiz ve etkileşimli.",
+  "youWillLearn": [
+    "Model nedir: bir girdiyi tahmine çeviren bir kural",
+    "Bir tahminin ne kadar yanlış olduğu nasıl ölçülür (kayıp)",
+    "Bir bilgisayar kayıpta yokuş aşağı adım atarak nasıl gelişir",
+    "Çok büyük bir öğrenme oranı neden her şeyi bozar"
+  ],
+  "story": [
+    {
+      "id": "problem",
+      "rail": "Problem",
+      "title": "Saatler puanı tahmin edebilir mi?",
+      "body": "Dokuz öğrenci bize kaç saat çalıştıklarını ve sınavdan kaç aldıklarını söyledi. Arkadaşınız **6.5 saat** çalışmayı planlıyor. Hangi puanı beklemeli?",
+      "keyIdea": "Bir **model**, bir girdiyi (saat) bir tahmine (puan) çeviren bir kuraldan ibarettir.",
+      "frameTag": "start",
+      "reveal": ["points"]
+    },
+    {
+      "id": "first-guess",
+      "rail": "İlk tahmin",
+      "title": "Kötü bir doğruyla başla",
+      "body": "En basit kural düz bir doğrudur: *puan = eğim × saat + başlangıç*. Bilgisayar doğru eğimi henüz bilmiyor, bu yüzden uydurma bir doğruyla başlıyor. Bu doğru üstelik ters yöne eğimli. Sorun değil.",
+      "keyIdea": "Her öğrenen yanlış başlar. Öğrenme, sonra olan şeydir.",
+      "math": "Doğru `guess = w·x + b`. **w** (eğim) ve **b** (yükseklik) sayıları modelin bildiği her şeydir. Eğitim, bunları seçmek demektir.",
+      "frameTag": "start",
+      "reveal": ["points", "line"]
+    },
+    {
+      "id": "measure",
+      "rail": "Ölç",
+      "title": "Ne kadar yanlış?",
+      "body": "Her kırmızı çubuk bir hatadır: doğrunun tahmini ile gerçek puan arasındaki fark. Büyük hatalar çok sayılsın ve negatifler pozitifleri götürmesin diye her farkın karesini alın, sonra ortalamasını alın. Bu tek sayı **kayıp**tır.",
+      "keyIdea": "Öğrenmek, kaybı küçültmek demektir.",
+      "math": "`loss = mean((guess − y)²)`, yani *ortalama kare hata*.",
+      "frameTag": "start",
+      "reveal": ["points", "line", "residuals"]
+    },
+    {
+      "id": "one-step",
+      "rail": "Tek adım",
+      "title": "Yokuş aşağı yuvarlan",
+      "body": "Sağda **olası her doğru** için kayıp var. Bu çanaktaki her nokta bir eğim ve yükseklik seçimidir; yüksekliği de o doğrunun ne kadar yanlış olacağıdır. Bizim doğrumuz turuncu nokta. Bilgisayar yokuş aşağının hangi yön olduğunu hisseder ve küçük bir adım atar.",
+      "keyIdea": "En dik yokuş yukarı yöne **gradyan** denir. Ters yöne adım atın.",
+      "math": "`w ← w − lr · ∂loss/∂w` ve `b ← b − lr · ∂loss/∂b`; burada **lr** öğrenme oranıdır: her adımın büyüklüğü.",
+      "frameTag": "first-update",
+      "reveal": ["points", "line", "residuals", "bowl", "path"]
+    },
+    {
+      "id": "repeat",
+      "rail": "Tekrarla",
+      "title": "Adım, adım, adım",
+      "body": "Tekrar yapın: tahmin et, ölç, adım at. İlk adımlar büyüktür çünkü çanak diktir. Nokta dibe yaklaştıkça eğim düzleşir ve adımlar kendiliğinden küçülür.",
+      "keyIdea": "Kimse bilgisayara cevabı söylemedi. Sadece eğimi takip etti.",
+      "frameTag": "update-8",
+      "reveal": ["points", "line", "bowl", "path"]
+    },
+    {
+      "id": "result",
+      "rail": "Sonuç",
+      "title": "Doğruyu buldu",
+      "body": "40 küçük adımdan sonra nokta çanağın dibine oturur ve doğru verilerin tam ortasından geçer. Eğimi yaklaşık **saat başına 5.5 puan**, yani 6.5 saat çalışma yaklaşık **72** puan öngörür.",
+      "keyIdea": "Sinir ağları da tam olarak böyle öğrenir, yalnızca iki sayı yerine milyonlarca sayıyla.",
+      "frameTag": "done",
+      "reveal": ["points", "line", "bowl", "path"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Başlangıç: uydurma bir doğru",
+      "body": "Eğim ve yükseklik tahmindir. Kayıp {loss}. Eğitimi başlatmak için oynat'a basın."
+    },
+    "predict": {
+      "title": "Adım {iteration}: tahmin et",
+      "body": "Her nokta için bir puan tahmin etmek üzere mevcut doğruyu kullan."
+    },
+    "error": {
+      "title": "Adım {iteration}: hataları ölç",
+      "body": "Her kırmızı çubuk bir hatadır: tahmin eksi gerçek puan. Birlikte doğrunun hangi yöne kaydırılacağını söylerler."
+    },
+    "update": {
+      "title": "Adım {iteration}: yokuş aşağı in",
+      "body": "Eğim ve yükseklik yokuş aşağı küçük bir adım attı. Kayıp şimdi {loss}."
+    },
+    "overshoot": {
+      "title": "Adım {iteration}: aşırı atlama!",
+      "body": "Adım o kadar büyüktü ki çanağın karşısına atladı ve daha yukarıya kondu. Kayıp {loss} değerine **çıktı**. Daha küçük bir öğrenme oranı bunu düzeltir."
+    },
+    "diverged": {
+      "title": "Patladı",
+      "body": "Her adım bir öncekinden daha fazla aştı, ta ki sayılar devasa olana kadar. Eğitim durdu. Öğrenme oranını 1.0'ın altına indirip tekrar deneyin."
+    },
+    "done": {
+      "title": "Bitti: {iteration} adım atıldı",
+      "body": "Doğrunun eğimi {slope}, kayıp {loss}. Başka bir veri kümesi deneyin ya da öğrenme oranını daha da yükseltin."
+    }
+  },
+  "stats": {
+    "step": "ADIM",
+    "loss": "KAYIP",
+    "slope": "EĞİM"
+  },
+  "lab": {
+    "breakIt": "Öğrenme oranını **1.0**'ın üzerine çekin ve oynat'a basın. Artık her adım düzelttiğinden fazla aşıyor; nokta çanakta gittikçe yukarı sekiyor ve kayıp patlayana kadar büyüyor. Sonra **Tek aykırı değer**'i deneyin ve tek bir kötü noktanın bütün doğruyu nasıl sürüklediğini izleyin.",
+    "presets": {
+      "study-hours": "Çalışma saatleri",
+      "house-prices": "Ev fiyatları",
+      "outlier": "Tek aykırı değer"
+    },
+    "params": {
+      "learningRate": {
+        "label": "Öğrenme oranı",
+        "hint": "Yokuş aşağı her adımın büyüklüğü."
+      },
+      "steps": {
+        "label": "Adımlar",
+        "hint": "Kaç kez tahmin edilip ölçülüp adım atılacağı."
+      }
+    },
+    "errors": {
+      "tooFew": "Bir doğru oturtmak için en az iki nokta ekleyin.",
+      "sameX": "Tüm noktalar tek bir sütunda, bu yüzden bulunacak bir eğim yok. Onları yana doğru yayın."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Doğrusal regresyon nedir?",
+        "body": "Doğrusal regresyon, bir nokta kümesine en iyi uyan düz doğruyu bulur; böylece bir sayıyı başka bir sayıdan tahmin edebilirsiniz: çalışma saatinden puanı, alandan fiyatı, tarihten sıcaklığı.\n\nDoğrunun iki sayısı vardır: bir **eğim** (girdinin her birimi için çıktının ne kadar değiştiği) ve bir **başlangıç yüksekliği**. Bu iki sayı için örneklerden iyi değerler bulmak işin tamamıdır ve makine öğrenmesinin *bir modeli eğitmek* derken ne kastettiğinin en basit örneğidir."
+      },
+      {
+        "heading": "Bilgisayar doğruyu nasıl bulur",
+        "body": "Dört hamleyi tekrarlar. **Tahmin et**: her noktayı tahmin etmek için mevcut doğruyu kullan. **Ölç**: tahminleri gerçek değerlerle karşılaştır ve farkların karelerinin ortalamasını al; bu kayıptır. **Yokuş aşağıyı bul**: eğim ve yükseklikteki hangi küçük değişikliğin kaybı en hızlı düşüreceğini hesapla. **Adım at**: onları o yönde biraz değiştir.\n\nHer tekrar kaybı biraz düşürür. Adımlar fark yaratmayı bıraktığında doğru, kayıp çanağının dibine yerleşmiştir."
+      },
+      {
+        "heading": "Adım adım matematik",
+        "body": "Önce girdiler, ortalamaları 0 ve yayılımları 1 olacak şekilde yeniden ölçeklenir: `x = (hours − mean) / std`. Bu çanağı yuvarlak yapar; böylece tek bir adım büyüklüğü iki sayıya da uyar.\n\n`n` nokta ile model `ŷ = w·x + b` tahminini yapar ve kayıp `L = (1/n) Σ (ŷ − y)²` olur.\n\nGradyan, her sayı değiştiğinde kaybın nasıl değiştiğini söyler: `∂L/∂w = (2/n) Σ (ŷ − y)·x` ve `∂L/∂b = (2/n) Σ (ŷ − y)`.\n\nHer adım gradyanın tersine hareket eder: `w ← w − lr·∂L/∂w` ve `b ← b − lr·∂L/∂b`. Bu derste, yeniden ölçeklenmiş girdilerle, 1.0'ın altındaki her öğrenme oranı dibe yerleşir; tam 1.0 sonsuza dek seker; 1.0'ın üstü patlar."
+      },
+      {
+        "heading": "Ne zaman kullanılır, ne zaman kullanılmaz",
+        "body": "Doğrusal regresyon hızlıdır, açıklaması kolaydır ve iyi bir ilk denemedir. Gerçek örüntü eğri olduğunda ya da birkaç uç nokta baskın çıktığında zorlanır.",
+        "table": {
+          "headers": ["Durum", "İşe yarar mı?", "Neden"],
+          "rows": [
+            ["Çıktı girdiyle düzenli olarak artıyor", "Evet", "Düz doğru doğru şekildir"],
+            ["Eğri örüntü (büyüme, doygunluk)", "Zayıf", "Düz doğru bükülemez; eğri özellikler ekleyin veya başka bir model kullanın"],
+            ["Birkaç uçuk aykırı değer", "Zayıf", "Hataların karesini almak uzaktaki noktaların çok sert çekmesine yol açar"],
+            ["Tahmini açıklamanız gerekiyor", "Evet", "Eğim, girdinin her biriminin ne kadar eklediğini tam olarak söyler"],
+            ["Verinin çok dışında tahmin", "Riskli", "Doğru, gerçekliğin gitmediği yerlerde bile sonsuza kadar devam eder"]
+          ]
+        }
+      },
+      {
+        "heading": "Sık yapılan hatalar",
+        "body": "**Çok büyük bir öğrenme oranı**, laboratuvarın gösterdiği gibi eğitimin sekip patlamasına yol açar. **Girdileri yeniden ölçeklemeyi unutmak**, çanağı hiçbir tek adım büyüklüğünün iyi çalışmadığı uzun, dar bir vadiye çevirir. **Doğruya verinin dışında güvenmek**: 30 saat çalışan bir öğrenci 200 almaz. **Aykırı değerleri görmezden gelmek**: tek bir kötü nokta bütün doğruyu eğebilir, bu yüzden oturtmadan önce verilerinize bakın."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Hataları doğrudan toplamak yerine neden karelerini alıyoruz?",
+        "a": "Pozitif ve negatif hatalar birbirini götürür, böylece berbat bir doğru sıfır alabilir. Kare almak her hatayı pozitif yapar ve büyük hataları küçüklerden daha çok cezalandırır. Ayrıca pürüzsüz bir çanak verir; bu da yokuş aşağı yönü hesaplamayı kolaylaştırır."
+      },
+      {
+        "q": "Öğrenme oranı ne işe yarar?",
+        "a": "Yokuş aşağı her adımın büyüklüğünü belirler. Çok küçükse eğitim emekler; çok büyükse her adım çanağın dibinin üzerinden atlar. İkisini de laboratuvarda deneyin."
+      },
+      {
+        "q": "Eğitimden önce x neden yeniden ölçeklenir?",
+        "a": "Yeniden ölçekleme olmadan eğim ve yükseklik çok farklı ölçeklerde yaşar ve çanak uzun ince bir vadiye dönüşür. O zaman tek bir adım büyüklüğü bir yönde çok büyük, diğerinde çok küçük kalır. Yeniden ölçekleme çanağı yuvarlak yapar."
+      },
+      {
+        "q": "En iyi doğru için bir formül yok mu?",
+        "a": "Var. Doğrusal regresyonda en iyi doğruyu doğrudan çözebilirsiniz (*en küçük kareler* formülü) ve bu dersteki doğru da aynı yere varır. Gradyan inişini kullanıyoruz çünkü sinir ağları dahil neredeyse tüm diğer modeller böyle eğitilir."
+      },
+      {
+        "q": "Bu makine öğrenmesi mi, istatistik mi?",
+        "a": "İkisi de. Doğrusal regresyon klasik bir istatistik aracıdır; onu gradyan inişiyle eğitmek ise makine öğrenmesinin temel fikridir. Bu yüzden ders 1'dir."
+      }
+    ]
+  }
+}

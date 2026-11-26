@@ -1,0 +1,166 @@
+{
+  "title": "Gradyan İnişi",
+  "description": "Gradyan inişinin bir kayıp arazisinde nasıl yokuş aşağı yürüdüğünü, neden zikzak çizdiğini ve momentum ile Adam'ın bunu nasıl düzelttiğini görün.",
+  "youWillLearn": [
+    "Gradyan nedir: en dik yokuş yukarı yön",
+    "Her adım neden gradyanın tersine gider",
+    "Öğrenme oranı emeklemek, zikzak çizmek ve patlamak arasında nasıl karar verir",
+    "Momentum ve Adam neyi değiştirir ve ne zaman yardımcı olur"
+  ],
+  "story": [
+    {
+      "id": "fog",
+      "rail": "Siste kayıp",
+      "title": "Gözler bağlı, dibi bul",
+      "body": "Yoğun siste bir yamaçta durduğunuzu düşünün. En alçak noktaya ulaşmak istiyorsunuz ama yalnızca ayağınızın altındaki zemini hissedebiliyorsunuz. Harita araziyi yukarıdan gösteriyor: yeşil alçak, lavanta yüksek. Beyaz top sizsiniz.",
+      "keyIdea": "Bir modeli eğitmek tam olarak budur: arazi **kayıp**tır ve en alçak nokta en iyi modeldir.",
+      "frameTag": "start",
+      "reveal": ["surface", "ball"]
+    },
+    {
+      "id": "feel",
+      "rail": "Eğimi hisset",
+      "title": "Eğimi hisset",
+      "body": "Siste bile zeminin hangi yöne eğildiğini anlayabilirsiniz. İki yönde ölçülen bu eğim **gradyan**dır. Doğrudan yokuş yukarıyı gösterir, bu yüzden kırmızı ok diğer yönü gösterir: yokuş aşağı.",
+      "keyIdea": "Gradyan size yukarının neresi olduğunu söyler. Ters yöne gidin.",
+      "math": "Bir `f(x, y)` yüksekliği için gradyan `(∂f/∂x, ∂f/∂y)` olur. Burada `f = 0.5·x² + 5·y²`, yani gradyan `(x, 10·y)`.",
+      "frameTag": "first-grad",
+      "reveal": ["surface", "ball", "arrow"]
+    },
+    {
+      "id": "step",
+      "rail": "Tek adım",
+      "title": "Yokuş aşağı tek adım",
+      "body": "Eğimin tersine bir adım atın. Ne kadar uzağa? **Öğrenme oranı** çarpı diklik: dik zemin büyük adım, düz zemin küçük adım demektir. Sonra durun, eğimi yeniden hissedin ve tekrarlayın.",
+      "keyIdea": "Bir güncelleme = yeni konum = eski konum − öğrenme oranı × gradyan.",
+      "math": "`x ← x − lr · ∂f/∂x` ve `y ← y − lr · ∂f/∂y`; burada `lr = 0.18`.",
+      "frameTag": "first-step",
+      "reveal": ["surface", "ball", "arrow", "path"]
+    },
+    {
+      "id": "zigzag",
+      "rail": "Zikzak",
+      "title": "Neden zikzak çizer",
+      "body": "Bu arazi bir **dar vadi**: duvarları dik ama tabanı hafifçe eğimli. Dik duvarlar karşı duvara aşan büyük adımlar üretirken hafif taban ileriye doğru minik adımlar üretir. Böylece top bir yandan öbür yana sekip yavaşça ilerler. Grafik, yüksekliğin önce hızlı sonra yavaş düştüğünü gösteriyor.",
+      "keyIdea": "Düz gradyan inişi, arazi bir yönde diğerinden çok daha dik olduğunda zorlanır.",
+      "frameTag": "step-10",
+      "reveal": ["surface", "ball", "path", "chart"]
+    },
+    {
+      "id": "size",
+      "rail": "Adım büyüklüğü",
+      "title": "Her şey adım büyüklüğünde",
+      "body": "Daha küçük bir öğrenme oranı sekmeyi durdurur ama tabanda emekler. Daha büyüğü ise gittikçe yükseğe seker: bu vadide yaklaşık **0.2**'nin üzerindeki her değer, her adımın bir öncekinden fazla aşmasına yol açar ve top haritadan uçup gider.",
+      "keyIdea": "Çok küçük yavaştır. Çok büyük patlar. Doğru büyüklük araziye bağlıdır.",
+      "math": "Vadinin enine eğim `10·y`'dir, bu yüzden her adım `y`'yi `1 − 10·lr` ile çarpar. `lr = 0.2`'nin üzerinde bu çarpanın büyüklüğü 1'den fazladır ve `y` büyür.",
+      "frameTag": "step-10",
+      "reveal": ["surface", "ball", "path", "chart"]
+    },
+    {
+      "id": "arrive",
+      "rail": "Varış",
+      "title": "Vardı, yavaşça",
+      "body": "40 adımdan sonra top dibe ulaşır. Ünlü iki iyileştirme bunu hızlandırır. **Momentum** son adımları hatırlar; böylece yana sekmeler birbirini götürür ve ileri hareket birikir. **Adam** her yönü genellikle ne kadar dik olduğuna göre ölçekler; böylece her yön makul bir adım alır. Laboratuvarda *Üçünü karşılaştır* ile deneyin.",
+      "keyIdea": "Neredeyse her sinir ağı gradyan inişiyle, genellikle momentum veya Adam ile eğitilir.",
+      "frameTag": "done",
+      "reveal": ["surface", "ball", "path", "chart"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Başlangıç: yamaçta duruyoruz",
+      "body": "Buradaki yükseklik {f}. Yokuş aşağı yürümeye başlamak için oynat'a basın."
+    },
+    "grad": {
+      "title": "Adım {step}: eğimi hisset",
+      "body": "Zemin {grad} diklikle eğiliyor. Ok, gradyanın tersine, yokuş aşağıyı gösteriyor."
+    },
+    "update": {
+      "title": "Adım {step}: yokuş aşağı in",
+      "body": "Eğimin tersine bir adım ilerlendi. Yükseklik şimdi {f}."
+    },
+    "diverged": {
+      "title": "Araziden uçup gitti",
+      "body": "Her adım bir öncekinden daha fazla aştı, ta ki sayılar devasa olana kadar. Öğrenme oranını düşürüp tekrar deneyin."
+    },
+    "done": {
+      "title": "Bitti: {step} adım atıldı",
+      "body": "Son yükseklik {f}, eğim {grad}. Başka bir arazi ya da başka bir optimize edici deneyin veya üçünü karşılaştırın."
+    }
+  },
+  "stats": {
+    "step": "ADIM",
+    "height": "YÜKSEKLİK",
+    "slope": "EĞİM"
+  },
+  "lab": {
+    "breakIt": "**Dar vadi**'de öğrenme oranını **0.2**'nin üzerine çekin ve oynat'a basın: top her adımda daha yükseğe seker ve sonunda uçup gider. Sonra **İki vadi**'yi seçin: düz gradyan inişi sağdaki sığ vadiye yerleşirken **Momentum** daha derin olana yuvarlanır. Yarıştırmak için **Üçünü karşılaştır**'ı açın.",
+    "presets": {
+      "bowl": "Çanak",
+      "ravine": "Dar vadi",
+      "saddle": "Eyer",
+      "two-valleys": "İki vadi"
+    },
+    "params": {
+      "learningRate": {
+        "label": "Öğrenme oranı",
+        "hint": "Eğime kıyasla her adımın büyüklüğü."
+      },
+      "steps": {
+        "label": "Adımlar",
+        "hint": "Eğimin kaç kez hissedilip adım atılacağı."
+      }
+    },
+    "errors": {}
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Gradyan inişi nedir?",
+        "body": "Gradyan inişi, neredeyse her makine öğrenmesi modelinin öğrenmek için kullandığı yöntemdir. Bir **kayıp** yazarsınız: modelin ne kadar yanlış olduğunu söyleyen tek bir sayı. Sonra modelin sayılarını, kaybı en hızlı düşüren yönde tekrar tekrar dürtersiniz. O yön, **gradyan**ın negatifidir.\n\nDers 1'de arazinin iki yönü vardı (bir doğrunun eğimi ve yüksekliği). Bir sinir ağının milyonlarca yönü vardır ama fikir aynıdır: eğimi hisset, yokuş aşağı küçük bir adım at, tekrarla."
+      },
+      {
+        "heading": "Öğrenme oranı",
+        "body": "Öğrenme oranı her adımın ne kadar uzağa gideceğine karar verir. Çok küçükse eğitim sonsuza dek sürer. Çok büyükse her adım dibin üzerinden atlar, belki başladığı yerden daha yükseğe konar; o zaman eğitim **ıraksar**. En iyi değer arazinin ne kadar dik olduğuna bağlıdır; bu yüzden genellikle birkaç değer denenerek ayarlanır.\n\nBir yönde diğerinden çok daha dik olan bir arazide (*dar vadi*), iki yön için de iyi olan tek bir öğrenme oranı yoktur. Bu dersteki zikzak bunu gösterir."
+      },
+      {
+        "heading": "Momentum ve Adam",
+        "body": "**Momentum** biriken bir hız tutar: her adım yeni gradyanı önceki hızın büyük kısmına ekler. İşaret değiştiren sekmeler birbirini götürür; tek yöndeki sürekli itişler hız kazanır. Ayrıca küçük tümseklerin ve sığ vadilerin içinden yuvarlanıp geçmeye yardımcı olur.\n\n**Adam** iki birikimli ortalama tutar: biri gradyanın (momentum gibi), diğeri onun kare büyüklüğünün. Birincisini ikincisinin kareköküne bölmek, yön dik de olsa düz de olsa her yöne benzer büyüklükte bir adım verir. Çoğu derin ağı eğitmek için varsayılan seçimdir.",
+        "table": {
+          "headers": ["Optimize edici", "Hatırladığı", "İyi olduğu", "Dikkat edilecek"],
+          "rows": [
+            ["Düz", "Hiçbir şey", "Basit, öngörülebilir çanaklar", "Dar vadilerde zikzak çizer; sığ vadilerde takılır"],
+            ["Momentum", "Son hızı", "Dar vadiler, küçük tümsekler", "Aşıp dibin etrafında dönebilir"],
+            ["Adam", "Ortalama eğim ve ortalama büyüklük", "Yönden yöne çok farklı diklik", "Tam dibe varmadan durabilir"]
+          ]
+        }
+      },
+      {
+        "heading": "Vadiler ve eyerler",
+        "body": "Gerçek kayıp arazilerinde birden fazla vadi vardır. Gradyan inişi yalnızca ayağının altındaki zemini bilir, bu yüzden ilk yuvarlandığı vadiye yerleşir; bu en derini olmayabilir (laboratuvarda *İki vadi*).\n\n**Eyer**, bir yönde minimum, diğer yönde maksimum olan bir noktadır, tıpkı at eyeri gibi. Oradaki eğim sıfırdır, bu yüzden tam üzerinde dengede duran bir top kalır. Minik bir dürtme onu yokuş aşağı gönderir (laboratuvarda *Eyer*). Büyük ağlarda eyerler kötü vadilerden çok daha yaygındır."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Neden gradyanın tersine gidilir?",
+        "a": "Gradyan, yüksekliğin en hızlı arttığı yönü gösterir. Biz yüksekliğin (kaybın) azalmasını istiyoruz, bu yüzden ters yöne adım atarız."
+      },
+      {
+        "q": "Öğrenme oranını nasıl seçerim?",
+        "a": "Yaklaşık ×3 aralıklı birkaç değer deneyin (0.001, 0.003, 0.01, …) ve kaybı hâlâ düzenli olarak düşüren en büyüğünü tutun. Kayıp zıplıyor veya büyüyorsa değer çok büyüktür."
+      },
+      {
+        "q": "Gradyan inişi her zaman en iyi cevabı bulur mu?",
+        "a": "Yalnızca arazinin tek bir vadisi olduğunda; buradaki çanak ve dar vadi gibi (ve ders 1'deki kayıp gibi). Birkaç vadi varsa iyi bir tanesini bulur, en iyisini değil."
+      },
+      {
+        "q": "Stokastik gradyan inişi nedir?",
+        "a": "Çok veri olduğunda kesin eğimi hesaplamak her örneği kullanır ve yavaştır. Stokastik gradyan inişi her adımda eğimi küçük, rastgele bir örnek grubundan tahmin eder. Yol daha gürültülü olur ama her adım çok daha ucuzdur."
+      },
+      {
+        "q": "Adam her zaman daha mı iyi?",
+        "a": "Hayır. Adam harika bir varsayılandır, ama momentumlu düz gradyan inişi bazen daha iyi genelleşir ve hâlâ birçok görüntü modelini eğitmek için kullanılır."
+      }
+    ]
+  }
+}
