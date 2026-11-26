@@ -49,7 +49,7 @@ def best_split(points, idx, features, min_leaf, k):
     return best
 
 
-def grow(points, max_depth, min_leaf):
+def grow(points, max_depth, min_leaf, features=None):
     k = max(p[2] for p in points) + 1
     k = max(k, 2)
     nodes = [{"depth": 0, "idx": list(range(len(points)))}]
@@ -64,7 +64,8 @@ def grow(points, max_depth, min_leaf):
         node["split"] = None
         if node["depth"] >= max_depth or g == 0 or len(idx) < 2 * min_leaf:
             continue
-        s = best_split(points, idx, (0, 1), min_leaf, k)
+        feats = features(node) if features else (0, 1)
+        s = best_split(points, idx, tuple(sorted(feats)), min_leaf, k)
         if s is None or g - s[2] <= 1e-12:
             continue
         f, t, _ = s
