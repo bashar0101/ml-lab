@@ -98,7 +98,9 @@ export function runPca(points: LabeledPoint[], p: PcaParams): Trace<PcaState> {
   state = { ...state, angle: (a.pc1Angle + 90) % 180, found: 2 };
   push("pc2", "pc2", ["pc2"]);
   state = { ...state, angle: a.pc1Angle, projected: true };
-  push("project", "project", ["project"]);
+  // Keeping both directions squashes nothing: it is only a rotation onto the new axes.
+  if (p.components === 1) push("project", "project", ["project"]);
+  else push("keep", "keep", ["project"]);
   push("return", "done", ["done"]);
   return { frames, meta: { algorithm: "pca", seed: 0, truncated: false } };
 }

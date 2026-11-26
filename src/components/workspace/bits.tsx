@@ -33,8 +33,8 @@ export function StatChips({ chips, labels }: { chips: StatChip[]; labels: Record
         <div key={c.labelKey} className={styles.stat}>
           <small>{labels[c.labelKey] ?? c.labelKey}</small>
           <span>
-            {c.value === null ? t("stat.tooBig") : formatStat(c.value)}
-            {c.suffix && c.value !== null ? <span className={styles.suffix}> {c.suffix}</span> : null}
+            {c.value === undefined ? t("stat.pending") : c.value === null ? t("stat.tooBig") : formatStat(c.value)}
+            {c.suffix && typeof c.value === "number" ? <span className={styles.suffix}> {c.suffix}</span> : null}
           </span>
         </div>
       ))}

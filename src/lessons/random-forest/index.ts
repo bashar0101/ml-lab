@@ -5,7 +5,7 @@ import { pseudo, python } from "./code";
 import { LabControls } from "./LabControls";
 import { Scene, type ForestData } from "./Scene";
 
-const pct = (v: number) => (Number.isFinite(v) ? Math.round(v * 1000) / 10 : null);
+const pct = (v: number) => (Number.isFinite(v) ? Math.round(v * 1000) / 10 : undefined);
 
 const randomForest: LessonModule<ForestState, ForestParams, ForestData> = {
   slug: "random-forest",
@@ -18,7 +18,7 @@ const randomForest: LessonModule<ForestState, ForestParams, ForestData> = {
   code: { python, pseudo },
   stats: (frame, params) => [
     { labelKey: "trees", value: frame.metrics.trees, suffix: params ? `/ ${params.trees}` : undefined },
-    { labelKey: "accuracy", value: frame.metrics.trees ? pct(frame.metrics.accuracy) : null, suffix: "%" },
+    { labelKey: "accuracy", value: frame.metrics.trees ? pct(frame.metrics.accuracy) : undefined, suffix: "%" },
     { labelKey: "oob", value: pct(frame.metrics.oob), suffix: "%" },
   ],
 };

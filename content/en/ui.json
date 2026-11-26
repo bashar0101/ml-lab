@@ -95,6 +95,7 @@
   "code.copy": "Copy",
   "code.copied": "Copied",
   "stat.tooBig": "too big",
+  "stat.pending": "—",
 
   "menu.open": "Open course menu",
   "menu.close": "Close course menu",

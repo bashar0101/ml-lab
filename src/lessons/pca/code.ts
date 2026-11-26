@@ -10,9 +10,12 @@ export const python: CodeLine[] = [
   { text: "values, vectors = np.linalg.eigh(C)   # the exact answer", key: "pc1" },
   { text: "pc1 = vectors[:, 1]           # most spread", key: "pc1" },
   { text: "pc2 = vectors[:, 0]           # at right angles", key: "pc2" },
-  { text: "z = X0 @ pc1                  # one number per point", key: "project" },
-  { text: "X_back = X.mean(axis=0) + np.outer(z, pc1)", key: "project" },
-  { text: "kept = values[1] / values.sum()", key: "return" },
+  { text: "if keep == 1:" },
+  { text: "    z = X0 @ pc1              # one number per point", key: "project" },
+  { text: "    X_back = X.mean(axis=0) + np.outer(z, pc1)", key: "project" },
+  { text: "else:  # keep both: just new axes, nothing lost", key: "keep" },
+  { text: "    Z = X0 @ np.stack([pc1, pc2], axis=1)", key: "keep" },
+  { text: "kept = values[1] / values.sum() if keep == 1 else 1.0", key: "return" },
 ];
 
 export const pseudo: CodeLine[] = [
@@ -23,5 +26,6 @@ export const pseudo: CodeLine[] = [
   { text: "the most spread-out direction is PC1", key: "pc1" },
   { text: "PC2 is at right angles to it", key: "pc2" },
   { text: "keep only the position along PC1", key: "project" },
+  { text: "(or keep both: same points, new axes)", key: "keep" },
   { text: "report how much of the spread was kept", key: "return" },
 ];

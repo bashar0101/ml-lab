@@ -51,7 +51,7 @@ export function runForest(points: LabeledPoint[], p: ForestParams): Trace<Forest
   const trees: ForestTree[] = [];
   const frames: Frame<ForestState>[] = [];
 
-  const metrics = (built: ForestTree[]) => {
+  const metrics = (built: ForestTree[], tree: number) => {
     const accuracy = built.length ? points.filter((q) => forestVotes(built, q.x, q.y).prediction === q.c).length / n : 0;
     // Out-of-bag: each point is judged only by the trees that never saw it.
     let judged = 0;
@@ -62,11 +62,11 @@ export function runForest(points: LabeledPoint[], p: ForestParams): Trace<Forest
       judged++;
       if (forestVotes(unseen, q.x, q.y).prediction === q.c) right++;
     });
-    return { trees: built.length, accuracy, oob: judged ? right / judged : Number.NaN };
+    return { tree, trees: built.length, accuracy, oob: judged ? right / judged : Number.NaN };
   };
   const push = (tree: number, counts: number[], codeLine: string, event: string, tags: string[] = []) => {
     const built = trees.slice();
-    frames.push({ state: { tree, counts, trees: built }, codeLine, event, tags, metrics: metrics(built) });
+    frames.push({ state: { tree, counts, trees: built }, codeLine, event, tags, metrics: metrics(built, tree) });
   };
 
   push(0, points.map(() => 1), "init", "init", ["start"]);
