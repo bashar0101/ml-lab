@@ -53,3 +53,12 @@ describe("validateText", () => {
     expect(validateText(text)).toBe(err);
   });
 });
+
+describe("review fix: the answer text is a percentage", () => {
+  it("says '…: 0.1%.' rather than '…: 0.'", async () => {
+    const { interpolate } = await import("@/engine/text");
+    const content = (await import("../../../content/en/lessons/recurrent-neural-network.json")).default;
+    const last = runRnn("bdcfhegdcehf", RNN_DEFAULTS).frames.at(-1)!;
+    expect(interpolate(content.events.predict.body, last.metrics)).toMatch(/^Chance it started with a: \d+(\.\d)?%\.$/);
+  });
+});

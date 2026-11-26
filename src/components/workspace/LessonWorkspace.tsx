@@ -12,6 +12,7 @@ import { useLessonKeys } from "@/state/keys";
 import { usePlayer } from "@/state/player";
 import { browserStorage, createProgressStore } from "@/state/progress";
 import { ModeSwitch, StatChips, StepRail } from "./bits";
+import { keepsFrame } from "./keepFrame";
 import { CourseTree } from "./CourseTree";
 import { CodePanel, LabPanel, NowCard } from "./LabParts";
 import styles from "./LessonWorkspace.module.css";
@@ -146,8 +147,7 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
       // Any edit stops playback, even when the data is invalid and the old run stays on screen.
       dispatch({ type: "pause" });
       const prev = labRef.current;
-      const viewOnly = !!prev && !prev.error && patch.data === undefined && patch.params !== undefined && !!mod.viewOnly?.(prev.params, patch.params);
-      keepIndexRef.current = viewOnly ? indexRef.current : null;
+      keepIndexRef.current = keepsFrame(mod, prev, patch) ? indexRef.current : null;
       setLab((prev) => {
         if (!prev) return prev;
         const params = patch.params ?? prev.params;

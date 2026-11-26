@@ -52,6 +52,8 @@ export interface LessonModule<S = unknown, P = unknown, D = unknown> {
   stats(frame: Frame<S>, params?: P): StatChip[];
   /** True when going from `prev` to `next` only changes how the run is shown (playback keeps its place). */
   viewOnly?(prev: P, next: P): boolean;
+  /** True when a data edit never changes the trace's shape, so the Lab can stay on the current frame (e.g. drawing a pixel). */
+  keepFrameOnData?: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

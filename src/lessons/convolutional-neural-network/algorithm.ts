@@ -88,7 +88,7 @@ export function runCnn(image: Image, p: CnnParams): Trace<CnnState> {
       codeLine,
       event: phase === "init" ? "init" : phase,
       tags,
-      metrics: { prediction, confidence: f.probs[prediction], value, filter: filter + 1 },
+      metrics: { prediction, confidence: f.probs[prediction], confidencePct: Math.round(f.probs[prediction] * 1000) / 10, value, filter: filter + 1 },
     });
 
   push("init", "init", null, 0, ["start"]);

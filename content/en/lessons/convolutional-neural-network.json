@@ -72,7 +72,7 @@
     },
     "conv": {
       "title": "Filter {filter} at this spot",
-      "body": "Multiply the 9 pixels by the filter's weights and add: {value}."
+      "body": "Multiply the 9 pixels by the filter's weights, add them up and add the filter's bias: {value}."
     },
     "relu": {
       "title": "ReLU",
@@ -88,7 +88,7 @@
     },
     "dense": {
       "title": "The answer: {prediction}",
-      "body": "The network is {confidence} sure it is a {prediction}."
+      "body": "The network is {confidencePct}% sure it is a {prediction}."
     },
     "done": {
       "title": "Done",
@@ -101,7 +101,7 @@
     "prediction": "ANSWER"
   },
   "lab": {
-    "breakIt": "Load **Noisy 8**: with about 15 % of its squares flipped the network still says 8, but only about two-thirds sure, with 0 close behind. Over many noisy digits its accuracy falls from 93 % to about 53 %, because it only ever trained on light noise. Then erase squares from a clean digit, one at a time, until the answer flips.",
+    "breakIt": "Load **Noisy 8**: with 13 of its 64 squares flipped (about 20 %) the network still says 8, but only about two-thirds sure, with 0 close behind. Over many noisy digits its accuracy falls from 93 % to about 53 %, because it only ever trained on light noise. Then erase squares from a clean digit, one at a time, until the answer flips.",
     "presets": {},
     "params": {},
     "errors": {}
@@ -145,7 +145,11 @@
       },
       {
         "q": "Can a CNN recognise a digit anywhere in the image?",
-        "a": "Within limits. Shared filters and pooling make it tolerant of small shifts, which is why shifted digits still work here. Large shifts, rotations or very different styles need training examples like them."
+        "a": "Within limits. Shared filters and pooling make it tolerant of small shifts, which is why every digit still works here when shifted anywhere the 8 × 8 grid allows (try **Shifted 3**). Large shifts, rotations or very different styles need training examples like them."
+      },
+      {
+        "q": "Why does a blank canvas say 1?",
+        "a": "The last layer must share 100 % between the ten digits; it has no \"nothing here\" answer and never saw an empty grid in training. A blank grid happens to look most like a thin 1 to it, so it says 1, about 90 % sure. Real systems add a \"none\" class or ignore low-confidence answers."
       },
       {
         "q": "Is this how photo apps recognise faces?",
