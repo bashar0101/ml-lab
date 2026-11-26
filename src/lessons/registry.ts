@@ -10,6 +10,7 @@ const modules: Record<string, () => Promise<{ default: AnyLessonModule }>> = {
   "decision-tree": () => import("./decision-tree"),
   "random-forest": () => import("./random-forest"),
   "k-means": () => import("./k-means"),
+  pca: () => import("./pca"),
 };
 
 export function hasLessonModule(slug: string): boolean {

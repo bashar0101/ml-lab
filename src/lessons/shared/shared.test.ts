@@ -19,7 +19,8 @@ describe("axes", () => {
 });
 
 describe("datasets2d", () => {
-  const ids: Dataset2DId[] = ["blobs", "overlap", "circles", "moons", "xor", "three-blobs", "uneven"];
+  const ids: Dataset2DId[] = ["blobs", "overlap", "circles", "moons", "xor", "three-blobs", "uneven", "ellipse", "round", "stripes"];
+  const CLASSES: Partial<Record<Dataset2DId, number>> = { "three-blobs": 3, ellipse: 1, round: 1 };
 
   it.each(ids)("%s is deterministic, inside the 0–10 box and has every class", (id) => {
     const a = makeDataset(id, 3);
@@ -32,7 +33,7 @@ describe("datasets2d", () => {
       expect(p.y).toBeLessThanOrEqual(10);
     }
     const classes = new Set(a.map((p) => p.c));
-    expect(classes.size).toBe(id === "three-blobs" ? 3 : 2);
+    expect(classes.size).toBe(CLASSES[id] ?? 2);
   });
 
   it("circles can't be separated by any straight line (best line stays under 80 %)", () => {

@@ -21,7 +21,8 @@ export function ModeSwitch({ mode, onMode }: { mode: Mode; onMode(m: Mode): void
 export function formatStat(v: number): string {
   if (Number.isInteger(v)) return String(v);
   const a = Math.abs(v);
-  return a >= 100 ? v.toFixed(1) : v.toFixed(2);
+  // Number(...) drops trailing zeros: 95.50 → 95.5.
+  return String(Number(a >= 100 ? v.toFixed(1) : v.toFixed(2)));
 }
 
 export function StatChips({ chips, labels }: { chips: StatChip[]; labels: Record<string, string> }) {
