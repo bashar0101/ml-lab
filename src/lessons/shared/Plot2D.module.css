@@ -1,0 +1,51 @@
+.axis path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+}
+
+.axis text {
+  fill: var(--muted);
+  font: 11px var(--font-ui);
+}
+
+.area {
+  fill: transparent;
+  pointer-events: none;
+}
+
+.clickable {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.marker {
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  transition: opacity 120ms ease;
+}
+
+.c0 {
+  fill: var(--peach);
+}
+
+.c1 {
+  fill: var(--lavender);
+}
+
+.c2 {
+  fill: var(--green);
+}
+
+.dim {
+  opacity: 0.35;
+}
+
+.ring {
+  stroke: var(--red);
+  stroke-width: 2.6;
+}
+
+.removable {
+  cursor: pointer;
+}
