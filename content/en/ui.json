@@ -189,5 +189,16 @@
   "knn.metric.manhattan": "Manhattan",
   "knn.queryX": "New point x",
   "knn.queryY": "New point y",
-  "knn.moveQuery": "Move the new point"
+  "knn.moveQuery": "Move the new point",
+
+  "svm.scene.label": "Two classes with the decision boundary, the dashed edges of the street and the support vectors circled on the left, and how far each point sits from the boundary on the right.",
+  "svm.scene.strip": "how far each point is from the boundary",
+  "svm.scene.wrong": "wrong side",
+  "svm.scene.street": "in the street",
+  "svm.scene.safe": "safe",
+  "svm.axis.x": "feature 1",
+  "svm.axis.y": "feature 2",
+  "svm.kernel": "Kernel",
+  "svm.kernel.linear": "Straight (linear)",
+  "svm.kernel.rbf": "Curved (RBF)"
 }

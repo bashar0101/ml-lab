@@ -30,7 +30,7 @@ export const lessons: LessonEntry[] = [
   { slug: "gradient-descent", chapter: "foundations", minutes: 10, level: "beginner", status: "live" },
   { slug: "logistic-regression", chapter: "classification", minutes: 10, level: "beginner", status: "live" },
   { slug: "k-nearest-neighbors", chapter: "classification", minutes: 8, level: "beginner", status: "live" },
-  { slug: "support-vector-machine", chapter: "classification", minutes: 12, level: "intermediate", status: "soon" },
+  { slug: "support-vector-machine", chapter: "classification", minutes: 12, level: "intermediate", status: "live" },
   { slug: "decision-tree", chapter: "trees", minutes: 10, level: "beginner", status: "soon" },
   { slug: "random-forest", chapter: "trees", minutes: 10, level: "intermediate", status: "soon" },
   { slug: "k-means", chapter: "patterns", minutes: 8, level: "beginner", status: "soon" },
