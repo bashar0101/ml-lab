@@ -1,5 +1,7 @@
 # ML Lab
 
+![ML Lab home page: "Watch machines learn." with a live linear regression demo and its loss bowl](docs/images/home-hero.png)
+
 **Watch machines learn.** ML Lab is a free, interactive website that teaches machine learning and deep learning by letting students *watch algorithms work*, one step at a time, and then experiment with them.
 
 Every lesson runs the real algorithm on real numbers, right in the browser, records every step, and replays it as an animation next to the code that produced it. There are no videos, no accounts and no servers: just open a lesson and start learning.
@@ -14,6 +16,23 @@ Use it to:
 - **Experiment** with your own data and settings and see what changes.
 - **Break things on purpose:** every lesson has one setting that makes the algorithm fail, so you see *why* it works when it does.
 - **Teach:** share a link to an exact step of a lesson (for example `/lessons/linear-regression/#step-4`) with a class.
+
+## Screenshots
+
+**Learn mode:** a guided story, one idea per step, while the picture moves.
+
+![Learn mode: the course list, the lesson animation with the loss bowl, and the story card for step 4](docs/images/lesson-learn.png)
+
+**Lab mode:** your data, your settings, a player, and the line of code that just ran.
+
+![Lab mode: data presets and sliders, the trained line, the player, and the highlighted Python code](docs/images/lesson-lab.png)
+
+<details>
+<summary><b>The whole home page</b></summary>
+
+![The full ML Lab home page: hero, how every lesson works, the six chapters, every lesson and questions](docs/images/home-full.png)
+
+</details>
 
 ## Features
 
