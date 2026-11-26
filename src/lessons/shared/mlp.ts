@@ -82,13 +82,48 @@ export function trainEpoch(net: Mlp, X: number[][], Y: (0 | 1)[], lr: number): {
   const gW = net.W.map((layer) => layer.map((row) => row.map(() => 0)));
   const gb = net.b.map((layer) => layer.map(() => 0));
   const n = X.length;
-  X.forEach((x, k) => {
-    const f = forward(net, x);
-    const g = backward(net, f, Y[k]);
-    g.dW.forEach((layer, l) => layer.forEach((row, j) => row.forEach((v, i) => (gW[l][j][i] += v / n))));
-    g.dz.forEach((layer, l) => layer.forEach((v, j) => (gb[l][j] += v / n)));
-  });
-  const loss = lossOf(net, X, Y);
+  const L = net.W.length;
+  const act = ACT[net.activation];
+  // Same arithmetic as forward() + backward(), in plain loops: this runs thousands of times per lesson.
+  const a: number[][] = [[], ...net.sizes.slice(1).map((s) => new Array<number>(s).fill(0))];
+  const z: number[][] = net.sizes.slice(1).map((s) => new Array<number>(s).fill(0));
+  const dz: number[][] = net.sizes.slice(1).map((s) => new Array<number>(s).fill(0));
+  let loss = 0;
+  for (let k = 0; k < n; k++) {
+    a[0] = X[k];
+    for (let l = 0; l < L; l++) {
+      const Wl = net.W[l];
+      const prev = a[l];
+      for (let j = 0; j < Wl.length; j++) {
+        let s = net.b[l][j];
+        const row = Wl[j];
+        for (let i = 0; i < row.length; i++) s += row[i] * prev[i];
+        z[l][j] = s;
+        a[l + 1][j] = l === L - 1 ? sigmoid(s) : act.f(s);
+      }
+    }
+    const p = a[L][0];
+    const pc = Math.min(1 - EPS, Math.max(EPS, p));
+    loss -= Y[k] * Math.log(pc) + (1 - Y[k]) * Math.log(1 - pc);
+    dz[L - 1][0] = p - Y[k];
+    for (let l = L - 2; l >= 0; l--) {
+      const next = net.W[l + 1];
+      for (let i = 0; i < z[l].length; i++) {
+        let s = 0;
+        for (let j = 0; j < next.length; j++) s += next[j][i] * dz[l + 1][j];
+        dz[l][i] = s * act.df(z[l][i]);
+      }
+    }
+    for (let l = 0; l < L; l++)
+      for (let j = 0; j < dz[l].length; j++) {
+        const d = dz[l][j];
+        const row = gW[l][j];
+        const prev = a[l];
+        for (let i = 0; i < row.length; i++) row[i] += (d * prev[i]) / n;
+        gb[l][j] += d / n;
+      }
+  }
+  loss /= n;
   const gradNorms = gW.map((layer) => Math.sqrt(layer.flat().reduce((s, v) => s + v * v, 0)));
   const next: Mlp = {
     ...net,
