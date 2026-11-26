@@ -170,7 +170,10 @@
   "gd.optimizer.momentum": "Momentum",
   "gd.optimizer.adam": "Adam",
   "gd.compare": "Compare all three",
-  "gd.clickHint": "Click the map to choose where to start.",
+  "gd.clickHint": "Click the map to choose where to start, or type a point below.",
+  "gd.startX": "Start x",
+  "gd.startY": "Start y",
+  "gd.setStart": "Set start",
 
   "log.scene.label": "Two kinds of points with the model's probability shaded behind them and its decision line on the left, and the squashing S-curve on the right.",
   "log.scene.sigmoid": "score squashed into a probability",

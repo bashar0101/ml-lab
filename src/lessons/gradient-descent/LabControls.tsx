@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useState, type FormEvent } from "react";
 import { Markdownish } from "@/components/Markdownish";
 import { useT } from "@/i18n/ui-context";
 import styles from "../linear-regression/LabControls.module.css";
@@ -34,6 +34,7 @@ export function LabControls({ params, onParams, onData, labels }: LabControlsPro
         ))}
       </div>
       <p className={styles.hint}>{t("gd.clickHint")}</p>
+      <StartForm onData={onData} />
 
       <div className={styles.chips} role="group" aria-label={t("gd.optimizer")}>
         {OPTIMIZERS.map((o) => (
@@ -90,5 +91,36 @@ export function LabControls({ params, onParams, onData, labels }: LabControlsPro
         />
       </div>
     </div>
+  );
+}
+
+const clamp3 = (v: number) => Math.max(-3, Math.min(3, v));
+
+/** Keyboard way to choose the start point (clicking the map does the same). */
+function StartForm({ onData }: { onData(d: GdData): void }) {
+  const t = useT();
+  const xId = useId();
+  const yId = useId();
+  const [x, setX] = useState("");
+  const [y, setY] = useState("");
+  const nx = Number(x);
+  const ny = Number(y);
+  const valid = x.trim() !== "" && y.trim() !== "" && Number.isFinite(nx) && Number.isFinite(ny);
+
+  function submit(e: FormEvent) {
+    e.preventDefault();
+    if (valid) onData({ start: [clamp3(nx), clamp3(ny)] });
+  }
+
+  return (
+    <form className={styles.addRow} onSubmit={submit}>
+      <label htmlFor={xId}>x</label>
+      <input id={xId} type="number" step="any" inputMode="decimal" value={x} onChange={(e) => setX(e.target.value)} aria-label={t("gd.startX")} />
+      <label htmlFor={yId}>y</label>
+      <input id={yId} type="number" step="any" inputMode="decimal" value={y} onChange={(e) => setY(e.target.value)} aria-label={t("gd.startY")} />
+      <button type="submit" className={styles.chip} disabled={!valid}>
+        {t("gd.setStart")}
+      </button>
+    </form>
   );
 }

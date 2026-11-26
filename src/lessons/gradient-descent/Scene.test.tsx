@@ -86,3 +86,14 @@ describe("gradient descent module", () => {
     expect(s[1].value).toBeNull();
   });
 });
+
+describe("keyboard start point", () => {
+  it("typing a start point sets it, clamped to the map", async () => {
+    const onData = vi.fn();
+    wrap(<mod.LabControls params={mod.defaultParams} data={{ start: null }} onParams={vi.fn()} onData={onData} labels={labels} />);
+    await userEvent.type(screen.getByLabelText("Start x"), "1.5");
+    await userEvent.type(screen.getByLabelText("Start y"), "-9");
+    await userEvent.click(screen.getByRole("button", { name: "Set start" }));
+    expect(onData).toHaveBeenLastCalledWith({ start: [1.5, -3] });
+  });
+});
