@@ -1,0 +1,205 @@
+{
+  "title": "Principal Component Analysis",
+  "description": "See how PCA finds the direction where data spreads the most, and squashes many numbers into fewer while keeping most of the information.",
+  "youWillLearn": [
+    "Why we want to describe data with fewer numbers",
+    "What the first principal component is: the direction of most spread",
+    "How much information squashing keeps",
+    "When the biggest spread is not what matters"
+  ],
+  "story": [
+    {
+      "id": "too-many",
+      "rail": "Too many",
+      "title": "Too many numbers",
+      "body": "Real data often has hundreds of numbers per example, many of them telling the same story. Here each point has two, but they move together: when one is big, the other tends to be big too. Could **one** number describe each point almost as well?",
+      "keyIdea": "PCA finds new directions that summarise the data with fewer numbers.",
+      "frameTag": "start",
+      "reveal": [
+        "points"
+      ]
+    },
+    {
+      "id": "centre",
+      "rail": "Centre",
+      "title": "Find the middle",
+      "body": "First find the centre of the cloud: the average of all points (the circled cross). Everything that follows is measured from there.",
+      "keyIdea": "PCA looks at how points spread *around* their mean.",
+      "frameTag": "center",
+      "reveal": [
+        "points",
+        "center"
+      ]
+    },
+    {
+      "id": "try-angles",
+      "rail": "Try angles",
+      "title": "Shine a light from every angle",
+      "body": "Pick a direction through the centre (dashed line) and drop every point straight onto it, like shadows. Measure how spread out the shadows are. Then try the next direction, and the next. The chart on the right plots the spread for each angle.",
+      "keyIdea": "Each direction gives a different one-number summary; some keep more of the spread than others.",
+      "math": "The spread along a unit direction `u` is the variance of the shadows, `uᵀ·C·u`, where `C` is the covariance matrix.",
+      "frameTag": "sweep",
+      "reveal": [
+        "points",
+        "center",
+        "direction",
+        "curve"
+      ]
+    },
+    {
+      "id": "pc1",
+      "rail": "PC1",
+      "title": "The most spread: PC1",
+      "body": "The direction where the shadows spread out the most is the **first principal component** (orange arrow). Its position along this direction is the single number that describes each point best.",
+      "keyIdea": "PC1 = the direction of greatest variance.",
+      "math": "PC1 is the eigenvector of `C` with the largest eigenvalue; that eigenvalue is the variance along it. No need to try every angle: `np.linalg.eigh(C)` gives it directly.",
+      "frameTag": "pc1",
+      "reveal": [
+        "points",
+        "center",
+        "axes",
+        "curve"
+      ]
+    },
+    {
+      "id": "pc2",
+      "rail": "PC2",
+      "title": "At right angles: PC2",
+      "body": "The second component is at right angles to the first, and it holds whatever spread is left. On the chart it sits exactly where the spread is smallest. With two features there are only two components.",
+      "keyIdea": "Components are perpendicular, each catching the most remaining spread.",
+      "frameTag": "pc2",
+      "reveal": [
+        "points",
+        "center",
+        "axes",
+        "curve"
+      ]
+    },
+    {
+      "id": "squash",
+      "rail": "Squash",
+      "title": "Keep only PC1",
+      "body": "Now slide every point onto the PC1 line. Each point is described by one number instead of two, and the bar shows how much of the original spread survived. When the cloud is long and thin, almost nothing is lost.",
+      "keyIdea": "Dimensionality reduction: fewer numbers, most of the information.",
+      "math": "Kept share = `λ₁ / (λ₁ + λ₂)`.",
+      "frameTag": "project",
+      "reveal": [
+        "points",
+        "center",
+        "axes",
+        "curve",
+        "project"
+      ]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "The raw cloud",
+      "body": "Two numbers per point. Press play to find better directions."
+    },
+    "center": {
+      "title": "Find the centre",
+      "body": "The mean of all points; every direction will pass through it."
+    },
+    "sweep": {
+      "title": "Trying the direction at {angle}°",
+      "body": "The shadows on this line have spread {variance}."
+    },
+    "pc1": {
+      "title": "PC1 found at {angle}°",
+      "body": "The most spread-out direction: spread {variance}."
+    },
+    "pc2": {
+      "title": "PC2, at right angles",
+      "body": "The direction with the least spread: {variance}."
+    },
+    "project": {
+      "title": "Squash onto PC1",
+      "body": "Each point is now one number. Share of the spread kept: {explained}."
+    },
+    "done": {
+      "title": "Done",
+      "body": "Share of the spread kept: {explained}. Try the round cloud and the two stripes."
+    }
+  },
+  "stats": {
+    "angle": "ANGLE",
+    "spread": "SPREAD",
+    "kept": "KEPT"
+  },
+  "lab": {
+    "breakIt": "Pick **Round**: every direction spreads about the same, so PC1 is close to a coin toss and squashing keeps only about half the spread. Then pick **Two stripes**: the most spread is *along* the stripes, so PC1 runs along them and squashing throws away exactly the direction that tells the two colours apart.",
+    "presets": {
+      "ellipse": "Stretched",
+      "round": "Round",
+      "stripes": "Two stripes",
+      "three-blobs": "Three groups"
+    },
+    "params": {},
+    "errors": {
+      "tooFew": "Add at least two points."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is PCA?",
+        "body": "Principal component analysis finds new axes for your data, ordered by how much of the data's spread (variance) they capture. Keeping only the first few axes describes each example with fewer numbers while losing as little spread as possible. It is used to compress data, to visualise many-feature data in 2D, and to remove noise before other models."
+      },
+      {
+        "heading": "How it works",
+        "body": "Centre the data, then compute its covariance matrix `C`, which says how each pair of features varies together. The **eigenvectors** of `C` are the principal components and the **eigenvalues** are the variances along them. Projecting onto the top k eigenvectors gives the best k-number summary in the sense of keeping the most variance, which is the same as making the smallest squared error when you map back."
+      },
+      {
+        "heading": "How many components to keep?",
+        "body": "Look at the share of variance each component explains and keep enough to reach, say, 90–95 %. With strongly correlated features a handful of components can replace hundreds of features.",
+        "table": {
+          "headers": [
+            "Data shape",
+            "PC1 share",
+            "Squashing to PC1"
+          ],
+          "rows": [
+            [
+              "Long thin cloud",
+              "High (90 %+)",
+              "Loses almost nothing"
+            ],
+            [
+              "Round cloud",
+              "About 50 %",
+              "Loses half the spread"
+            ],
+            [
+              "Spread ≠ what matters",
+              "Any",
+              "May throw away the useful direction"
+            ]
+          ]
+        }
+      },
+      {
+        "heading": "Pitfalls",
+        "body": "PCA only sees variance, not meaning: the direction that separates two classes may have little spread and be thrown away (the two stripes). It is sensitive to scale, so features in different units should be standardised first. And it finds straight-line directions only; curved structure needs other methods."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Is PCA supervised?",
+        "a": "No. It never looks at labels. The colours in the Lab are only there to show what PCA ignores."
+      },
+      {
+        "q": "Why centre the data first?",
+        "a": "Principal components are directions of spread around the mean. Without centring, the first direction would mostly point from the origin to the cloud."
+      },
+      {
+        "q": "Do I have to try every angle?",
+        "a": "No. The sweep is only to build intuition. The eigen-decomposition of the covariance matrix gives the exact answer directly, in any number of dimensions."
+      },
+      {
+        "q": "Is PCA the same as linear regression?",
+        "a": "No. Regression minimises vertical errors when predicting y from x. PCA treats all features alike and minimises the perpendicular distance to the line."
+      }
+    ]
+  }
+}

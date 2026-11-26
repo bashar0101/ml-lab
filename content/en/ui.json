@@ -225,5 +225,14 @@
   "km.init": "Start",
   "km.init.random": "Random start",
   "km.init.plus-plus": "Smart start (k-means++)",
-  "km.reseed": "New random start"
+  "km.reseed": "New random start",
+
+  "pca.scene.label": "A cloud of points with its centre, a direction being tried and the shadows of the points on it, then the two principal directions on the left; the spread of the shadows for every direction on the right.",
+  "pca.scene.curve": "spread of the shadows for each direction",
+  "pca.scene.pc1": "PC1",
+  "pca.scene.pc2": "PC2",
+  "pca.scene.kept": "spread kept: {pct}%",
+  "pca.components": "Directions to keep",
+  "pca.components.1": "Keep one direction",
+  "pca.components.2": "Keep both directions"
 }

@@ -47,7 +47,7 @@ describe("runPca", () => {
     const t = runPca(pts, PCA_DEFAULTS);
     const sweep = t.frames.filter((f) => f.event === "sweep");
     const best = sweep.reduce((a, f) => (f.metrics.variance > a.metrics.variance ? f : a));
-    const diff = Math.abs(best.state.angle - fixtures.pc1Angle);
+    const diff = Math.abs((best.state.angle ?? 0) - fixtures.pc1Angle);
     expect(Math.min(diff, 180 - diff)).toBeLessThanOrEqual(3);
   });
 
