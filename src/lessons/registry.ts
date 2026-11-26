@@ -15,6 +15,7 @@ const modules: Record<string, () => Promise<{ default: AnyLessonModule }>> = {
   backpropagation: () => import("./backpropagation"),
   "convolutional-neural-network": () => import("./convolutional-neural-network"),
   "recurrent-neural-network": () => import("./recurrent-neural-network"),
+  "attention-transformers": () => import("./attention-transformers"),
 };
 
 export function hasLessonModule(slug: string): boolean {

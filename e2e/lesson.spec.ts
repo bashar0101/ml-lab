@@ -17,7 +17,7 @@ test("article and metadata are in the static HTML", async ({ request }) => {
 });
 
 test("unknown lesson slugs are not built", async ({ request }) => {
-  expect((await request.get("/lessons/attention-transformers/")).status()).toBe(404);
+  expect((await request.get("/lessons/not-a-lesson/")).status()).toBe(404);
 });
 
 test("phone: course menu opens and closes", async ({ page }, info) => {

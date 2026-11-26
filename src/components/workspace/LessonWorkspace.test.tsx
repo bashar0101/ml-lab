@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import ui from "../../../content/en/ui.json";
 import lrJson from "../../../content/en/lessons/linear-regression.json";
 import { LessonContentSchema } from "@/content/schema";
+import { lessons } from "@/course/manifest";
 import { UiProvider } from "@/i18n/ui-context";
 import { LessonWorkspace } from "./LessonWorkspace";
 
@@ -63,11 +64,18 @@ describe("LessonWorkspace, Learn mode", () => {
   });
 
   it("coming-soon lessons are not links and the current lesson is", async () => {
-    renderWorkspace();
-    await screen.findByText("Step 1 / 6");
-    const soon = screen.getAllByText("Attention & Transformers")[0];
-    expect(soon.closest("a")).toBeNull();
-    expect(screen.getAllByRole("link", { name: /Linear Regression/ })[0]).toHaveAttribute("href", expect.stringMatching(/^\/lessons\/linear-regression\/?$/)); // trailing slash comes from next.config at build time
+    // Every lesson is live now; mark one as coming soon to keep the course tree's behaviour pinned.
+    const entry = lessons.find((l) => l.slug === "attention-transformers")!;
+    entry.status = "soon";
+    try {
+      renderWorkspace();
+      await screen.findByText("Step 1 / 6");
+      const soon = screen.getAllByText("Attention & Transformers")[0];
+      expect(soon.closest("a")).toBeNull();
+      expect(screen.getAllByRole("link", { name: /Linear Regression/ })[0]).toHaveAttribute("href", expect.stringMatching(/^\/lessons\/linear-regression\/?$/)); // trailing slash comes from next.config at build time
+    } finally {
+      entry.status = "live";
+    }
   });
 
   it("shows the scene once the lesson module loads", async () => {
