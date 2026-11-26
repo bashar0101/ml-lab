@@ -1,4 +1,5 @@
 import type { LessonContent } from "@/content/schema";
+import { DEFAULT_LOCALE, localePath, type Locale } from "@/i18n/locales";
 
 export interface SearchEntry {
   href: string;
@@ -18,10 +19,10 @@ export function plain(md: string): string {
     .trim();
 }
 
-export function buildSearchIndex(items: { slug: string; content: LessonContent }[]): SearchEntry[] {
+export function buildSearchIndex(items: { slug: string; content: LessonContent }[], locale: Locale = DEFAULT_LOCALE): SearchEntry[] {
   const out: SearchEntry[] = [];
   for (const { slug, content: c } of items) {
-    const page = `/lessons/${slug}/`;
+    const page = localePath(locale, `/lessons/${slug}/`);
     const lesson = c.title;
     out.push({ href: page, title: lesson, lesson, kind: "lesson", text: plain([c.description, ...c.youWillLearn].join(" ")) });
     c.story.forEach((s, k) =>

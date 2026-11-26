@@ -7,6 +7,7 @@
   "nav.home": "ML Lab home",
   "nav.search": "Search lessons and ideas",
   "nav.about": "About",
+  "lang.label": "Language",
   "theme.toLight": "Switch to light theme",
   "theme.toDark": "Switch to dark theme",
 
@@ -71,6 +72,7 @@
   "level.beginner": "Beginner",
   "level.intermediate": "Intermediate",
   "lesson.minutes": "{n} min",
+  "lesson.notTranslated": "This lesson has not been translated yet, so it is shown in English.",
   "lesson.comingSoon": "Soon",
   "lesson.eyebrow": "{number}. {chapter} / Lesson {n}",
   "lesson.loading": "Loading the lesson…",

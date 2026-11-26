@@ -99,3 +99,47 @@
     display: inline;
   }
 }
+
+.lang {
+  position: relative;
+}
+
+.lang > summary {
+  list-style: none;
+  padding-inline: 8px;
+  font-size: 12px;
+}
+
+.lang > summary::-webkit-details-marker {
+  display: none;
+}
+
+.langMenu {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: calc(100% + 6px);
+  z-index: 30;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  min-inline-size: 140px;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.langMenu a {
+  display: block;
+  padding-block: 6px;
+  padding-inline: 10px;
+  border-radius: 6px;
+  color: var(--ink);
+  text-decoration: none;
+  font: 14px var(--font-body);
+}
+
+.langMenu a:hover,
+.langMenu a[aria-current="true"] {
+  background: var(--green);
+}

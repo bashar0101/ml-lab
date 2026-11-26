@@ -1,9 +1,11 @@
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 import type { z } from "zod";
 import { LessonContentSchema, UiSchema, type LessonContent, type UiStrings } from "./schema";
 
-export const DEFAULT_LOCALE = "en";
+import { DEFAULT_LOCALE, type Locale } from "@/i18n/locales";
+
+export { DEFAULT_LOCALE };
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -34,4 +36,17 @@ export function loadUi(locale: string): Promise<UiStrings> {
 
 export function loadLesson(locale: string, slug: string): Promise<LessonContent> {
   return readJson(path.join(CONTENT_DIR, locale, "lessons", `${slug}.json`), LessonContentSchema);
+}
+
+/** A lesson in the given language, or the English text (fallback: true) until it is translated. */
+export async function loadLessonFor(locale: Locale, slug: string): Promise<{ content: LessonContent; fallback: boolean }> {
+  if (locale !== DEFAULT_LOCALE) {
+    const file = path.join(CONTENT_DIR, locale, "lessons", `${slug}.json`);
+    const exists = await access(file).then(
+      () => true,
+      () => false,
+    );
+    if (exists) return { content: await loadLesson(locale, slug), fallback: false };
+  }
+  return { content: await loadLesson(DEFAULT_LOCALE, slug), fallback: locale !== DEFAULT_LOCALE };
 }

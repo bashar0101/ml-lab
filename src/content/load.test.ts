@@ -36,3 +36,13 @@ describe("content", () => {
     await expect(loadLesson("en", "does-not-exist")).rejects.toThrow(/does-not-exist/);
   });
 });
+
+describe("loadLessonFor", () => {
+  it("falls back to English when a lesson is not translated yet, and says so", async () => {
+    const { loadLessonFor } = await import("./load");
+    const en = await loadLessonFor("en", "pca");
+    expect(en.fallback).toBe(false);
+    const missing = await loadLessonFor("tr", "__not-a-lesson__").catch((e: Error) => e.message);
+    expect(missing).toMatch(/file not found/);
+  });
+});
