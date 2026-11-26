@@ -1,0 +1,181 @@
+{
+  "title": "Yapay Sinir Ağı",
+  "description": "Küçük bir sinir ağının düz çizgileri nasıl eğri sınırlara çevirdiğini görün: nöronlar, katmanlar, ileri geçiş ve gradyan inişiyle eğitim.",
+  "youWillLearn": [
+    "Tek bir yapay nöron ne hesaplar",
+    "Bir nöron katmanı basit çizgileri nasıl eğrilerde birleştirir",
+    "Tek bir nokta ağın içinden nasıl geçer (ileri geçiş)",
+    "Bir ağın çizmesi gereken şekil için neden yeterli nörona ihtiyacı vardır"
+  ],
+  "story": [
+    {
+      "id": "one-neuron",
+      "rail": "Tek nöron",
+      "title": "Tek nöron lojistik regresyondur",
+      "body": "Ders 3'teki lojistik regresyonu hatırlayın: girdilerin bir eğriyle sıkıştırılmış ağırlıklı toplamı. Bu tam olarak bir **yapay nöron**dur. Sağda, soldaki iki daire girdilerdir (x ve y), çizgiler ise ağırlıklardır. Tek bir nöron yalnızca düz bir sınır çizebilir; bu halkalar ise eğri bir sınır ister.",
+      "keyIdea": "Nöron = ağırlıklı toplam + aktivasyon. Tek başına düz bir doğru çizer.",
+      "math": "`neuron(x) = act(w₁·x₁ + w₂·x₂ + b)`; burada `act` tanh, ReLU ya da sigmoid'dir.",
+      "frameTag": "start",
+      "reveal": ["points", "network"]
+    },
+    {
+      "id": "layer",
+      "rail": "Katman",
+      "title": "Bir nöron katmanı",
+      "body": "Birkaç nöronu yan yana koyun: bir **gizli katman**. Her biri girdilere kendi ağırlıklarıyla bakar, bu yüzden her biri kendi düz doğrusunu çizer. Mavi bağlantılar pozitif, kırmızı kesikliler negatif ağırlıklardır; kalın olan daha büyüktür. Sonra çıktı nöronu gizli nöronların cevaplarını birleştirir.",
+      "keyIdea": "Her biri kendi doğrusuna sahip birçok basit nöron, bir sonraki katman tarafından birleştirilir.",
+      "frameTag": "start",
+      "reveal": ["points", "network"]
+    },
+    {
+      "id": "follow",
+      "rail": "Noktayı izle",
+      "title": "Bir noktayı içeri kadar izle",
+      "body": "Bir nokta alın (daire içindeki). İki sayısı girdi nöronlarının değerleri olur. Her tahmin buradan başlar.",
+      "keyIdea": "Ağ yalnızca sayıları görür.",
+      "frameTag": "forward-input",
+      "reveal": ["points", "network", "values", "probe"]
+    },
+    {
+      "id": "forward",
+      "rail": "İleri geçiş",
+      "title": "Katman katman bir cevaba",
+      "body": "Her gizli nöron girdileri ağırlıklarıyla çarpar, toplar ve sonucu sıkıştırır; renk değeri gösterir (şeftali negatif, lavanta pozitif). Çıktı nöronu da gizli değerlerle aynısını yapar ve bir olasılığa sıkıştırır. Soldan sağa bu yolculuk **ileri geçiş**tir. Ağırlıklar hâlâ rastgele, bu yüzden cevap bir tahmindir.",
+      "keyIdea": "İleri geçiş: girdiler → gizli katman(lar) → çıktı olasılığı.",
+      "math": "Katman katman: `a⁽ˡ⁺¹⁾ = act(W⁽ˡ⁾·a⁽ˡ⁾ + b⁽ˡ⁾)`; çıktıda bir sigmoid ile.",
+      "frameTag": "forward-output",
+      "reveal": ["points", "network", "values", "probe"]
+    },
+    {
+      "id": "train",
+      "rail": "Eğit",
+      "title": "Her ağırlığı aynı anda öğren",
+      "body": "Eğitim önceki gradyan inişinin aynısıdır, ama şimdi ağdaki **her** ağırlığa aynı anda uygulanır: tahmin yap, log-kaybı ölç, tüm ağırlıkları yokuş aşağı dürt. Gölgeleme ağın her yerdeki olasılığını gösterir; öğrenirken sınırın büküldüğünü izleyin. Ağın her ağırlığın eğimini nasıl hesapladığı ders 11'dir.",
+      "keyIdea": "Ders 1'deki tarifin aynısı, yalnızca ayarlanacak çok daha fazla sayı var.",
+      "frameTag": "train-half",
+      "reveal": ["points", "network", "shade"]
+    },
+    {
+      "id": "result",
+      "rail": "Eğri sınır",
+      "title": "Düz parçalardan eğriler",
+      "body": "Eğitimden sonra gizli nöronların doğruları, iç halkanın etrafında kapalı, eğri bir sınırda birleşir. Daha çok nöron ve katmanla ağlar neredeyse her şekli çizebilir. Aynı fikrin görüntü ve metin tanımaya kadar büyüyebilmesinin nedeni budur.",
+      "keyIdea": "Gizli nöronlar bir ağın sınırını bükmesini sağlar; daha çok nöron, daha çok kıvrım.",
+      "frameTag": "done",
+      "reveal": ["points", "network", "shade"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Rastgele ağırlıklı bir ağ",
+      "body": "İçinden bir noktayı izlemek, sonra eğitmek için oynat'a basın."
+    },
+    "input": {
+      "title": "İleri geçiş: girdiler",
+      "body": "Daire içindeki noktanın iki sayısı girdi nöronlarına girer."
+    },
+    "hidden": {
+      "title": "İleri geçiş: bir gizli katman",
+      "body": "Her nöron: önceki katmanın ağırlıklı toplamı, sonra aktivasyon."
+    },
+    "output": {
+      "title": "İleri geçiş: çıktı",
+      "body": "Çıktı nöronu toplamını bu nokta için bir olasılığa sıkıştırır."
+    },
+    "train": {
+      "title": "Eğitim: dönem {epoch}",
+      "body": "Kayıp {loss}; doğru taraftaki noktaların oranı {accuracy}."
+    },
+    "diverged": {
+      "title": "Ağırlıklar patladı",
+      "body": "Öğrenme oranı bu ağ için çok yüksek. Düşürüp tekrar deneyin."
+    },
+    "done": {
+      "title": "{epoch} dönem eğitildi",
+      "body": "Son kayıp {loss}; doğru oranı {accuracy}."
+    }
+  },
+  "stats": {
+    "epoch": "DÖNEM",
+    "loss": "KAYIP",
+    "accuracy": "DOĞRULUK"
+  },
+  "lab": {
+    "breakIt": "**Halkalar**'da **1 gizli katman** ve **1 nöron** ayarlayın: tek bir gizli nöron yalnızca düz bir sınır çizebilir, bu yüzden ağ iç halkanın etrafını saramaz. Nöronları birer birer ekleyin ve sınırın büküldüğünü izleyin. Sonra **ReLU**'ya geçin: sınırları keskin köşeli düz parçalardan oluşur.",
+    "presets": {
+      "circles": "Halkalar",
+      "moons": "Hilaller",
+      "xor": "Dama tahtası",
+      "blobs": "İki grup",
+      "overlap": "Örtüşen"
+    },
+    "params": {
+      "layers": {
+        "label": "Gizli katmanlar",
+        "hint": "Girdi ile çıktı arasında kaç nöron katmanı olduğu."
+      },
+      "neurons": {
+        "label": "Katman başına nöron",
+        "hint": "Daha çok nöron, birleştirilecek daha çok doğru."
+      },
+      "learningRate": {
+        "label": "Öğrenme oranı",
+        "hint": "Her ağırlık için adım büyüklüğü."
+      },
+      "epochs": {
+        "label": "Dönemler",
+        "hint": "Tüm noktalar üzerinden kaç geçiş yapılacağı."
+      }
+    },
+    "errors": {
+      "tooFew": "En az dört nokta ekleyin.",
+      "oneClass": "İki sınıftan da nokta ekleyin."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Sinir ağı nedir?",
+        "body": "Bir sinir ağı, katmanlar hâlinde bağlanmış birçok basit birimden, **nöronlardan** oluşur. Her nöron girdilerinin ağırlıklı toplamını artı bir sapma hesaplar ve bunu bir **aktivasyon fonksiyonundan** geçirir. İlk katman veriyi alır; son katman cevabı üretir; aradaki katmanlar **gizli katmanlardır**.\n\nTek bir sigmoid çıktı nöronu olan ve gizli katmanı olmayan bir ağ lojistik regresyondur. Ağları güçlü kılan gizli katmanlardır: modelin girdilerden yeni özellikler kurmasını ve onları birleştirmesini sağlarlar."
+      },
+      {
+        "heading": "Aktivasyonlar neden önemlidir",
+        "body": "Bir aktivasyon fonksiyonu olmadan katmanları üst üste koymak anlamsız olurdu: ağırlıklı toplamların ağırlıklı toplamı yine tek bir ağırlıklı toplamdır ve sınır düz kalırdı. Doğrusal olmayan aktivasyon (tanh, ReLU, sigmoid), gizli nöronların sınırı bükmesini sağlayan şeydir.",
+        "table": {
+          "headers": ["Aktivasyon", "Çıktı aralığı", "Notlar"],
+          "rows": [
+            ["tanh", "−1 ile 1 arası", "Pürüzsüz, 0 merkezli; küçük ağlar için iyi"],
+            ["ReLU", "0 veya daha fazla", "Hızlı, derin öğrenmede varsayılan; düz parçalardan sınırlar"],
+            ["Sigmoid", "0 ile 1 arası", "Klasik; derin yığınlarda yavaş öğrenir (bkz. ders 11)"]
+          ]
+        }
+      },
+      {
+        "heading": "Ne kadar büyük olmalı?",
+        "body": "Daha çok nöron ve katman daha karmaşık sınırlar çizebilir, ama daha çok veriye de ihtiyaç duyar ve aşırı öğrenebilir: tıpkı derin bir karar ağacı gibi sınırları gürültünün etrafına sarar. Uygulamada insanlar küçük başlar, ağ eğitim verisine uyana kadar kapasite ekler, sonra onu dürüst tutmak için daha çok veri ya da düzenlileştirme kullanır."
+      },
+      {
+        "heading": "Eğitim",
+        "body": "Tüm ağırlıklar küçük ve rastgele başlar (hepsi eşit başlasaydı her nöron aynı şeyi öğrenirdi). Eğitim tekrar eder: veri için ileri geçiş, log-kayıp, kaybın her ağırlığa göre gradyanı, yokuş aşağı küçük bir adım. Bu gradyanları verimli hesaplamak **geri yayılım**dır, bir sonraki ders."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Beyin böyle mi çalışıyor?",
+        "a": "Yalnızca kabaca. Yapay nöronlar gerçek olanlardan esinlenmiştir ama basit matematiktir; gerçek beyinler çok farklı öğrenir."
+      },
+      {
+        "q": "Neden rastgele ağırlıklarla başlanır?",
+        "a": "Her ağırlık aynı başlasaydı her gizli nöron aynı şeyi hesaplar ve aynı güncellemeleri alırdı; böylece sonsuza dek aynı kalırlardı. Rastgelelik bu simetriyi bozar."
+      },
+      {
+        "q": "Girdiler neden ölçeklenir?",
+        "a": "Çok farklı ölçeklerdeki girdiler bazı ağırlıkları diğerlerinden çok daha önemli kılar ve eğitimi yavaşlatır. Burada x ve y, ağa girmeden önce ortalama 0 ve yayılım 1 olacak şekilde yeniden ölçeklenir."
+      },
+      {
+        "q": "Derin öğrenme kaç katmandır?",
+        "a": "Kesin bir çizgi yok, ama derin ağların çok sayıda gizli katmanı vardır, çoğu zaman onlarca ya da yüzlerce. Bu dersteki fikirler her boyutta aynıdır."
+      }
+    ]
+  }
+}

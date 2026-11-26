@@ -118,3 +118,8 @@ code {
   display: inline-block;
   transform: scaleX(-1);
 }
+
+/* Inside left-to-right charts, each label still reads in its own language's direction. */
+[dir="rtl"] svg text {
+  unicode-bidi: plaintext;
+}

@@ -1,0 +1,167 @@
+{
+  "title": "Temel Bileşen Analizi",
+  "description": "TBA'nın verinin en çok yayıldığı yönü nasıl bulduğunu ve bilginin çoğunu koruyarak çok sayıyı daha aza nasıl sıkıştırdığını görün.",
+  "youWillLearn": [
+    "Veriyi neden daha az sayıyla tanımlamak isteriz",
+    "Birinci temel bileşen nedir: en çok yayılımın yönü",
+    "Sıkıştırma ne kadar bilgi korur",
+    "En büyük yayılım ne zaman önemli olan şey değildir"
+  ],
+  "story": [
+    {
+      "id": "too-many",
+      "rail": "Çok fazla",
+      "title": "Çok fazla sayı",
+      "body": "Gerçek verilerde örnek başına çoğu zaman yüzlerce sayı vardır ve birçoğu aynı hikâyeyi anlatır. Burada her noktanın iki sayısı var ama birlikte hareket ediyorlar: biri büyükken diğeri de büyük olma eğiliminde. Her noktayı **tek** bir sayı neredeyse aynı iyilikte tanımlayabilir mi?",
+      "keyIdea": "TBA, veriyi daha az sayıyla özetleyen yeni yönler bulur.",
+      "frameTag": "start",
+      "reveal": ["points"]
+    },
+    {
+      "id": "centre",
+      "rail": "Merkez",
+      "title": "Ortayı bul",
+      "body": "Önce bulutun merkezini bulun: tüm noktaların ortalaması (daire içindeki artı). Bundan sonraki her şey oradan ölçülür.",
+      "keyIdea": "TBA, noktaların ortalamalarının *etrafında* nasıl yayıldığına bakar.",
+      "frameTag": "center",
+      "reveal": ["points", "center"]
+    },
+    {
+      "id": "try-angles",
+      "rail": "Açıları dene",
+      "title": "Her açıdan ışık tut",
+      "body": "Merkezden geçen bir yön seçin (kesikli çizgi) ve her noktayı gölgeler gibi doğrudan onun üzerine düşürün. Gölgelerin ne kadar yayıldığını ölçün. Sonra bir sonraki yönü, sonra bir sonrakini deneyin. Sağdaki grafik her açı için yayılımı çizer.",
+      "keyIdea": "Her yön farklı bir tek sayılık özet verir; bazıları yayılımı diğerlerinden daha çok korur.",
+      "math": "Birim yön `u` boyunca yayılım, gölgelerin varyansıdır: `uᵀ·C·u`; burada `C` kovaryans matrisidir.",
+      "frameTag": "sweep",
+      "reveal": ["points", "center", "direction", "curve"]
+    },
+    {
+      "id": "pc1",
+      "rail": "PC1",
+      "title": "En çok yayılım: PC1",
+      "body": "Gölgelerin en çok yayıldığı yön **birinci temel bileşen**dir (turuncu ok). Bir noktanın bu yön boyunca konumu, onu en iyi tanımlayan tek sayıdır.",
+      "keyIdea": "PC1 = en büyük varyansın yönü.",
+      "math": "PC1, `C`'nin en büyük özdeğere sahip özvektörüdür; o özdeğer de onun boyunca varyanstır. Her açıyı denemeye gerek yok: `np.linalg.eigh(C)` onu doğrudan verir.",
+      "frameTag": "pc1",
+      "reveal": ["points", "center", "axes", "curve"]
+    },
+    {
+      "id": "pc2",
+      "rail": "PC2",
+      "title": "Dik açıyla: PC2",
+      "body": "İkinci bileşen birinciye diktir ve kalan yayılımı taşır. Grafikte tam olarak yayılımın en küçük olduğu yerdedir. İki özellikle yalnızca iki bileşen vardır.",
+      "keyIdea": "Bileşenler birbirine diktir; her biri kalan en çok yayılımı yakalar.",
+      "frameTag": "pc2",
+      "reveal": ["points", "center", "axes", "curve"]
+    },
+    {
+      "id": "squash",
+      "rail": "Sıkıştır",
+      "title": "Yalnızca PC1'i tut",
+      "body": "Şimdi her noktayı PC1 doğrusunun üzerine kaydırın. Her nokta iki yerine tek bir sayıyla tanımlanır ve çubuk özgün yayılımın ne kadarının kaldığını gösterir. Bulut uzun ve inceyse neredeyse hiçbir şey kaybolmaz.",
+      "keyIdea": "Boyut indirgeme: daha az sayı, bilginin çoğu.",
+      "math": "Korunan pay = `λ₁ / (λ₁ + λ₂)`.",
+      "frameTag": "project",
+      "reveal": ["points", "center", "axes", "curve", "project"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Ham bulut",
+      "body": "Nokta başına iki sayı. Daha iyi yönler bulmak için oynat'a basın."
+    },
+    "center": {
+      "title": "Merkezi bul",
+      "body": "Tüm noktaların ortalaması; her yön onun içinden geçecek."
+    },
+    "sweep": {
+      "title": "{angle}° yönü deneniyor",
+      "body": "Bu doğrudaki gölgelerin yayılımı {variance}."
+    },
+    "pc1": {
+      "title": "PC1 {angle}° açısında bulundu",
+      "body": "En çok yayılan yön: yayılım {variance}."
+    },
+    "pc2": {
+      "title": "Dik açıyla PC2",
+      "body": "En az yayılan yön: {variance}."
+    },
+    "project": {
+      "title": "PC1'e sıkıştır",
+      "body": "Her nokta artık tek bir sayı. Korunan yayılım payı: {explained}."
+    },
+    "done": {
+      "title": "Bitti",
+      "body": "Korunan yayılım payı: {explained}. Yuvarlak bulutu ve iki şeridi deneyin."
+    },
+    "keep": {
+      "title": "İki yönü de tut",
+      "body": "Hiçbir şey sıkıştırılmıyor: noktalar yalnızca yeni eksenler boyunca tanımlanıyor, bu yüzden yayılımın tamamı korunuyor."
+    }
+  },
+  "stats": {
+    "angle": "AÇI",
+    "spread": "YAYILIM",
+    "kept": "KORUNAN"
+  },
+  "lab": {
+    "breakIt": "**Yuvarlak**'ı seçin: her yön yaklaşık aynı yayılır, bu yüzden PC1 yazı turaya yakındır ve sıkıştırma yayılımın yalnızca yarısını korur. Sonra **İki şerit**'i seçin: en çok yayılım şeritler *boyuncadır*, bu yüzden PC1 onlar boyunca uzanır ve sıkıştırma tam da iki rengi birbirinden ayıran yönü atar.",
+    "presets": {
+      "ellipse": "Uzatılmış",
+      "round": "Yuvarlak",
+      "stripes": "İki şerit",
+      "three-blobs": "Üç grup"
+    },
+    "params": {},
+    "errors": {
+      "tooFew": "En az iki nokta ekleyin."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "TBA nedir?",
+        "body": "Temel bileşen analizi (TBA, İngilizcede PCA), verileriniz için, verinin yayılımının (varyansının) ne kadarını yakaladıklarına göre sıralanmış yeni eksenler bulur. Yalnızca ilk birkaç ekseni tutmak, her örneği mümkün olduğunca az yayılım kaybederek daha az sayıyla tanımlar. Veriyi sıkıştırmak, çok özellikli verileri 2D'de görselleştirmek ve başka modellerden önce gürültüyü temizlemek için kullanılır."
+      },
+      {
+        "heading": "Nasıl çalışır",
+        "body": "Veriyi merkezleyin, sonra her özellik çiftinin birlikte nasıl değiştiğini söyleyen kovaryans matrisi `C`'yi hesaplayın. `C`'nin **özvektörleri** temel bileşenlerdir, **özdeğerleri** de onlar boyunca varyanslardır. En üstteki k özvektöre izdüşüm almak, en çok varyansı koruma anlamında en iyi k sayılık özeti verir; bu, geri dönüştürürken en küçük kare hatayı yapmakla aynıdır."
+      },
+      {
+        "heading": "Kaç bileşen tutulmalı?",
+        "body": "Her bileşenin açıkladığı varyans payına bakın ve örneğin 90–95 %'e ulaşacak kadarını tutun. Güçlü biçimde ilişkili özelliklerle bir avuç bileşen yüzlerce özelliğin yerini alabilir.",
+        "table": {
+          "headers": ["Veri şekli", "PC1 payı", "PC1'e sıkıştırma"],
+          "rows": [
+            ["Uzun ince bulut", "Yüksek (90 %+)", "Neredeyse hiçbir şey kaybetmez"],
+            ["Yuvarlak bulut", "Yaklaşık 50 %", "Yayılımın yarısını kaybeder"],
+            ["Yayılım ≠ önemli olan", "Herhangi", "Yararlı yönü atabilir"]
+          ]
+        }
+      },
+      {
+        "heading": "Tuzaklar",
+        "body": "TBA anlamı değil yalnızca varyansı görür: iki sınıfı ayıran yönün yayılımı az olabilir ve atılabilir (iki şerit). Ölçeğe duyarlıdır, bu yüzden farklı birimlerdeki özellikler önce standartlaştırılmalıdır. Ve yalnızca düz yönler bulur; eğri yapılar başka yöntemler gerektirir."
+      }
+    ],
+    "faq": [
+      {
+        "q": "TBA denetimli mi?",
+        "a": "Hayır. Etiketlere hiç bakmaz. Laboratuvardaki renkler yalnızca TBA'nın neyi görmezden geldiğini göstermek için oradadır."
+      },
+      {
+        "q": "Veri neden önce merkezlenir?",
+        "a": "Temel bileşenler ortalamanın etrafındaki yayılım yönleridir. Merkezleme olmadan ilk yön çoğunlukla orijinden buluta doğru işaret ederdi."
+      },
+      {
+        "q": "Her açıyı denemem gerekir mi?",
+        "a": "Hayır. Tarama yalnızca sezgi kazandırmak içindir. Kovaryans matrisinin özayrışımı, kaç boyut olursa olsun kesin cevabı doğrudan verir."
+      },
+      {
+        "q": "TBA doğrusal regresyonla aynı mı?",
+        "a": "Hayır. Regresyon, x'ten y'yi tahmin ederken dikey hataları küçültür. TBA tüm özelliklere eşit davranır ve doğruya olan dik uzaklığı küçültür."
+      }
+    ]
+  }
+}
