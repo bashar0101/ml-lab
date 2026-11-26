@@ -19,7 +19,7 @@ describe("runDecisionTree", () => {
   it("records init, then scan/split/leaf events, then done, with the story tags", () => {
     const t = runDecisionTree(pts, TREE_DEFAULTS);
     expect(t.frames[0]).toMatchObject({ event: "init", tags: ["start"] });
-    expect(t.frames[1].event).toBe("scan");
+    expect(t.frames[1]).toMatchObject({ event: "scan", tags: ["first-scan"] });
     expect(t.frames[2]).toMatchObject({ event: "split", tags: ["first-split"] });
     expect(t.frames.at(-1)).toMatchObject({ event: "done", codeLine: "return", tags: ["done"] });
     expect(frameIndexOfTag(t, "depth-2")).toBeGreaterThan(2);

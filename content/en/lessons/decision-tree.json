@@ -1,0 +1,162 @@
+{
+  "title": "Decision Tree",
+  "description": "Watch a decision tree play twenty questions with your data: pick the best yes/no question, split, and repeat. Free and interactive.",
+  "youWillLearn": [
+    "How a model can classify by asking yes/no questions",
+    "How Gini impurity scores a question",
+    "Why trees cut the plane into boxes",
+    "When to stop growing, and what happens if you don't"
+  ],
+  "story": [
+    {
+      "id": "questions",
+      "rail": "20 questions",
+      "title": "Play twenty questions",
+      "body": "You've probably played *twenty questions*: guess the answer by asking yes/no questions. A decision tree does the same with data. Each point is described by two numbers, **x** and **y**, and belongs to one of two classes. Which questions should we ask?",
+      "keyIdea": "A decision tree is a flowchart of yes/no questions, learned from examples.",
+      "frameTag": "start",
+      "reveal": ["points", "tree"]
+    },
+    {
+      "id": "best-question",
+      "rail": "Best question",
+      "title": "Which question is best?",
+      "body": "A question looks like *\"is x less than 4.3?\"*. For each feature the tree tries every possible cut and scores the two halves it would make. The dashed lines are the best cut for **x** and the best cut for **y**. A good question leaves each half as *pure* as possible: mostly one class.",
+      "keyIdea": "Purity is measured by **Gini impurity**: 0 = all one class, 0.5 = a perfect 50/50 mix.",
+      "math": "`gini = 1 − Σ pₖ²`, where `pₖ` is the share of class k in a half. A split's score is the size-weighted average of the two halves' Gini.",
+      "frameTag": "first-scan",
+      "reveal": ["points", "candidates", "tree"]
+    },
+    {
+      "id": "split",
+      "rail": "Split",
+      "title": "Ask it: split the plane",
+      "body": "The question with the lowest Gini wins. It becomes the root of the tree, and it cuts the plane into two boxes. Points answering *yes* go left in the tree, *no* go right. Each box is coloured by its majority class.",
+      "keyIdea": "Every question cuts along one feature, so every boundary is straight and parallel to an axis.",
+      "frameTag": "first-split",
+      "reveal": ["points", "regions", "splits", "tree"]
+    },
+    {
+      "id": "split-again",
+      "rail": "Split again",
+      "title": "Then ask again inside each box",
+      "body": "Each box is a smaller version of the same problem, so the tree repeats the recipe inside it: find the best question for just those points, and split. Level by level the boxes get smaller and purer.",
+      "keyIdea": "The same simple step, repeated, builds a complex shape.",
+      "frameTag": "depth-2",
+      "reveal": ["points", "regions", "splits", "candidates", "tree"]
+    },
+    {
+      "id": "stop",
+      "rail": "When to stop",
+      "title": "Knowing when to stop",
+      "body": "A box stops splitting when it is pure, when it has too few points, or when the tree reaches its **maximum depth** (3 here). The final boxes are **leaves**: a new point is classified by asking the questions from the top until it lands in one.",
+      "keyIdea": "Limits on depth and leaf size keep the tree from memorising noise.",
+      "frameTag": "done",
+      "reveal": ["points", "regions", "splits", "tree"]
+    },
+    {
+      "id": "boxes",
+      "rail": "Boxes",
+      "title": "A map made of boxes",
+      "body": "The coloured boxes are the tree's whole model of the world. Curved shapes, like these moons, get approximated by staircases of boxes. Trees are easy to read and need no scaling of the data, but they can be jumpy: move a few points and the tree can change completely.",
+      "keyIdea": "Easy to explain, fast, but unstable. The next lesson fixes that with a forest of trees.",
+      "frameTag": "done",
+      "reveal": ["points", "regions", "splits", "tree"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "One box holds every point",
+      "body": "No questions asked yet. Press play to grow the tree."
+    },
+    "scan": {
+      "title": "Searching for the best question",
+      "body": "Every cut along x and y is scored; the dashed lines are the best one for each feature, with its Gini."
+    },
+    "split": {
+      "title": "Split",
+      "body": "The best question splits this box in two. The tree now has {nodes} nodes; {accuracy} of the points are in a box of their own class."
+    },
+    "leaf": {
+      "title": "A leaf",
+      "body": "This box stops here: it is pure, too small, or at the maximum depth."
+    },
+    "done": {
+      "title": "The finished tree",
+      "body": "{leaves} leaves, depth {depth}, fraction of training points classified correctly {accuracy}."
+    }
+  },
+  "stats": {
+    "depth": "DEPTH",
+    "leaves": "LEAVES",
+    "accuracy": "ACCURACY"
+  },
+  "lab": {
+    "breakIt": "On **Overlapping**, set **Max depth 8** and **Min points per leaf 1**: the tree keeps splitting until every point sits in its own pure box, carving tiny islands around noise. It is now perfect on these points and bad on new ones. Then try **Checkerboard**: the best first question only shaves a little off one edge, because any cut through the middle leaves both halves still half-and-half.",
+    "presets": {
+      "blobs": "Two groups",
+      "overlap": "Overlapping",
+      "moons": "Moons",
+      "three-blobs": "Three groups",
+      "xor": "Checkerboard"
+    },
+    "params": {
+      "maxDepth": {
+        "label": "Max depth",
+        "hint": "How many questions in a row the tree may ask."
+      },
+      "minLeaf": {
+        "label": "Min points per leaf",
+        "hint": "A split is only allowed if both halves keep at least this many points."
+      }
+    },
+    "errors": {
+      "tooFew": "Add at least two points."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is a decision tree?",
+        "body": "A decision tree classifies by asking a sequence of yes/no questions about the features, like a flowchart. Each internal node holds a question such as *x < 4.3?*, each branch an answer, and each leaf a final class.\n\nThe tree is learned greedily from the top: at each node it picks the question that best separates the classes among the points that reached that node, then repeats inside each branch."
+      },
+      {
+        "heading": "Scoring a question with Gini impurity",
+        "body": "**Gini impurity** measures how mixed a group is: `1 − Σ pₖ²`. A pure group scores 0; an even two-class mix scores 0.5. To score a question, compute the Gini of each half and average them weighted by size. The best question gives the lowest weighted Gini (the biggest *gain*). Entropy is a popular alternative score and usually picks very similar splits."
+      },
+      {
+        "heading": "Overfitting and how to stop it",
+        "body": "Left alone, a tree keeps splitting until every leaf is pure, which on noisy data means memorising individual points. Common brakes: a **maximum depth**, a **minimum number of points per leaf**, a minimum gain for a split, or growing fully and **pruning** back afterwards.",
+        "table": {
+          "headers": ["Setting", "Small value", "Large value"],
+          "rows": [
+            ["Max depth", "Simple, may underfit", "Detailed, may overfit"],
+            ["Min points per leaf", "Islands around single points", "Broad, smoother boxes"]
+          ]
+        }
+      },
+      {
+        "heading": "Strengths and weaknesses",
+        "body": "Trees are easy to explain (you can read the questions), handle features on any scale and mixed types, and are fast. Their weaknesses: boundaries are axis-aligned staircases, and they are **unstable**: a small change in the data can produce a very different tree. Combining many trees (random forests, gradient boosting) fixes most of this and is one of the most successful methods for table-shaped data."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Why are the boundaries always horizontal or vertical?",
+        "a": "Each question tests one feature against a threshold, so each cut is perpendicular to one axis. Diagonal boundaries need many small steps."
+      },
+      {
+        "q": "Is the greedy choice always best?",
+        "a": "No. Picking the best question at each step doesn't guarantee the best tree overall. The checkerboard dataset shows this: the best first question barely improves purity, even though two questions together would separate it almost perfectly."
+      },
+      {
+        "q": "Do I need to scale my features?",
+        "a": "No. A threshold works the same whether a feature is in metres or millimetres, unlike k-NN or SVMs."
+      },
+      {
+        "q": "Can trees predict numbers?",
+        "a": "Yes. Regression trees put the average value of their points in each leaf and pick splits that reduce the variance instead of the Gini."
+      }
+    ]
+  }
+}

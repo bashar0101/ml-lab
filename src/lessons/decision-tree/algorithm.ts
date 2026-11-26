@@ -47,7 +47,7 @@ export function runDecisionTree(points: LabeledPoint[], p: TreeParams): Trace<Tr
   let firstSplit = true;
   let firstDeepSplit = true;
   const all = growTree(points, p, (e) => {
-    if (e.kind === "scan") return push(e.nodes, "scan", "scan", e.node.id, e.candidates);
+    if (e.kind === "scan") return push(e.nodes, "scan", "scan", e.node.id, e.candidates, e.node.id === 0 ? ["first-scan"] : []);
     if (e.kind === "leaf") return push(e.nodes, "leaf", "leaf", e.node.id, []);
     const tags: string[] = [];
     if (firstSplit) {
