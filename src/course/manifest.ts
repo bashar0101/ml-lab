@@ -36,7 +36,7 @@ export const lessons: LessonEntry[] = [
   { slug: "k-means", chapter: "patterns", minutes: 8, level: "beginner", status: "live" },
   { slug: "pca", chapter: "patterns", minutes: 10, level: "intermediate", status: "live" },
   { slug: "neural-network", chapter: "neural", minutes: 12, level: "intermediate", status: "live" },
-  { slug: "backpropagation", chapter: "neural", minutes: 12, level: "intermediate", status: "soon" },
+  { slug: "backpropagation", chapter: "neural", minutes: 12, level: "intermediate", status: "live" },
   { slug: "convolutional-neural-network", chapter: "deep", minutes: 14, level: "intermediate", status: "soon" },
   { slug: "recurrent-neural-network", chapter: "deep", minutes: 12, level: "intermediate", status: "soon" },
   { slug: "attention-transformers", chapter: "deep", minutes: 15, level: "intermediate", status: "soon" },

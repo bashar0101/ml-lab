@@ -242,5 +242,16 @@
   "nn.activation.tanh": "tanh",
   "nn.activation.relu": "ReLU",
   "nn.activation.sigmoid": "Sigmoid",
-  "nn.reseed": "New random weights"
+  "nn.reseed": "New random weights",
+
+  "bp.scene.label": "A small network: values flow left to right on the forward pass, blame (δ) flows right to left on the backward pass, and each connection gets its gradient; on the right, the example, its loss and the gradient size of every layer.",
+  "bp.scene.forward": "forward pass: values flow →",
+  "bp.scene.backward": "← backward pass: blame flows back",
+  "bp.scene.example": "this example",
+  "bp.scene.target": "true answer y = {y}",
+  "bp.scene.prediction": "prediction p = {p}",
+  "bp.scene.loss": "loss = {loss}",
+  "bp.scene.chart": "gradient size per layer (epoch {epoch})",
+  "bp.scene.layer": "layer {n}",
+  "bp.scene.logScale": "log scale: each step ×10"
 }

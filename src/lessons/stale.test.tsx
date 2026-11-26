@@ -15,6 +15,7 @@ const MODEL_PARTS: Record<string, string[]> = {
   "k-means": ["centroid", "trail", "regions", "chart"],
   pca: ["direction", "projection", "axis", "mean", "curve", "explained", "projected"],
   "neural-network": ["shade", "node-value", "probe", "edge"],
+  backpropagation: ["value", "blame", "edge-grad", "grad-bar"],
 };
 
 describe.each(Object.entries(MODEL_PARTS))("%s with stale data", (slug, parts) => {
@@ -26,7 +27,8 @@ describe.each(Object.entries(MODEL_PARTS))("%s with stale data", (slug, parts) =
         <mod.Scene trace={t} index={t.frames.length - 1} data={mod.defaultData} reveal="all" stale />
       </UiProvider>,
     );
-    expect(container.querySelectorAll("[data-part=point]").length).toBeGreaterThan(0);
+    // The backpropagation picture is a network diagram; it has no data points to keep.
+    if (slug !== "backpropagation") expect(container.querySelectorAll("[data-part=point]").length).toBeGreaterThan(0);
     for (const part of parts) expect(container.querySelector(`[data-part=${part}]`), part).toBeNull();
   });
 });

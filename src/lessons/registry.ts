@@ -12,6 +12,7 @@ const modules: Record<string, () => Promise<{ default: AnyLessonModule }>> = {
   "k-means": () => import("./k-means"),
   pca: () => import("./pca"),
   "neural-network": () => import("./neural-network"),
+  backpropagation: () => import("./backpropagation"),
 };
 
 export function hasLessonModule(slug: string): boolean {
