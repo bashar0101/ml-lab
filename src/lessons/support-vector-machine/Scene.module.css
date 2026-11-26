@@ -1,0 +1,59 @@
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  font-family: var(--font-ui);
+}
+
+.caption,
+.tick {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.axis {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+
+.side0 {
+  fill: color-mix(in srgb, var(--peach) 45%, var(--stage));
+}
+
+.side1 {
+  fill: color-mix(in srgb, var(--lavender) 55%, var(--stage));
+}
+
+.boundary line {
+  stroke: var(--blue);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.margin line {
+  stroke: var(--blue);
+  stroke-width: 1.6;
+  stroke-dasharray: 6 5;
+  stroke-linecap: round;
+}
+
+.support {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 2;
+}
+
+.picked {
+  fill: color-mix(in srgb, var(--peach-2) 22%, transparent);
+  stroke: var(--peach-2);
+  stroke-width: 1.5;
+}
+
+.street {
+  fill: color-mix(in srgb, var(--blue) 10%, transparent);
+}
+
+.wrongZone {
+  fill: color-mix(in srgb, var(--red) 9%, transparent);
+}

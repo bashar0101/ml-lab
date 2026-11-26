@@ -1,0 +1,166 @@
+{
+  "title": "Support Vector Machine",
+  "description": "See how a support vector machine finds the widest street between two classes, which points hold it up, and how the kernel trick bends it. Free and interactive.",
+  "youWillLearn": [
+    "Why the widest gap between classes is the safest boundary",
+    "What support vectors are and why only they matter",
+    "How C trades a wide street against mistakes",
+    "How the kernel trick draws curved boundaries"
+  ],
+  "story": [
+    {
+      "id": "many-lines",
+      "rail": "Many lines",
+      "title": "Many lines split them",
+      "body": "Two groups of points, nicely apart. You could draw countless straight lines between them and every one would classify all points correctly. Which line should we trust for **new** points?",
+      "keyIdea": "Getting the training points right isn't enough; we want the line that is safest for points we haven't seen.",
+      "frameTag": "start",
+      "reveal": ["points"]
+    },
+    {
+      "id": "street",
+      "rail": "Widest street",
+      "title": "Build the widest street",
+      "body": "A support vector machine looks for the widest **street** that separates the groups: the solid blue line runs down the middle and the dashed lines are its edges. A wide street leaves room for new points that land a bit off from the old ones.",
+      "keyIdea": "The best boundary is the one with the biggest margin to both groups.",
+      "math": "The model is `f(x) = w·x + b`. The middle line is `f(x) = 0`, the edges are `f(x) = ±1`, and the street's width is `2 / |w|`, so a wide street means a small `w`.",
+      "frameTag": "first-epoch",
+      "reveal": ["points", "boundary", "margins", "shade"]
+    },
+    {
+      "id": "push",
+      "rail": "Push",
+      "title": "Points push the street",
+      "body": "Training visits the points in random order. A point that is safely outside the street does nothing. A point **inside the street or on the wrong side** pushes the boundary away from itself (orange halo). The strip on the right shows where every point stands: on the wrong side, in the street, or safe.",
+      "keyIdea": "Only points that are too close or wrong ever change the model.",
+      "math": "This is the Pegasos algorithm: for a picked point, if `y·f(x) < 1` then its push count `α` goes up by one. The model is `f(x) = Σ α·y·K(xᵢ, x) / (λt)`.",
+      "frameTag": "epoch-5",
+      "reveal": ["points", "boundary", "margins", "shade", "strip"]
+    },
+    {
+      "id": "supports",
+      "rail": "Supports",
+      "title": "Only a few points matter",
+      "body": "When training settles, a handful of points sit on the edges of the street or inside it. They are the **support vectors** (blue circles): they hold the street up. You could delete every other point and the street would not move.",
+      "keyIdea": "The whole model is defined by its support vectors.",
+      "frameTag": "done",
+      "reveal": ["points", "boundary", "margins", "shade", "strip", "support"]
+    },
+    {
+      "id": "strictness",
+      "rail": "Strictness",
+      "title": "How strict should it be?",
+      "body": "Real data overlaps, so no street is perfectly clear. The setting **C** decides the trade-off. A small C accepts some points inside the street (or even on the wrong side) to keep it wide. A large C insists on fewer violations, even if the street gets narrow and twisted around odd points.",
+      "keyIdea": "C balances a wide margin against training mistakes.",
+      "math": "The SVM minimises `λ/2·|w|² + mean(max(0, 1 − y·f(x)))` with `λ = 1/(C·n)`: the first part wants a wide street, the second (the *hinge loss*) punishes points inside it.",
+      "frameTag": "done",
+      "reveal": ["points", "boundary", "margins", "shade", "strip", "support"]
+    },
+    {
+      "id": "kernel",
+      "rail": "Kernel trick",
+      "title": "Bending the street",
+      "body": "What if no straight street exists, like one group inside a ring of the other? The **kernel trick** measures similarity in a smarter way, so the same algorithm draws curved streets. Try it in the Lab: pick **Rings**, then **Curved (RBF)**.",
+      "keyIdea": "A kernel lets a linear method draw curved boundaries without ever computing new features.",
+      "math": "Replace the dot product `xᵢ·x` with a kernel. The RBF kernel `K(a, b) = e^(−γ·|a − b|²)` says how close two points are; `γ` sets how far each point's influence reaches.",
+      "frameTag": "done",
+      "reveal": ["points", "boundary", "margins", "shade", "strip", "support"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Start: no boundary yet",
+      "body": "Every point will be visited once per epoch. Press play to start."
+    },
+    "pick": {
+      "title": "Epoch {epoch}: who pushes?",
+      "body": "The highlighted points were inside the street or on the wrong side, so they push the boundary this epoch."
+    },
+    "update": {
+      "title": "Epoch {epoch}: the street moves",
+      "body": "Accuracy {accuracy}; {supports} points are on or inside the street."
+    },
+    "done": {
+      "title": "Done after {epoch} epochs",
+      "body": "Fraction correct {accuracy}, with {supports} support vectors. Try another C, or the curved kernel."
+    }
+  },
+  "stats": {
+    "epoch": "EPOCH",
+    "accuracy": "ACCURACY",
+    "supports": "SUPPORTS"
+  },
+  "lab": {
+    "breakIt": "On **Overlapping**, slide **C** down to **0.01**: the street gets so wide that many points sit inside it and some end up on the wrong side. Push C to **100** and it narrows to chase every point. Then pick **Rings** with **Curved (RBF)** and drag **Gamma** to **20**: every point grows its own little island.",
+    "presets": {
+      "blobs": "Two groups",
+      "overlap": "Overlapping",
+      "circles": "Rings",
+      "moons": "Moons"
+    },
+    "params": {
+      "C": {
+        "label": "C (strictness)",
+        "hint": "Small = wide street, some mistakes allowed. Large = narrow, strict street."
+      },
+      "gamma": {
+        "label": "Gamma (reach)",
+        "hint": "How far each point's influence reaches. Large = very local, wiggly borders."
+      },
+      "epochs": {
+        "label": "Epochs",
+        "hint": "How many times every point is visited."
+      }
+    },
+    "errors": {
+      "tooFew": "Add at least four points.",
+      "oneClass": "Add points of both classes: there is no street between one group and nothing."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is a support vector machine?",
+        "body": "A support vector machine (SVM) is a classifier that separates two classes with the **widest possible margin**. Among all boundaries that split the data, it picks the one that stays furthest from the closest points of both classes.\n\nThose closest points are the **support vectors**. They alone define the boundary, which makes SVMs compact and, with few features, very robust."
+      },
+      {
+        "heading": "Soft margins and C",
+        "body": "Perfectly separable data is rare. A **soft-margin** SVM allows some points inside the street or on the wrong side, and pays a penalty for each: the *hinge loss*. The parameter **C** sets the price. Small C: cheap violations, wide street, smoother boundary. Large C: expensive violations, narrow street that bends to fit the training points, with a risk of overfitting."
+      },
+      {
+        "heading": "The kernel trick",
+        "body": "An SVM only ever needs to know how similar two points are, measured by a dot product. Swap that dot product for a **kernel** function and the SVM behaves as if the data had been mapped into a richer space where a straight boundary works, without ever computing that space.\n\nThe popular **RBF** (Gaussian) kernel scores two points by how close they are. Its width `γ` matters: small γ gives smooth, wide curves; large γ lets every point influence only its own neighbourhood, which can overfit badly.",
+        "table": {
+          "headers": ["Kernel", "Boundary shape", "Watch out for"],
+          "rows": [
+            ["Linear", "Straight line", "Fails on rings, moons and other curved data"],
+            ["RBF, small γ", "Smooth curves", "Can underfit tight shapes"],
+            ["RBF, large γ", "Islands around points", "Overfits noise"]
+          ]
+        }
+      },
+      {
+        "heading": "How it is trained here",
+        "body": "Classic SVM solvers use quadratic programming. This lesson uses **Pegasos**, a simple stochastic method that reaches the same kind of solution: visit points in random order, and whenever one sits inside the street or on the wrong side, increase its weight `α`. The points that end up with `α > 0` and sit on or inside the street are the support vectors."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Why is a wider margin better?",
+        "a": "New data is never exactly like the training data. A wide street leaves room for that noise, so new points are less likely to land on the wrong side. Learning theory backs this up: wider margins give better guarantees on unseen data."
+      },
+      {
+        "q": "What are support vectors?",
+        "a": "The training points that lie on the edges of the street or inside it. They are the only points with a say in where the boundary goes."
+      },
+      {
+        "q": "SVM or logistic regression?",
+        "a": "With a linear kernel they often give similar boundaries. Logistic regression gives probabilities; an SVM gives a margin and depends only on the hardest points. With kernels, SVMs draw curved boundaries that plain logistic regression can't."
+      },
+      {
+        "q": "Are SVMs still used?",
+        "a": "Yes, especially on small and medium datasets with many features, such as text classification and bioinformatics. On huge datasets of images or text, neural networks have mostly taken over."
+      }
+    ]
+  }
+}

@@ -6,6 +6,7 @@ const modules: Record<string, () => Promise<{ default: AnyLessonModule }>> = {
   "gradient-descent": () => import("./gradient-descent"),
   "logistic-regression": () => import("./logistic-regression"),
   "k-nearest-neighbors": () => import("./k-nearest-neighbors"),
+  "support-vector-machine": () => import("./support-vector-machine"),
 };
 
 export function hasLessonModule(slug: string): boolean {
