@@ -6,7 +6,7 @@ export interface LabeledPoint {
   c: 0 | 1 | 2;
 }
 
-export type Dataset2DId = "blobs" | "overlap" | "circles" | "moons" | "xor" | "three-blobs";
+export type Dataset2DId = "blobs" | "overlap" | "circles" | "moons" | "xor" | "three-blobs" | "uneven";
 
 const clamp = (v: number) => Math.min(9.7, Math.max(0.3, v));
 const round = (v: number) => Math.round(v * 100) / 100;
@@ -52,6 +52,11 @@ export function makeDataset(id: Dataset2DId, seed = 1, n = 40): LabeledPoint[] {
         ...blob(3, 7, 0.7, 1, q),
         ...blob(7, 3, 0.7, 1, n - 3 * q),
       ];
+    }
+    case "uneven": {
+      // One big loose group and two small tight ones: k-means likes equal-sized round groups.
+      const small = Math.max(2, Math.floor(n / 8));
+      return [...blob(3.6, 5, 1.3, 0, n - 2 * small), ...blob(8, 8, 0.35, 1, small), ...blob(8.2, 2.2, 0.35, 1, small)];
     }
     case "three-blobs": {
       const t = Math.floor(n / 3);

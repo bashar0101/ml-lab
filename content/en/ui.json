@@ -217,5 +217,13 @@
 
   "rf.scene.label": "Points shaded by how many trees vote for each class on the left, and small maps of the latest trees on the right.",
   "rf.scene.thumbs": "the latest trees ({n} so far)",
-  "rf.reseed": "New random forest"
+  "rf.reseed": "New random forest",
+
+  "km.scene.label": "Points coloured by their nearest centre, with the numbered centres and their paths on the left, and the total squared distance after each round on the right.",
+  "km.scene.chart": "total squared distance to the centres",
+  "km.scene.iteration": "round",
+  "km.init": "Start",
+  "km.init.random": "Random start",
+  "km.init.plus-plus": "Smart start (k-means++)",
+  "km.reseed": "New random start"
 }

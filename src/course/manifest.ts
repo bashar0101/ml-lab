@@ -33,7 +33,7 @@ export const lessons: LessonEntry[] = [
   { slug: "support-vector-machine", chapter: "classification", minutes: 12, level: "intermediate", status: "live" },
   { slug: "decision-tree", chapter: "trees", minutes: 10, level: "beginner", status: "live" },
   { slug: "random-forest", chapter: "trees", minutes: 10, level: "intermediate", status: "live" },
-  { slug: "k-means", chapter: "patterns", minutes: 8, level: "beginner", status: "soon" },
+  { slug: "k-means", chapter: "patterns", minutes: 8, level: "beginner", status: "live" },
   { slug: "pca", chapter: "patterns", minutes: 10, level: "intermediate", status: "soon" },
   { slug: "neural-network", chapter: "neural", minutes: 12, level: "intermediate", status: "soon" },
   { slug: "backpropagation", chapter: "neural", minutes: 12, level: "intermediate", status: "soon" },

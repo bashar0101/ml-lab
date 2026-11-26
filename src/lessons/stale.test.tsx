@@ -12,6 +12,7 @@ const MODEL_PARTS: Record<string, string[]> = {
   "support-vector-machine": ["boundary", "margin", "support", "shade", "strip"],
   "decision-tree": ["region", "split-line", "tree-node"],
   "random-forest": ["tree-map", "forest-map", "thumb"],
+  "k-means": ["centroid", "trail", "regions", "chart"],
 };
 
 describe.each(Object.entries(MODEL_PARTS))("%s with stale data", (slug, parts) => {

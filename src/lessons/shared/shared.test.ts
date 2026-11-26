@@ -19,7 +19,7 @@ describe("axes", () => {
 });
 
 describe("datasets2d", () => {
-  const ids: Dataset2DId[] = ["blobs", "overlap", "circles", "moons", "xor", "three-blobs"];
+  const ids: Dataset2DId[] = ["blobs", "overlap", "circles", "moons", "xor", "three-blobs", "uneven"];
 
   it.each(ids)("%s is deterministic, inside the 0–10 box and has every class", (id) => {
     const a = makeDataset(id, 3);
@@ -80,5 +80,13 @@ describe("moons", () => {
   it("fits inside the box without piling up on the edges", () => {
     const pts = makeDataset("moons");
     expect(pts.filter((p) => p.x <= 0.3 || p.x >= 9.7 || p.y <= 0.3 || p.y >= 9.7)).toHaveLength(0);
+  });
+});
+
+describe("uneven", () => {
+  it("has one big loose group and two small tight ones", () => {
+    const pts = makeDataset("uneven");
+    const big = pts.filter((p) => p.c === 0).length;
+    expect(big).toBeGreaterThan(pts.length / 2);
   });
 });

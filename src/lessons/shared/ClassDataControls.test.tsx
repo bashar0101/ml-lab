@@ -54,3 +54,12 @@ describe("typed points", () => {
     expect(onData).toHaveBeenLastCalledWith({ ...data, points: [{ x: 10, y: 0, c: 1 }] });
   });
 });
+
+describe("unlabelled data (clustering)", () => {
+  it("hides the class picker when there is only one class", () => {
+    const data: ClassData = { presetId: "custom", points: [], drawClass: 0 };
+    wrap(<ClassDataControls data={data} onData={vi.fn()} presets={["blobs"]} labels={labels} classes={1} />);
+    expect(screen.queryByRole("button", { name: "Class A" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Add point" })).toBeInTheDocument();
+  });
+});
