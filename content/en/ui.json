@@ -210,5 +210,9 @@
   "dt.scene.no": "no",
   "dt.scene.candidate": "{feature} < {t}: gini {gini}",
   "dt.feature.0": "x",
-  "dt.feature.1": "y"
+  "dt.feature.1": "y",
+
+  "rf.scene.label": "Points shaded by how many trees vote for each class on the left, and small maps of the latest trees on the right.",
+  "rf.scene.thumbs": "the latest trees ({n} so far)",
+  "rf.reseed": "New random forest"
 }
