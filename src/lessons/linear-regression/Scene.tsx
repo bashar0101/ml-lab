@@ -6,6 +6,8 @@ import type { SceneProps } from "../types";
 import { toLine, type LrState, type Point } from "./algorithm";
 import { getPreset } from "./presets";
 import styles from "./Scene.module.css";
+import { clipLine, niceDomain } from "../shared/axes";
+import { clientToSvg } from "../shared/Plot2D";
 import { buildSurface, isoProject, lossFor, makeHeightFn, surfaceRanges, type SurfaceBox } from "./surface";
 
 export interface LrData {
@@ -23,29 +25,6 @@ const CUSTOM_DOMAIN = { x: [0, 10] as [number, number], y: [0, 100] as [number, 
 const LIMIT = 2000;
 
 const clampSvg = (v: number) => (Number.isFinite(v) ? Math.max(-LIMIT, Math.min(LIMIT, v)) : 0);
-
-function niceStep(span: number, count: number): number {
-  const raw = span / Math.max(1, count);
-  const pow = 10 ** Math.floor(Math.log10(raw));
-  const m = raw / pow;
-  return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * pow;
-}
-
-function niceDomain(values: number[], count = 5): { domain: [number, number]; ticks: number[] } {
-  let lo = Math.min(...values);
-  let hi = Math.max(...values);
-  if (lo === hi) {
-    lo -= 1;
-    hi += 1;
-  }
-  const step = niceStep(hi - lo, count);
-  const domain: [number, number] = [Math.floor(lo / step) * step, Math.ceil(hi / step) * step];
-  if (domain[0] === lo && lo !== 0) domain[0] -= step;
-  if (domain[1] === hi) domain[1] += step;
-  const ticks: number[] = [];
-  for (let v = domain[0]; v <= domain[1] + step / 2; v += step) ticks.push(Math.round(v * 1e6) / 1e6);
-  return { domain, ticks };
-}
 
 function axes(data: LrData) {
   if (data.presetId === "custom" || data.points.length === 0) {
@@ -98,11 +77,9 @@ export function Scene({ trace, index, data, reveal, onData }: SceneProps<LrState
   const editable = !!onData && data.presetId === "custom";
   function addPoint(e: MouseEvent<SVGRectElement>) {
     if (!editable) return;
-    const svg = e.currentTarget.ownerSVGElement;
-    const ctm = svg?.getScreenCTM();
-    if (!svg || !ctm) return;
     // Map through the SVG's own transform: correct however the viewBox is scaled or letterboxed.
-    const pt = new DOMPoint(e.clientX, e.clientY).matrixTransform(ctm.inverse());
+    const pt = clientToSvg(e.currentTarget.ownerSVGElement, e.clientX, e.clientY);
+    if (!pt) return;
     const p = fromSvg(pt.x, pt.y);
     onData!({ ...data, points: [...data.points, { x: round1(p.x), y: round1(p.y) }] });
   }
@@ -217,36 +194,6 @@ export function Scene({ trace, index, data, reveal, onData }: SceneProps<LrState
       {show("bowl") && current && <circle data-part="current" className={styles.current} cx={current[0]} cy={current[1]} r={7} />}
     </svg>
   );
-}
-
-/**
- * The part of y = slope·x + intercept inside the plot (y padded by 5 %), in data units.
- * Clipping keeps the true angle; clamping each end separately would bend a steep line.
- */
-function clipLine(
-  line: { slope: number; intercept: number },
-  [x0, x1]: [number, number],
-  [y0, y1]: [number, number],
-): [[number, number], [number, number]] | null {
-  const pad = (y1 - y0) * 0.05;
-  const lo = y0 - pad;
-  const hi = y1 + pad;
-  const f = (x: number) => line.slope * x + line.intercept;
-  let a = x0;
-  let b = x1;
-  if (line.slope !== 0) {
-    const xa = (lo - line.intercept) / line.slope;
-    const xb = (hi - line.intercept) / line.slope;
-    a = Math.max(x0, Math.min(xa, xb));
-    b = Math.min(x1, Math.max(xa, xb));
-  } else if (line.intercept < lo || line.intercept > hi) {
-    return null;
-  }
-  if (!(a < b)) return null;
-  return [
-    [a, f(a)],
-    [b, f(b)],
-  ];
 }
 
 function round1(v: number): number {
