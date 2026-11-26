@@ -17,16 +17,17 @@ const VOTES = { x0: 470, x1: 740, y0: 56, row: 26 };
 const LIST = { x0: 470, x1: 740, y0: 196, row: 15, max: 9 };
 const round1 = (v: number) => Math.round(v * 10) / 10;
 
-export function Scene({ trace, index, data, reveal, onData }: SceneProps<KnnState, KnnData>) {
+export function Scene({ trace, index, data, reveal, onData, stale }: SceneProps<KnnState, KnnData>) {
   const t = useT();
-  const show = (part: string) => reveal === "all" || reveal.has(part);
+  // While the data is stale only the student's own points (and query) are drawn, never the old model.
+  const show = (part: string) => (!stale || part === "points" || part === "query") && (reveal === "all" || reveal.has(part));
   const s = trace.frames[Math.max(0, Math.min(trace.frames.length - 1, index))].state;
   const sc = makeScale(PLOT, DOMAIN, DOMAIN);
   const q = s.query;
   const pts = data.points;
   // The recorded run belongs to these points only if the counts match.
   const fits = !s.distances || s.distances.length === pts.length;
-  const nearest = fits && s.nearest ? s.nearest : [];
+  const nearest = fits && !stale && s.nearest ? s.nearest : [];
   const kth = nearest.length && s.distances ? s.distances[nearest[nearest.length - 1]] : 0;
   const editable = !!onData && data.presetId === "custom";
   const r = sc.sx(kth) - sc.sx(0);

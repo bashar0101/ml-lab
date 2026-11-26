@@ -20,14 +20,15 @@ const DOMAIN: [number, number] = [0, 10];
 const M_RANGE: [number, number] = [-2, 3];
 const round1 = (v: number) => Math.round(v * 10) / 10;
 
-export function Scene({ trace, index, data, reveal, onData }: SceneProps<SvmState, SvmData>) {
+export function Scene({ trace, index, data, reveal, onData, stale }: SceneProps<SvmState, SvmData>) {
   const t = useT();
-  const show = (part: string) => reveal === "all" || reveal.has(part);
+  // While the data is stale only the student's own points (and query) are drawn, never the old model.
+  const show = (part: string) => (!stale || part === "points" || part === "query") && (reveal === "all" || reveal.has(part));
   const frame = trace.frames[Math.max(0, Math.min(trace.frames.length - 1, index))];
   const s = frame.state;
   const pts = data.points;
   const fits = s.alpha.length === pts.length;
-  const trained = fits && s.scale > 0;
+  const trained = fits && s.t > 0 && !stale;
   const sc = makeScale(PLOT, DOMAIN, DOMAIN);
   const editable = !!onData && data.presetId === "custom";
 
@@ -110,7 +111,7 @@ export function Scene({ trace, index, data, reveal, onData }: SceneProps<SvmStat
       {show("points") &&
         pts.map((p, i) => (
           <g key={i}>
-            {show("support") && trained && s.margins[i] <= 1 + 1e-9 && (
+            {show("support") && trained && s.alpha[i] > 0 && (
               <circle data-part="support" className={styles.support} cx={sc.sx(p.x)} cy={sc.sy(p.y)} r={11} pointerEvents="none" />
             )}
             {picked.has(i) && <circle data-part="picked" className={styles.picked} cx={sc.sx(p.x)} cy={sc.sy(p.y)} r={13} pointerEvents="none" />}

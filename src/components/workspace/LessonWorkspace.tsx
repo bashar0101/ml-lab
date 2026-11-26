@@ -97,11 +97,22 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
     [learnTrace, story],
   );
 
+  // Set when only a view setting changed: the new run keeps the frame the student was on.
+  const keepIndexRef = useRef<number | null>(null);
+  const indexRef = useRef(0);
+  const labRef = useRef<LabState | null>(null);
+  useEffect(() => {
+    indexRef.current = player.index;
+    labRef.current = lab;
+  });
+
   // A new trace (or mode) resets the player; in Learn it jumps straight to the step's moment.
   useEffect(() => {
     if (!trace) return;
     dispatch({ type: "load", length: trace.frames.length });
     if (mode === "learn") dispatch({ type: "seek", index: tagIndex(step) });
+    else if (keepIndexRef.current !== null) dispatch({ type: "seek", index: Math.min(keepIndexRef.current, trace.frames.length - 1) });
+    keepIndexRef.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trace, mode]);
 
@@ -134,6 +145,9 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
       if (!mod) return;
       // Any edit stops playback, even when the data is invalid and the old run stays on screen.
       dispatch({ type: "pause" });
+      const prev = labRef.current;
+      const viewOnly = !!prev && !prev.error && patch.data === undefined && patch.params !== undefined && !!mod.viewOnly?.(prev.params, patch.params);
+      keepIndexRef.current = viewOnly ? indexRef.current : null;
       setLab((prev) => {
         if (!prev) return prev;
         const params = patch.params ?? prev.params;
@@ -257,6 +271,7 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
                 data={sceneData}
                 reveal={reveal}
                 onData={mode === "lab" ? (d: unknown) => updateLab({ data: d }) : undefined}
+                stale={mode === "lab" && !!lab?.error}
               />
             </>
           ) : (

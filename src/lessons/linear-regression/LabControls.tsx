@@ -23,7 +23,8 @@ function PointEditor({ data, onData }: { data: LrData; onData(d: LrData): void }
   function add(e: FormEvent) {
     e.preventDefault();
     if (!valid) return;
-    onData({ ...data, points: [...data.points, { x: nx, y: ny }] });
+    // Keep typed points on the drawing grid (x 0–10, y 0–100).
+    onData({ ...data, points: [...data.points, { x: Math.min(10, Math.max(0, nx)), y: Math.min(100, Math.max(0, ny)) }] });
     setX("");
     setY("");
   }

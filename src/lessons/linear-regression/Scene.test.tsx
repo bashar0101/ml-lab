@@ -122,3 +122,15 @@ describe("registry", () => {
     expect(hasLessonModule("pca")).toBe(false);
   });
 });
+
+describe("typed points (linear regression)", () => {
+  it("are kept inside the drawing grid (x 0–10, y 0–100)", async () => {
+    const onData = vi.fn();
+    const labels = { presets: {}, params: { learningRate: { label: "Learning rate" }, steps: { label: "Steps" } } };
+    wrap(<mod.LabControls params={mod.defaultParams} data={{ presetId: "custom", points: [] }} onParams={vi.fn()} onData={onData} labels={labels} />);
+    await userEvent.type(screen.getByLabelText("x"), "12");
+    await userEvent.type(screen.getByLabelText("y"), "250");
+    await userEvent.click(screen.getByRole("button", { name: "Add point" }));
+    expect(onData).toHaveBeenLastCalledWith({ presetId: "custom", points: [{ x: 10, y: 100 }] });
+  });
+});

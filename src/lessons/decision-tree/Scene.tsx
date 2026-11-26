@@ -35,15 +35,16 @@ function layout(nodes: TreeNode[]) {
   return { pos, leaves: leaf, depth: Math.max(...nodes.map((n) => n.depth)) };
 }
 
-export function Scene({ trace, index, data, reveal, onData }: SceneProps<TreeState, TreeData>) {
+export function Scene({ trace, index, data, reveal, onData, stale }: SceneProps<TreeState, TreeData>) {
   const t = useT();
-  const show = (part: string) => reveal === "all" || reveal.has(part);
+  // While the data is stale only the student's own points (and query) are drawn, never the old model.
+  const show = (part: string) => (!stale || part === "points" || part === "query") && (reveal === "all" || reveal.has(part));
   const s = trace.frames[Math.max(0, Math.min(trace.frames.length - 1, index))].state;
   const nodes = s.nodes;
   const sc = makeScale(PLOT, DOMAIN, DOMAIN);
   const pts = data.points;
   const editable = !!onData && data.presetId === "custom";
-  const current = s.current !== null ? nodes[s.current] : null;
+  const current = s.current !== null && !stale ? nodes[s.current] : null;
   const feature = (f: 0 | 1) => t(`dt.feature.${f}`);
 
   const lay = layout(nodes);

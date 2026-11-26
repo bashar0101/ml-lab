@@ -39,9 +39,10 @@ function axes(data: LrData) {
 /** 0..1 height → one of six theme-aware colour bands. */
 const band = (h: number) => styles[`h${Math.min(5, Math.floor(h * 6))}`];
 
-export function Scene({ trace, index, data, reveal, onData }: SceneProps<LrState, LrData>) {
+export function Scene({ trace, index, data, reveal, onData, stale }: SceneProps<LrState, LrData>) {
   const t = useT();
-  const show = (part: string) => reveal === "all" || reveal.has(part);
+  // While the data is stale only the student's own points (and query) are drawn, never the old model.
+  const show = (part: string) => (!stale || part === "points" || part === "query") && (reveal === "all" || reveal.has(part));
   const frame = trace.frames[Math.max(0, Math.min(trace.frames.length - 1, index))];
   const s = frame.state;
   const { x: xAxis, y: yAxis } = useMemo(() => axes(data), [data]);

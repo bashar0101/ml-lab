@@ -85,7 +85,8 @@ function PointForm({ data, onData }: { data: ClassData; onData(d: ClassData): vo
   function add(e: FormEvent) {
     e.preventDefault();
     if (!valid) return;
-    onData({ ...data, points: [...data.points, { x: nx, y: ny, c: data.drawClass }] });
+    const clamp = (v: number) => Math.min(10, Math.max(0, v));
+    onData({ ...data, points: [...data.points, { x: clamp(nx), y: clamp(ny), c: data.drawClass }] });
     setX("");
     setY("");
   }

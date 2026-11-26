@@ -13,6 +13,8 @@ const logisticRegression: LessonModule<LogState, LogParams, LogData> = {
   defaultData: { presetId: "overlap", points: makeDataset("overlap"), drawClass: 0 },
   validate: (data) => validateLogistic(data.points),
   run: (data, params) => runLogistic(data.points, params),
+  // The threshold only moves the line and the accuracy; training is identical.
+  viewOnly: (prev, next) => prev.learningRate === next.learningRate && prev.steps === next.steps,
   Scene,
   LabControls,
   code: { python, pseudo },
