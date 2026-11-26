@@ -252,9 +252,10 @@
   "bp.scene.target": "true answer y = {y}",
   "bp.scene.prediction": "prediction p = {p}",
   "bp.scene.loss": "loss = {loss}",
-  "bp.scene.chart": "gradient size per layer (epoch {epoch})",
+  "bp.scene.chart": "gradient size, epoch {epoch}",
   "bp.scene.layer": "layer {n}",
   "bp.scene.logScale": "log scale: each step ×10",
+  "bp.scene.ghost": "dashed = epoch 1, filled = now",
 
   "cnn.scene.label": "The 8 by 8 drawing as numbers with the sliding 3 by 3 window, the filter's weights, the feature map filling in, the pooled maps, and the probability of each digit.",
   "cnn.scene.image": "the drawing (1 = ink)",

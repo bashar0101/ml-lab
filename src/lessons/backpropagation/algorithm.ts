@@ -13,7 +13,7 @@ export interface BackpropParams {
 
 export interface BackpropState {
   net: Mlp;
-  /** Forward pass of the example (with the weights before the update). */
+  /** Forward pass of the example: before the update in the first steps, then with the trained weights of each epoch. */
   fwd: ForwardPass;
   grad: { dz: number[][]; dW: number[][][] };
   /** Layers of activations shown after the inputs (forward frames grow this). */
@@ -49,8 +49,9 @@ export function runBackprop(points: LabeledPoint[], p: BackpropParams): Trace<Ba
   const L = start.W.length;
   const fwd = forward(start, X[0]);
   const grad = backward(start, fwd, Y[0]);
+  const lossOf = (p: number) => -(Y[0] * Math.log(Math.max(EPS, p)) + (1 - Y[0]) * Math.log(Math.max(EPS, 1 - p)));
   const prob = fwd.a[L][0];
-  const exampleLoss = -(Y[0] * Math.log(Math.max(EPS, prob)) + (1 - Y[0]) * Math.log(Math.max(EPS, 1 - prob)));
+  const exampleLoss = lossOf(prob);
 
   let state: BackpropState = { net: start, fwd, grad, shownForward: 0, shownBackward: 0, showGrads: false, updated: false, history: [], x: X[0], y: Y[0] };
   const frames: Frame<BackpropState>[] = [];
@@ -78,13 +79,18 @@ export function runBackprop(points: LabeledPoint[], p: BackpropParams): Trace<Ba
   let net = start;
   for (let e = 1; e <= EPOCHS; e++) {
     const r = trainEpoch(net, X, Y, p.learningRate);
-    state = { ...state, net: r.net, history: [...state.history, r.gradNorms] };
+    // Redraw the example through the network as it is now, so the values, prediction and loss match the picture.
+    const now = r.net.W.flat(2).every((v) => Number.isFinite(v)) ? r.net : net;
+    const f = forward(now, X[0]);
+    state = { ...state, net: now, fwd: f, grad: backward(now, f, Y[0]), history: [...state.history, r.gradNorms] };
     const first = r.gradNorms[0];
     const last = r.gradNorms[r.gradNorms.length - 1];
-    push("epoch", "epoch", e === 1 ? ["epochs"] : [], { epoch: e, first, last, ratio: first > 0 ? last / first : 0 });
+    const p0 = f.a[L][0];
+    push("epoch", "epoch", e === 1 ? ["epochs"] : [], { epoch: e, first, last, ratio: first > 0 ? last / first : NaN, prediction: p0, loss: lossOf(p0) });
     if (r.diverged) break;
     net = r.net;
   }
-  push("return", "done", ["done"]);
+  const end = state.fwd.a[L][0];
+  push("return", "done", ["done"], { prediction: end, loss: lossOf(end) });
   return { frames, meta: { algorithm: "backpropagation", seed: p.seed, truncated: false } };
 }
