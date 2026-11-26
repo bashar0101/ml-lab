@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/fix-segment-files.mjs",
+    "build": "next build && node scripts/fix-segment-files.mjs && node scripts/stamp-locales.mjs",
     "lint": "eslint",
     "test": "vitest run",
     "e2e": "playwright test",

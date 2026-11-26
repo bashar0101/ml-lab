@@ -98,3 +98,23 @@ code {
     scroll-behavior: auto !important;
   }
 }
+
+/* Right-to-left pages. Letter-spacing would pull Arabic's joined letters apart. */
+:root[lang="ar"] * {
+  letter-spacing: normal !important;
+}
+
+/* Charts, code and maths read left to right in every language. */
+[dir="rtl"] svg,
+[dir="rtl"] pre,
+[dir="rtl"] code,
+[dir="rtl"] kbd {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* "Forward" arrows point the way the text reads. */
+[dir="rtl"] .flip-rtl {
+  display: inline-block;
+  transform: scaleX(-1);
+}

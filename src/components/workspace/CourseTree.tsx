@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { chapters, lessons, lessonsInChapter } from "@/course/manifest";
+import { useLocalePath } from "@/i18n/locale-context";
 import { useT } from "@/i18n/ui-context";
 import styles from "./CourseTree.module.css";
 
@@ -15,6 +16,7 @@ export function CourseTree({
   onNavigate?: () => void;
 }) {
   const t = useT();
+  const to = useLocalePath();
   const done = lessons.filter((l) => completed.has(l.slug)).length;
 
   return (
@@ -48,7 +50,7 @@ export function CourseTree({
                   return (
                     <li key={l.slug}>
                       <Link
-                        href={`/lessons/${l.slug}/`}
+                        href={to(`/lessons/${l.slug}/`)}
                         className={current ? `${styles.lesson} ${styles.current}` : styles.lesson}
                         aria-current={current ? "page" : undefined}
                         onClick={onNavigate}

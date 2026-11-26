@@ -9,14 +9,15 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { useLocalePath } from "@/i18n/locale-context";
 import { useT } from "@/i18n/ui-context";
 import { searchEntries, type SearchEntry } from "@/search";
 import { isTyping } from "@/state/keys";
 import bar from "./TopBar.module.css";
 import styles from "./SearchPalette.module.css";
 
-async function fetchIndex(): Promise<SearchEntry[]> {
-  const res = await fetch("/search-index.json");
+async function fetchIndex(url: string): Promise<SearchEntry[]> {
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`search index: ${res.status}`);
   return res.json();
 }
@@ -30,11 +31,9 @@ export interface SearchPaletteProps {
 }
 
 /** The top-bar search button and its Ctrl K command palette. */
-export function SearchPalette({
-  loadIndex = fetchIndex,
-  navigate = goTo,
-}: SearchPaletteProps) {
+export function SearchPalette({ loadIndex, navigate = goTo }: SearchPaletteProps) {
   const t = useT();
+  const indexUrl = useLocalePath()("/search-index.json");
   const id = useId();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -50,12 +49,12 @@ export function SearchPalette({
     setOpen(true);
     if (!loading.current) {
       loading.current = true;
-      loadIndex().then(setIndex, () => {
+      (loadIndex ?? (() => fetchIndex(indexUrl)))().then(setIndex, () => {
         loading.current = false;
         setIndex("error");
       });
     }
-  }, [loadIndex]);
+  }, [loadIndex, indexUrl]);
 
   const hide = useCallback(() => {
     setOpen(false);

@@ -1,13 +1,25 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { HeroDemo } from "@/components/HeroDemo";
 import styles from "@/components/home.module.css";
 import { Markdownish } from "@/components/Markdownish";
-import { DEFAULT_LOCALE, loadUi } from "@/content/load";
+import { loadUi } from "@/content/load";
 import { chapters, lessonIndex, lessonsInChapter } from "@/course/manifest";
+import { alternates, localePath, type Locale } from "@/i18n/locales";
 import { translate } from "@/i18n/translate";
 
-export default async function Home() {
-  const ui = await loadUi(DEFAULT_LOCALE);
+export async function homeMetadata(locale: Locale): Promise<Metadata> {
+  const ui = await loadUi(locale);
+  return {
+    title: { absolute: `${ui["site.name"]} · ${ui["site.tagline"]}` },
+    description: ui["site.description"],
+    alternates: { canonical: localePath(locale, "/"), languages: alternates("/") },
+  };
+}
+
+export async function HomeView({ locale }: { locale: Locale }) {
+  const ui = await loadUi(locale);
+  const to = (p: string) => localePath(locale, p);
   const t = (k: string, v?: Record<string, string | number>) => translate(ui, k, v);
   const faq = [1, 2, 3, 4];
 
@@ -20,7 +32,7 @@ export default async function Home() {
         </h1>
         <p className={styles.subtitle}>{t("home.subtitle")}</p>
         <div className={styles.ctas}>
-          <Link href="/lessons/linear-regression/" className="btn btn-ink">
+          <Link href={to("/lessons/linear-regression/")} className="btn btn-ink">
             {t("home.start")}
           </Link>
           <a href="#lessons" className="btn">
@@ -78,7 +90,7 @@ export default async function Home() {
                     <li key={l.slug} data-lesson-status={l.status}>
                       <span className={styles.lessonNo}>{String(lessonIndex(l.slug)).padStart(2, "0")}</span>
                       {l.status === "live" ? (
-                        <Link href={`/lessons/${l.slug}/`} className={styles.lessonTitle}>
+                        <Link href={to(`/lessons/${l.slug}/`)} className={styles.lessonTitle}>
                           {title}
                         </Link>
                       ) : (

@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
-import { Footer } from "@/components/Footer";
-import { TopBar } from "@/components/TopBar";
+import { IBM_Plex_Sans_Arabic, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { DEFAULT_LOCALE, loadUi } from "@/content/load";
-import { UiProvider } from "@/i18n/ui-context";
+import { localeBootstrapScript } from "@/i18n/bootstrap";
 import { ogImage } from "@/og/images";
 import { SITE_URL } from "@/site";
 import { themeBootstrapScript } from "@/state/theme";
 import "@/styles/globals.css";
 
-const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
+// latin-ext carries Turkish letters (ğ ş ı İ).
+const mono = JetBrains_Mono({ subsets: ["latin", "latin-ext"], variable: "--font-mono", display: "swap" });
 const serif = Instrument_Serif({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   weight: "400",
   style: ["normal", "italic"],
   variable: "--font-serif",
   display: "swap",
 });
+// Only Arabic pages use it, so English and Turkish pages do not preload it.
+const arabic = IBM_Plex_Sans_Arabic({ subsets: ["arabic"], weight: ["400", "600", "700"], variable: "--font-arabic", display: "swap", preload: false });
 
 export async function generateMetadata(): Promise<Metadata> {
   const ui = await loadUi(DEFAULT_LOCALE);
@@ -29,41 +30,18 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const ui = await loadUi(DEFAULT_LOCALE);
+/**
+ * The one root layout. Each language's shell (top bar, footer, strings) lives in app/(en) and app/[locale];
+ * lang/dir on <html> are stamped per language after the build (scripts/stamp-locales.mjs) and by the
+ * boot script below in development.
+ */
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang={DEFAULT_LOCALE}
-      data-theme="light"
-      className={`${mono.variable} ${serif.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang={DEFAULT_LOCALE} dir="ltr" data-theme="light" className={`${mono.variable} ${serif.variable} ${arabic.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript + ";" + localeBootstrapScript }} />
       </head>
-      <body>
-        <UiProvider strings={ui}>
-          <TopBar
-            strings={{
-              home: ui["nav.home"],
-              toLight: ui["theme.toLight"],
-              toDark: ui["theme.toDark"],
-            }}
-          />
-          {children}
-          <Footer
-            strings={{
-              name: ui["site.name"],
-              line: ui["home.footer"],
-              about: ui["nav.about"],
-              contact: ui["footer.contact"],
-              privacy: ui["footer.privacy"],
-              terms: ui["footer.terms"],
-              github: ui["footer.github"],
-            }}
-          />
-        </UiProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

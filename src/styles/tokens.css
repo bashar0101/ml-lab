@@ -66,3 +66,10 @@
   --on-ink: #1b1916;
   --stage: #201d1a;
 }
+
+/* Arabic: every stack falls through to an Arabic face (Latin letters and digits keep the site's fonts). */
+:root[lang="ar"] {
+  --font-ui: var(--font-mono), var(--font-arabic), ui-monospace, Consolas, monospace;
+  --font-display: var(--font-serif), var(--font-arabic), Georgia, serif;
+  --font-body: var(--font-arabic), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}

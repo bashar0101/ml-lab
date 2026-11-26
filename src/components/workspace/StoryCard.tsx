@@ -51,7 +51,7 @@ export function StoryCard({
         </button>
         <button type="button" className={`btn btn-primary ${styles.next}`} onClick={onNext}>
           {nextRail ? t("story.next", { name: nextRail }) : t("story.toLab")}
-          <span aria-hidden="true">→</span>
+          <span className="flip-rtl" aria-hidden="true">→</span>
         </button>
       </div>
     </div>
