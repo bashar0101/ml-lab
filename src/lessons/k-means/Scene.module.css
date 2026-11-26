@@ -1,0 +1,110 @@
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  font-family: var(--font-ui);
+}
+
+.caption,
+.tick {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.axis {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+
+.point {
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+
+.unassigned {
+  fill: var(--card);
+}
+
+/* Six cluster colours; each centroid also carries its number. */
+.k0,
+.r0 {
+  fill: var(--peach);
+}
+.k1,
+.r1 {
+  fill: var(--lavender);
+}
+.k2,
+.r2 {
+  fill: var(--green);
+}
+.k3,
+.r3 {
+  fill: var(--blue-soft);
+}
+.k4,
+.r4 {
+  fill: color-mix(in srgb, var(--ch-deep) 35%, var(--card));
+}
+.k5,
+.r5 {
+  fill: color-mix(in srgb, var(--ch-foundations) 45%, var(--card));
+}
+
+.r0,
+.r1,
+.r2,
+.r3,
+.r4,
+.r5 {
+  fill-opacity: 0.45;
+}
+
+.s0 {
+  stroke: var(--peach-2);
+}
+.s1 {
+  stroke: var(--lavender-2);
+}
+.s2 {
+  stroke: var(--green-2);
+}
+.s3 {
+  stroke: var(--blue);
+}
+.s4 {
+  stroke: var(--ch-deep);
+}
+.s5 {
+  stroke: var(--ch-foundations);
+}
+
+.cross {
+  stroke-width: 4;
+  stroke-linecap: round;
+  paint-order: stroke;
+}
+
+.label {
+  fill: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.trail {
+  fill: none;
+  stroke-width: 1.6;
+  stroke-dasharray: 3 3;
+}
+
+.series {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.dot {
+  fill: var(--peach-2);
+  stroke: var(--ink);
+}

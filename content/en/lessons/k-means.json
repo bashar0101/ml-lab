@@ -1,0 +1,204 @@
+{
+  "title": "K-Means Clustering",
+  "description": "Watch k-means find groups in unlabelled data: drop centres, assign every point to the nearest one, move the centres, repeat. Free and interactive.",
+  "youWillLearn": [
+    "What learning without labels (clustering) means",
+    "The two alternating steps of k-means",
+    "Why it always stops, and what it is minimising",
+    "Why the starting centres and the choice of k matter"
+  ],
+  "story": [
+    {
+      "id": "no-labels",
+      "rail": "No labels",
+      "title": "No answers given",
+      "body": "So far every point came with a class. Here nobody tells us anything: these are just points, like customers described by two numbers. Can the computer find natural **groups** on its own?",
+      "keyIdea": "Finding groups in unlabelled data is called **clustering**: unsupervised learning.",
+      "frameTag": "start",
+      "reveal": [
+        "points"
+      ]
+    },
+    {
+      "id": "centres",
+      "rail": "Centres",
+      "title": "Drop k centres",
+      "body": "We decide how many groups to look for: **k = 3**. k-means starts by placing 3 centres (the numbered ✕ marks), here on 3 randomly chosen points. They are almost certainly in the wrong places. That is fine.",
+      "keyIdea": "Each group will be described by one centre point.",
+      "frameTag": "start",
+      "reveal": [
+        "points",
+        "centroids"
+      ]
+    },
+    {
+      "id": "join",
+      "rail": "Join",
+      "title": "Everyone joins the nearest centre",
+      "body": "Step one: every point joins the centre it is closest to and takes its colour. The shaded background shows which centre owns each spot on the map.",
+      "keyIdea": "Assignment step: points pick the nearest centre.",
+      "math": "Point `x` joins cluster `argminⱼ |x − cⱼ|²`.",
+      "frameTag": "first-assign",
+      "reveal": [
+        "points",
+        "centroids",
+        "regions"
+      ]
+    },
+    {
+      "id": "move",
+      "rail": "Move",
+      "title": "Centres move to the middle",
+      "body": "Step two: each centre moves to the middle (the average position) of the points that joined it. The dashed lines show where each centre came from.",
+      "keyIdea": "Update step: each centre becomes the mean of its points, hence the name k-*means*.",
+      "math": "`cⱼ = mean of all points in cluster j`.",
+      "frameTag": "first-update",
+      "reveal": [
+        "points",
+        "centroids",
+        "regions",
+        "trails"
+      ]
+    },
+    {
+      "id": "repeat",
+      "rail": "Repeat",
+      "title": "Repeat until nobody moves",
+      "body": "Join, move, join, move. The chart tracks the total squared distance from every point to its centre: it can only go down, so the process must stop. It stops when a full round changes no point's group.",
+      "keyIdea": "Both steps lower the same score, so k-means always settles, usually within a few rounds.",
+      "math": "k-means minimises the **inertia** `Σ |x − c(x)|²`. Joining the nearest centre and moving to the mean each lower it or leave it unchanged.",
+      "frameTag": "done",
+      "reveal": [
+        "points",
+        "centroids",
+        "regions",
+        "trails",
+        "chart"
+      ]
+    },
+    {
+      "id": "limits",
+      "rail": "Limits",
+      "title": "What k-means can't see",
+      "body": "k-means assumes groups are round blobs of similar size, and it needs you to choose k. It also settles where the *nearest* low point is, so a bad start can give a bad answer. The Lab lets you break all three.",
+      "keyIdea": "Settled doesn't mean best: try several starts and keep the lowest inertia.",
+      "frameTag": "done",
+      "reveal": [
+        "points",
+        "centroids",
+        "regions",
+        "trails",
+        "chart"
+      ]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Centres dropped",
+      "body": "k centres are placed. Press play to start the rounds."
+    },
+    "assign": {
+      "title": "Round {iteration}: points join their nearest centre",
+      "body": "{changed} points changed group this round."
+    },
+    "update": {
+      "title": "Round {iteration}: centres move to the middle",
+      "body": "The total squared distance is now {inertia}."
+    },
+    "done": {
+      "title": "Settled after {iteration} rounds",
+      "body": "No point changed group, so the centres won't move again. Final total squared distance {inertia}."
+    }
+  },
+  "stats": {
+    "iteration": "ROUND",
+    "inertia": "INERTIA",
+    "changed": "MOVED"
+  },
+  "lab": {
+    "breakIt": "Pick **Moons** with **k = 2**: k-means cuts straight across them and puts about a fifth of the points in the wrong moon, because it only knows round blobs. Pick **Uneven** and press **New random start** a few times: some starts split the big loose group in two and lump a small group in with one half. Then set **k = 6** on **Three groups**: it happily splits real groups to use up all its centres.",
+    "presets": {
+      "three-blobs": "Three groups",
+      "blobs": "Two groups",
+      "moons": "Moons",
+      "circles": "Rings",
+      "uneven": "Uneven"
+    },
+    "params": {
+      "k": {
+        "label": "k (clusters)",
+        "hint": "How many groups to look for."
+      }
+    },
+    "errors": {
+      "tooFew": "Add at least two points."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is k-means?",
+        "body": "k-means splits unlabelled data into **k groups** so that points in a group are close to their group's centre. It alternates two simple steps: assign every point to its nearest centre, then move every centre to the mean of its points. It is the most widely used clustering method, from grouping customers to compressing images (each pixel colour replaced by its cluster's centre)."
+      },
+      {
+        "heading": "Why it always stops",
+        "body": "Both steps can only lower the **inertia**, the sum of squared distances from each point to its centre. There are finitely many ways to split the points, so the process must eventually stop changing. But it stops at a *local* minimum: the nearest good arrangement, not necessarily the best one."
+      },
+      {
+        "heading": "Starting well: k-means++",
+        "body": "Random starting centres can land two in the same group and none in another. **k-means++** picks the first centre at random and each next one with probability proportional to its squared distance from the centres already chosen, so they spread out. It gives better results on average and is the default in most libraries. Running k-means several times and keeping the lowest inertia also helps.",
+        "table": {
+          "headers": [
+            "Problem",
+            "Symptom",
+            "Remedy"
+          ],
+          "rows": [
+            [
+              "Unlucky start",
+              "Two centres share a group",
+              "k-means++, several restarts"
+            ],
+            [
+              "Wrong k",
+              "Groups split or merged",
+              "Try several k, look for an elbow in the inertia"
+            ],
+            [
+              "Non-round shapes",
+              "Cuts straight through moons or rings",
+              "Use a density-based method such as DBSCAN"
+            ],
+            [
+              "Features on different scales",
+              "One feature dominates the distance",
+              "Standardise the features first"
+            ]
+          ]
+        }
+      },
+      {
+        "heading": "Choosing k",
+        "body": "Inertia always drops as k grows (with k equal to the number of points it is zero), so you can't just minimise it. A common trick is the **elbow**: plot inertia against k and pick the point where adding another cluster stops helping much. Often the right k comes from the problem itself: how many sizes of T-shirt to make, how many customer segments to target."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Is k-means supervised or unsupervised?",
+        "a": "Unsupervised: it never sees any labels. The groups it finds may or may not match categories that people care about."
+      },
+      {
+        "q": "Does it always find the best clustering?",
+        "a": "No. It always stops, but at a local minimum that depends on the starting centres. That is why libraries run it several times."
+      },
+      {
+        "q": "What happens to an empty cluster?",
+        "a": "If no point joins a centre, it has no mean to move to. Here it simply stays put; libraries often move it to a far-away point instead."
+      },
+      {
+        "q": "Why squared distance?",
+        "a": "With squared distance the best centre of a group is exactly its mean, which makes the update step simple. Using plain distance gives a different method (k-medians)."
+      }
+    ]
+  }
+}

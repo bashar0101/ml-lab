@@ -9,6 +9,7 @@ const modules: Record<string, () => Promise<{ default: AnyLessonModule }>> = {
   "support-vector-machine": () => import("./support-vector-machine"),
   "decision-tree": () => import("./decision-tree"),
   "random-forest": () => import("./random-forest"),
+  "k-means": () => import("./k-means"),
 };
 
 export function hasLessonModule(slug: string): boolean {

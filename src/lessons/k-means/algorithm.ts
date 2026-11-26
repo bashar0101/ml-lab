@@ -24,7 +24,7 @@ export interface KMeansState {
   trails: Centroid[][];
 }
 
-export const KMEANS_DEFAULTS: KMeansParams = { k: 3, init: "random", seed: 1 };
+export const KMEANS_DEFAULTS: KMeansParams = { k: 3, init: "random", seed: 6 };
 export const KMEANS_LIMITS = { k: { min: 1, max: 6 } } as const;
 export const MAX_ITER = 20;
 
