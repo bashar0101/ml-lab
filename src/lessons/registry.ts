@@ -4,6 +4,7 @@ import type { AnyLessonModule } from "./types";
 const modules: Record<string, () => Promise<{ default: AnyLessonModule }>> = {
   "linear-regression": () => import("./linear-regression"),
   "gradient-descent": () => import("./gradient-descent"),
+  "logistic-regression": () => import("./logistic-regression"),
 };
 
 export function hasLessonModule(slug: string): boolean {

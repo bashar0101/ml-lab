@@ -1,0 +1,178 @@
+{
+  "title": "Logistic Regression",
+  "description": "Watch logistic regression learn a line that splits two classes and turn scores into probabilities with the sigmoid. Free and interactive.",
+  "youWillLearn": [
+    "How a line can split two kinds of points",
+    "How the sigmoid turns any score into a probability",
+    "Why log-loss punishes confident mistakes",
+    "Why a straight line can't separate every dataset"
+  ],
+  "story": [
+    {
+      "id": "problem",
+      "rail": "Pass or fail",
+      "title": "Will this student pass?",
+      "body": "Each point is a student: how many hours they studied (across) and slept (up). Peach circles **failed** the exam, lavender squares **passed**. A new student tells you their two numbers. Pass or fail?",
+      "keyIdea": "This is **classification**: the answer is a category, not a number.",
+      "frameTag": "start",
+      "reveal": ["points"]
+    },
+    {
+      "id": "score",
+      "rail": "Score",
+      "title": "Draw a line, get a score",
+      "body": "Combine the two numbers into one **score**: a little of each, plus a starting value. On the blue line the score is exactly 0. On one side it is positive (leans *pass*), on the other negative (leans *fail*). The background shading shows which way each spot leans.",
+      "keyIdea": "A straight line splits the plane into two sides, one per class.",
+      "math": "`z = w₁·studied + w₂·slept + b`. The line is where `z = 0`.",
+      "frameTag": "first-update",
+      "reveal": ["points", "boundary", "shade"]
+    },
+    {
+      "id": "squash",
+      "rail": "Squash",
+      "title": "Squash it into a probability",
+      "body": "A score can be any number, like −7 or 12. A probability must be between 0 and 1. The **sigmoid** S-curve on the right does the squashing: big positive scores become almost 1, big negative ones almost 0, and a score of 0 becomes exactly 0.5. Each student is placed on the curve.",
+      "keyIdea": "Logistic regression = a line's score, squashed by the sigmoid into a probability.",
+      "math": "`p = σ(z) = 1 / (1 + e^(−z))`",
+      "frameTag": "first-update",
+      "reveal": ["points", "boundary", "shade", "sigmoid"]
+    },
+    {
+      "id": "surprise",
+      "rail": "Surprise",
+      "title": "Confident mistakes cost the most",
+      "body": "To learn, we need a loss. Logistic regression uses **log-loss**: how surprised the model is by the truth. Saying 90 % pass for a student who passed costs a little. Saying 99 % *fail* for a student who passed costs a lot. Ringed points are the ones currently on the wrong side.",
+      "keyIdea": "Log-loss rewards being right *and* being honest about how sure you are.",
+      "math": "For one student `loss = −[y·log(p) + (1 − y)·log(1 − p)]`, with `y = 1` for pass. Average over everyone.",
+      "frameTag": "first-update",
+      "reveal": ["points", "boundary", "shade", "sigmoid"]
+    },
+    {
+      "id": "learn",
+      "rail": "Learn",
+      "title": "Downhill again",
+      "body": "Training is the same gradient descent as in the first two lessons: measure the loss, find which way to turn and shift the line, take a small step. After ten steps the line has swung round to sit between the two groups.",
+      "keyIdea": "Different model, same recipe: a loss plus gradient descent.",
+      "math": "The gradient is beautifully simple: `∂loss/∂w = mean((p − y)·x)` and `∂loss/∂b = mean(p − y)`.",
+      "frameTag": "update-10",
+      "reveal": ["points", "boundary", "shade", "sigmoid"]
+    },
+    {
+      "id": "result",
+      "rail": "The line",
+      "title": "A line and a probability",
+      "body": "The model now gives every student a probability of passing. Where the groups overlap, it is honestly unsure (pale shading) and a few students land on the wrong side. That is the limit of a straight line, and in the Lab you can find data where a line fails completely.",
+      "keyIdea": "Logistic regression is the building block of neural networks: each neuron is one of these.",
+      "frameTag": "done",
+      "reveal": ["points", "boundary", "shade", "sigmoid"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Start: no opinion yet",
+      "body": "With w = 0 and b = 0 every score is 0, so every student gets 50 %. The loss is {loss}."
+    },
+    "predict": {
+      "title": "Step {step}: score and squash",
+      "body": "Each student gets a score from the line, squashed into a probability of passing."
+    },
+    "error": {
+      "title": "Step {step}: compare with the truth",
+      "body": "Error = probability − real answer (1 for pass, 0 for fail). Confident mistakes give the biggest errors."
+    },
+    "update": {
+      "title": "Step {step}: turn and shift the line",
+      "body": "The loss is now {loss} and the fraction of students on the right side is {accuracy}."
+    },
+    "diverged": {
+      "title": "The numbers blew up",
+      "body": "The weights grew enormous. Lower the learning rate and try again."
+    },
+    "done": {
+      "title": "Done: {step} steps",
+      "body": "Final loss {loss}; fraction classified correctly {accuracy}. Move the threshold to trade one kind of mistake for the other."
+    }
+  },
+  "stats": {
+    "step": "STEP",
+    "loss": "LOSS",
+    "accuracy": "ACCURACY"
+  },
+  "lab": {
+    "breakIt": "Pick **Rings**: one class sits inside a circle of the other. No straight line can separate them, so accuracy stays near a coin flip however long you train. Then try a huge learning rate on **Two groups** and watch the line snap around.",
+    "presets": {
+      "blobs": "Two groups",
+      "overlap": "Overlapping",
+      "circles": "Rings"
+    },
+    "params": {
+      "learningRate": {
+        "label": "Learning rate",
+        "hint": "How big each step downhill is."
+      },
+      "steps": {
+        "label": "Steps",
+        "hint": "How many times to score, compare and update."
+      },
+      "threshold": {
+        "label": "Threshold",
+        "hint": "Probability needed to call a point class B. Moves the line without retraining."
+      }
+    },
+    "errors": {
+      "tooFew": "Add at least four points.",
+      "oneClass": "Add points of both classes: the model needs examples of each to learn the difference."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is logistic regression?",
+        "body": "Logistic regression predicts the **probability** that something belongs to a class: will this email be spam, will this patient have the disease, will this student pass. Despite its name it is used for classification, not for predicting numbers.\n\nIt works in two parts. First it computes a score as a weighted sum of the inputs, exactly like linear regression. Then it squashes that score with the sigmoid function into a number between 0 and 1."
+      },
+      {
+        "heading": "The sigmoid and the decision boundary",
+        "body": "The sigmoid `σ(z) = 1 / (1 + e^(−z))` is an S-shaped curve. It never quite reaches 0 or 1, and it equals exactly 0.5 when the score is 0.\n\nTo make a yes/no decision you pick a **threshold**, usually 0.5. All points with probability above it are called class B. The set of points where the probability equals the threshold is a straight line (a plane with more inputs): the **decision boundary**. Raising the threshold makes the model more cautious about saying *yes*."
+      },
+      {
+        "heading": "Training with log-loss",
+        "body": "Logistic regression is trained by gradient descent on the **log-loss** (also called cross-entropy). For each point it takes `−log` of the probability the model gave to the true class: near 0 when the model was confidently right, very large when it was confidently wrong.\n\nSquared error would also work in principle, but with the sigmoid it creates flat regions where learning stalls. Log-loss gives a smooth bowl with one bottom, so gradient descent always finds the best line."
+      },
+      {
+        "heading": "When to use it, and when not to",
+        "body": "Logistic regression is fast, hard to overfit with few inputs, and its weights are easy to read: a positive weight pushes towards class B.",
+        "table": {
+          "headers": ["Situation", "Works?", "Why"],
+          "rows": [
+            ["Classes separable by a straight line", "Yes", "That is exactly the shape it can draw"],
+            ["You need probabilities, not just labels", "Yes", "The sigmoid output is a calibrated probability"],
+            ["Classes in rings, spirals or islands", "No", "A single straight boundary can't bend; add features or use a tree or network"],
+            ["Very many inputs, few examples", "With care", "Add regularisation so weights don't grow wild"]
+          ]
+        }
+      },
+      {
+        "heading": "Common mistakes",
+        "body": "**Reading accuracy alone**: if 95 % of emails are not spam, a model that always says *not spam* is 95 % accurate and useless. **Forgetting the threshold is a choice**: in medicine, missing a sick patient may be far worse than a false alarm, so the threshold should be lower. **Perfectly separable data**: the weights keep growing forever because the model can always get more confident; regularisation or early stopping fixes it."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Why is it called regression if it classifies?",
+        "a": "Historically it is a regression on the log-odds: the score `z` is a linear function of the inputs, just like linear regression. The classification comes from applying a threshold to its probability."
+      },
+      {
+        "q": "What does the threshold do?",
+        "a": "It decides how sure the model must be before calling a point class B. Moving it slides the decision line without retraining, trading false alarms against misses."
+      },
+      {
+        "q": "Can it handle more than two classes?",
+        "a": "Yes: multinomial (softmax) regression gives each class its own score and turns all scores into probabilities that sum to 1. It is exactly the last layer of most classification neural networks."
+      },
+      {
+        "q": "How is this related to neural networks?",
+        "a": "One logistic regression is one artificial neuron with a sigmoid activation. A neural network stacks many of them, which lets it draw curved boundaries."
+      }
+    ]
+  }
+}
