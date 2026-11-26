@@ -20,14 +20,15 @@ const DOMAIN: [number, number] = [0, 10];
 const M_RANGE: [number, number] = [-2, 3];
 const round1 = (v: number) => Math.round(v * 10) / 10;
 
-export function Scene({ trace, index, data, reveal, onData }: SceneProps<SvmState, SvmData>) {
+export function Scene({ trace, index, data, reveal, onData, stale }: SceneProps<SvmState, SvmData>) {
   const t = useT();
-  const show = (part: string) => reveal === "all" || reveal.has(part);
+  // While the data is stale only the student's own points (and query) are drawn, never the old model.
+  const show = (part: string) => (!stale || part === "points" || part === "query") && (reveal === "all" || reveal.has(part));
   const frame = trace.frames[Math.max(0, Math.min(trace.frames.length - 1, index))];
   const s = frame.state;
   const pts = data.points;
   const fits = s.alpha.length === pts.length;
-  const trained = fits && s.t > 0;
+  const trained = fits && s.t > 0 && !stale;
   const sc = makeScale(PLOT, DOMAIN, DOMAIN);
   const editable = !!onData && data.presetId === "custom";
 

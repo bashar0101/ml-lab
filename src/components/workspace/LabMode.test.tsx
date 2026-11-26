@@ -51,6 +51,8 @@ describe("LessonWorkspace, Lab mode", () => {
     await openLab();
     fireEvent.click(screen.getByRole("button", { name: /Draw your own/ })); // starts empty
     expect(screen.getByText(lr.lab.errors.tooFew)).toBeVisible();
+    // the old model is not drawn over the new (empty) data
+    expect(document.querySelector("[data-part=line]")).toBeNull();
     expect(screen.getByText(/\/ 122$/)).toBeVisible();
   });
 

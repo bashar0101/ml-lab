@@ -21,14 +21,15 @@ const ZMAX = 6;
 const BANDS = 8;
 const round1 = (v: number) => Math.round(v * 10) / 10;
 
-export function Scene({ trace, index, data, reveal, onData }: SceneProps<LogState, LogData>) {
+export function Scene({ trace, index, data, reveal, onData, stale }: SceneProps<LogState, LogData>) {
   const t = useT();
-  const show = (part: string) => reveal === "all" || reveal.has(part);
+  // While the data is stale only the student's own points (and query) are drawn, never the old model.
+  const show = (part: string) => (!stale || part === "points" || part === "query") && (reveal === "all" || reveal.has(part));
   const frame = trace.frames[Math.max(0, Math.min(trace.frames.length - 1, index))];
   const s = frame.state;
   const threshold = s.threshold;
   // Predictions exist once the first guess is made.
-  const predicted = frame.codeLine !== "init";
+  const predicted = frame.codeLine !== "init" && !stale;
   const trainedOnThis = s.probs.length === data.points.length;
 
   const shade = useMemo(

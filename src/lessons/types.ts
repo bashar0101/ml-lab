@@ -16,6 +16,11 @@ export interface SceneProps<S, D> {
   reveal: ReadonlySet<string> | "all";
   /** When set (Lab only), the scene may let the student edit the data, e.g. by clicking. */
   onData?: (d: D) => void;
+  /**
+   * True while the student's edited data is invalid and the trace belongs to older data:
+   * draw the current points, but none of the model.
+   */
+  stale?: boolean;
 }
 
 export interface LabControlsProps<P, D> {

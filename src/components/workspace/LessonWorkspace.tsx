@@ -271,6 +271,7 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
                 data={sceneData}
                 reveal={reveal}
                 onData={mode === "lab" ? (d: unknown) => updateLab({ data: d }) : undefined}
+                stale={mode === "lab" && !!lab?.error}
               />
             </>
           ) : (
