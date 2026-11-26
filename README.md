@@ -27,6 +27,12 @@ Use it to:
 
 ![Lab mode: data presets and sliders, the trained line, the player, and the highlighted Python code](docs/images/lesson-lab.png)
 
+**Deep learning, too:** a convolutional network reading a drawn digit, and self-attention linking "it" to the word it refers to.
+
+![Convolutional Neural Network lesson: the drawn digit as numbers, a learned 3×3 filter and the feature map after ReLU](docs/images/lesson-cnn.png)
+
+![Attention & Transformers lesson: attention arcs from "it" to every word, its vector before and after attention, and both heads' attention grids](docs/images/lesson-attention.png)
+
 <details>
 <summary><b>The whole home page</b></summary>
 
@@ -42,13 +48,22 @@ Use it to:
   - hyperparameter sliders (learning rate, steps, …)
   - a player with play/pause, step forward/back, a scrubber and speeds from 0.25× to 4×
   - a code panel in **Python** and **pseudocode** with the line that just ran highlighted
-- **Real algorithms, not canned videos:** each algorithm is a pure TypeScript function that records a trace of frames; the picture is a replay of that trace. The math is tested against NumPy.
+- **Real algorithms, not canned videos:** each algorithm is a pure TypeScript function that records a trace of frames; the picture is a replay of that trace. The math is tested against NumPy. The convolutional and recurrent networks use small weights trained offline with NumPy (the browser recomputes every activation from them), and the attention lesson uses hand-set weights, stated openly in the lesson.
 - **"Break it" moments:** every lesson shows a failure on purpose (for example, a learning rate that is too big blows up training).
-- **Course structure:** 14 lessons in 6 chapters, from linear regression to attention and transformers. Lessons 1–11 are live (Linear Regression, Gradient Descent, Logistic Regression, k-Nearest Neighbors, Support Vector Machine, Decision Tree, Random Forest, K-Means, PCA, Neural Network, Backpropagation); the rest are marked "coming soon".
+- **Course structure:** 14 lessons in 6 chapters, all live:
+
+  | Chapter | Lessons |
+  |---|---|
+  | 01 Foundations | Linear Regression, Gradient Descent |
+  | 02 Classification | Logistic Regression, k-Nearest Neighbors, Support Vector Machine |
+  | 03 Trees & Forests | Decision Tree, Random Forest |
+  | 04 Finding Patterns | K-Means Clustering, Principal Component Analysis |
+  | 05 Neural Networks | Neural Network, Backpropagation |
+  | 06 Deep Learning | Convolutional Neural Network, Recurrent Neural Network, Attention & Transformers |
 - **Progress tracking** saved in your own browser; no sign-up.
 - **Shareable links** to any step or to the Lab (`#step-3`, `#lab`).
 - **Light and dark themes**, keyboard shortcuts (←/→, Space, R, L), screen-reader friendly, and a phone layout.
-- **Fast and static:** every lesson is a pre-rendered page that search engines can index; the lesson page ships under 200 KB of JavaScript.
+- **Fast and static:** every lesson is a pre-rendered page that search engines can index; every lesson page ships under 200 KB of JavaScript.
 - **Ready for translation:** all text lives in JSON files under `content/`, and the CSS supports right-to-left languages.
 
 ## Getting Started
@@ -57,7 +72,7 @@ Use it to:
 
 - [Node.js](https://nodejs.org/) 20 or newer (developed on Node 22)
 - npm (comes with Node.js)
-- Optional: Python 3 with NumPy, only to regenerate the test fixtures in `tools/`
+- Optional: Python 3 with NumPy, only to regenerate the test fixtures and trained weights in `tools/`
 
 ### Install and run
 
@@ -81,7 +96,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `npm run e2e` | Run the browser tests (Playwright) against `out/`; run `npx playwright install chromium` once first |
 | `npm run budget` | Check the lesson page stays under 200 KB of gzipped JavaScript |
 | `npm run lint` | Lint the code (ESLint) |
-| `python tools/fixtures/linear_regression.py` | Regenerate the NumPy reference results for lesson 1 |
+| `python tools/fixtures/<lesson>.py` | Regenerate a lesson's NumPy reference results (for example `linear_regression.py`) |
+| `python tools/train/digits.py` | Retrain the small CNN on generated digits and rewrite its weights |
+| `python tools/train/rnn.py` | Retrain the small RNN and rewrite its weights |
 
 ### Deploying
 
@@ -93,10 +110,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ml-lab/
 ├── content/en/              # All text: UI strings and one JSON file per lesson
 │   ├── ui.json
-│   └── lessons/linear-regression.json
+│   └── lessons/             # linear-regression.json … attention-transformers.json
 ├── e2e/                     # Playwright browser tests
 ├── scripts/                 # Build helpers (JS budget check, export fix)
 ├── tools/fixtures/          # NumPy scripts that produce reference results
+├── tools/train/             # NumPy scripts that train the CNN and RNN weights
 ├── src/
 │   ├── app/                 # Next.js pages: home, lessons/[slug], about, privacy, terms, sitemap
 │   ├── components/          # Top bar, footer, article, home page parts
@@ -106,7 +124,8 @@ ml-lab/
 │   ├── engine/              # Trace engine: frames, seeded random numbers, text helpers
 │   ├── i18n/                # UI string lookup
 │   ├── lessons/             # One folder per lesson: algorithm, scene, controls, code
-│   │   └── linear-regression/
+│   │   ├── shared/          # Plot helpers, datasets, CART and MLP code shared by lessons
+│   │   └── linear-regression/ … attention-transformers/
 │   ├── state/               # Player, deep links, progress, keyboard, theme
 │   └── styles/              # Design tokens and global CSS
 └── docs/superpowers/        # Design spec and implementation plans
