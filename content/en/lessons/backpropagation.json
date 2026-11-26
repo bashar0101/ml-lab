@@ -1,0 +1,177 @@
+{
+  "title": "Backpropagation",
+  "description": "Follow one training step through a neural network: the forward pass, the loss, blame flowing backwards, and every weight's gradient.",
+  "youWillLearn": [
+    "How a network's error is traced back to every weight",
+    "Why the blame at the output is simply prediction minus truth",
+    "How the chain rule passes blame from layer to layer",
+    "Why deep sigmoid networks learn slowly at the start (vanishing gradients)"
+  ],
+  "story": [
+    {
+      "id": "guess",
+      "rail": "Guess",
+      "title": "Make a guess",
+      "body": "Take one training example. Its two numbers enter on the left and flow through the network layer by layer: every neuron computes a weighted sum and squashes it. Out comes a probability. This is the forward pass from the last lesson, now with the numbers written in.",
+      "keyIdea": "Learning starts with a normal prediction.",
+      "frameTag": "forward-out",
+      "reveal": ["network", "values"]
+    },
+    {
+      "id": "how-wrong",
+      "rail": "How wrong",
+      "title": "How wrong was it?",
+      "body": "Compare the prediction with the true answer using the log-loss: small if the network was confidently right, large if it was confidently wrong. To improve, every weight needs to know which way to move to lower this number.",
+      "keyIdea": "One number, the loss, depends on every weight in the network.",
+      "math": "`loss = −[y·log(p) + (1 − y)·log(1 − p)]`",
+      "frameTag": "loss",
+      "reveal": ["network", "values"]
+    },
+    {
+      "id": "blame-output",
+      "rail": "Blame output",
+      "title": "Blame starts at the output",
+      "body": "Work backwards. First ask how much the output neuron's sum is to blame. For a sigmoid output with log-loss the answer is beautifully simple: **prediction minus truth**. The blue tag δ is that blame.",
+      "keyIdea": "Output blame δ = p − y: too high gives positive blame, too low negative.",
+      "math": "`∂loss/∂z_out = p − y` (the sigmoid's slope cancels against the log-loss).",
+      "frameTag": "backward-out",
+      "reveal": ["network", "values", "blame"]
+    },
+    {
+      "id": "pass-back",
+      "rail": "Pass it back",
+      "title": "Pass the blame back",
+      "body": "Each hidden neuron gets a share of the output's blame, in proportion to the weight connecting them, and scaled by how steep its own activation was. This is the **chain rule** from calculus, applied one layer at a time from right to left. That is why it is called *back*propagation.",
+      "keyIdea": "Blame flows backwards along the same connections the values flowed forwards.",
+      "math": "`δ_hidden = (Wᵀ · δ_next) × act′(z_hidden)`",
+      "frameTag": "backward-hidden",
+      "reveal": ["network", "values", "blame"]
+    },
+    {
+      "id": "every-weight",
+      "rail": "Every weight",
+      "title": "Every weight gets its gradient",
+      "body": "A weight's gradient is the blame of the neuron it feeds into times the value that flowed through it. The orange numbers on the connections are these gradients. Then every weight takes a small step against its gradient, exactly like gradient descent in lesson 2.",
+      "keyIdea": "One backward pass gives the gradient of every weight at once.",
+      "math": "`∂loss/∂w = δ_to × a_from`, then `w ← w − lr·∂loss/∂w`.",
+      "frameTag": "grads",
+      "reveal": ["network", "values", "blame", "grads"]
+    },
+    {
+      "id": "fading",
+      "rail": "Fading",
+      "title": "When blame fades away",
+      "body": "Training repeats this for every example, epoch after epoch. The bars show how big each layer's gradients are. Here they are similar. But every layer multiplies the blame by an activation slope, and the sigmoid's slope is at most 0.25. In the Lab, try **5 hidden layers** with **Sigmoid**: the first layer's gradient becomes hundreds of times smaller than the last's, so the early layers barely learn.",
+      "keyIdea": "Vanishing gradients: deep networks use ReLU-like activations and careful initialisation to keep blame alive.",
+      "frameTag": "done",
+      "reveal": ["network", "values", "chart"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "One example, one network",
+      "body": "Press play to send the example forward, then the blame backward."
+    },
+    "forward": {
+      "title": "Forward pass",
+      "body": "Values flow one layer to the right."
+    },
+    "loss": {
+      "title": "The loss",
+      "body": "The prediction was {prediction}; the loss for this example is {loss}."
+    },
+    "backward": {
+      "title": "Backward pass",
+      "body": "Blame (δ) flows one layer to the left."
+    },
+    "grads": {
+      "title": "Every weight's gradient",
+      "body": "Each connection's gradient = blame where it arrives × value where it starts."
+    },
+    "update": {
+      "title": "One step downhill",
+      "body": "Every weight moved a little against its gradient."
+    },
+    "epoch": {
+      "title": "Training: epoch {epoch}",
+      "body": "The last layer's gradient is {ratio} times the first layer's."
+    },
+    "done": {
+      "title": "Done",
+      "body": "Compare the bars: similar sizes mean every layer is learning."
+    }
+  },
+  "stats": {
+    "prediction": "PREDICTION",
+    "loss": "LOSS",
+    "ratio": "LAST ÷ FIRST"
+  },
+  "lab": {
+    "breakIt": "Set **5 hidden layers** and **Sigmoid**: the first layer's gradient is hundreds of times smaller than the last layer's, so the early layers barely change. Switch to **ReLU** or **tanh** and the bars even out.",
+    "presets": {
+      "blobs": "Two groups",
+      "moons": "Moons",
+      "circles": "Rings"
+    },
+    "params": {
+      "depth": {
+        "label": "Hidden layers",
+        "hint": "Layers of three neurons between input and output."
+      },
+      "learningRate": {
+        "label": "Learning rate",
+        "hint": "Step size for every weight."
+      }
+    },
+    "errors": {
+      "tooFew": "Add at least four points.",
+      "oneClass": "Add points of both classes."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is backpropagation?",
+        "body": "Backpropagation is the algorithm that computes, for every weight in a neural network, how the loss would change if that weight changed a little: the gradient. Gradient descent then uses those gradients to update the weights. Almost every neural network is trained this way."
+      },
+      {
+        "heading": "Forward, then backward",
+        "body": "A **forward pass** computes and remembers every neuron's value. A **backward pass** starts at the loss and moves towards the inputs, computing each neuron's *blame* δ: how much the loss changes when that neuron's weighted sum changes. Each layer's blame comes from the next layer's blame by the chain rule, so the whole backward pass costs about as much as the forward pass, however many weights there are."
+      },
+      {
+        "heading": "Vanishing and exploding gradients",
+        "body": "Each step backwards multiplies the blame by weights and activation slopes. If those factors are small, the blame shrinks layer after layer and the first layers barely learn: **vanishing gradients**. If they are large, it grows out of control: **exploding gradients**.",
+        "table": {
+          "headers": ["Cause", "Effect", "Common fix"],
+          "rows": [
+            ["Sigmoid / tanh in deep stacks", "Early layers learn very slowly", "ReLU activations, careful initialisation"],
+            ["Large weights", "Gradients explode, training diverges", "Smaller learning rate, gradient clipping"],
+            ["Very deep networks", "Both problems", "Residual connections, normalisation layers"]
+          ]
+        }
+      },
+      {
+        "heading": "Automatic differentiation",
+        "body": "Nobody writes backward passes by hand any more. Libraries such as PyTorch and JAX record the forward computation and run backpropagation automatically (*autodiff*). Understanding it still matters: it explains why some networks train well and others don't."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Is backpropagation the same as gradient descent?",
+        "a": "No. Backpropagation computes the gradients; gradient descent (or Adam, etc.) uses them to change the weights."
+      },
+      {
+        "q": "Why is the output blame just p − y?",
+        "a": "The sigmoid's slope and the log-loss's derivative cancel out neatly. That is one reason this pair is the standard choice for yes/no outputs."
+      },
+      {
+        "q": "Does the brain use backpropagation?",
+        "a": "Probably not in this exact form. How the brain assigns credit across many layers is still an open research question."
+      },
+      {
+        "q": "What are vanishing gradients?",
+        "a": "When blame shrinks as it flows backwards through many layers, the early layers get almost no learning signal. ReLU activations, good initialisation and residual connections are the usual remedies."
+      }
+    ]
+  }
+}

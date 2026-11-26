@@ -1,0 +1,90 @@
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  font-family: var(--font-ui);
+}
+
+.caption,
+.tick {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.info text:not(.caption):not(.tick) {
+  fill: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.edgePos {
+  stroke: var(--blue);
+  stroke-opacity: 0.6;
+}
+
+.edgeNeg {
+  stroke: var(--red);
+  stroke-opacity: 0.6;
+  stroke-dasharray: 4 3;
+}
+
+.edgeGrad {
+  fill: var(--peach-2);
+  font-size: 10px;
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: var(--stage);
+  stroke-width: 3px;
+}
+
+.node,
+.nodeEmpty {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.node {
+  fill: var(--lavender);
+}
+
+.nodeEmpty {
+  fill: var(--card);
+}
+
+.value {
+  fill: var(--ink);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.blameBox {
+  fill: var(--blue-soft);
+  stroke: var(--blue);
+}
+
+.blame {
+  fill: var(--blue-ink);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.flowFwd,
+.flowBwd {
+  stroke-width: 2;
+}
+
+.flowFwd {
+  stroke: var(--ink);
+}
+
+.flowBwd {
+  stroke: var(--blue);
+}
+
+.flowHead {
+  fill: var(--ink);
+}
+
+.bar {
+  fill: var(--peach-2);
+}
