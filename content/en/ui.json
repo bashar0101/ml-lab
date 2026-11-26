@@ -234,5 +234,13 @@
   "pca.scene.kept": "spread kept: {pct}%",
   "pca.components": "Directions to keep",
   "pca.components.1": "Keep one direction",
-  "pca.components.2": "Keep both directions"
+  "pca.components.2": "Keep both directions",
+
+  "nn.scene.label": "Points shaded by the network's probability on the left, and the network on the right: inputs, hidden neurons and output, with blue (positive) and red dashed (negative) connections.",
+  "nn.scene.network": "the network: inputs → hidden → output",
+  "nn.activation": "Activation",
+  "nn.activation.tanh": "tanh",
+  "nn.activation.relu": "ReLU",
+  "nn.activation.sigmoid": "Sigmoid",
+  "nn.reseed": "New random weights"
 }

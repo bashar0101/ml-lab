@@ -17,7 +17,7 @@ test("article and metadata are in the static HTML", async ({ request }) => {
 });
 
 test("unknown lesson slugs are not built", async ({ request }) => {
-  expect((await request.get("/lessons/neural-network/")).status()).toBe(404);
+  expect((await request.get("/lessons/recurrent-neural-network/")).status()).toBe(404);
 });
 
 test("phone: course menu opens and closes", async ({ page }, info) => {

@@ -1,0 +1,99 @@
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  font-family: var(--font-ui);
+}
+
+.caption {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.p0 {
+  fill: color-mix(in srgb, var(--peach) 85%, var(--stage));
+}
+.p1 {
+  fill: color-mix(in srgb, var(--peach) 60%, var(--stage));
+}
+.p2 {
+  fill: color-mix(in srgb, var(--peach) 35%, var(--stage));
+}
+.p3 {
+  fill: color-mix(in srgb, var(--peach) 12%, var(--stage));
+}
+.p4 {
+  fill: color-mix(in srgb, var(--lavender) 15%, var(--stage));
+}
+.p5 {
+  fill: color-mix(in srgb, var(--lavender) 40%, var(--stage));
+}
+.p6 {
+  fill: color-mix(in srgb, var(--lavender) 65%, var(--stage));
+}
+.p7 {
+  fill: color-mix(in srgb, var(--lavender) 90%, var(--stage));
+}
+
+.edgePos {
+  stroke: var(--blue);
+  stroke-opacity: 0.7;
+}
+
+.edgeNeg {
+  stroke: var(--red);
+  stroke-opacity: 0.7;
+  stroke-dasharray: 4 3;
+}
+
+.nodeEmpty,
+.n0,
+.n1,
+.n2,
+.n3,
+.n4,
+.n5,
+.n6 {
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+
+.nodeEmpty {
+  fill: var(--card);
+}
+.n0 {
+  fill: var(--peach-2);
+}
+.n1 {
+  fill: color-mix(in srgb, var(--peach-2) 55%, var(--card));
+}
+.n2 {
+  fill: color-mix(in srgb, var(--peach) 70%, var(--card));
+}
+.n3 {
+  fill: var(--card);
+}
+.n4 {
+  fill: color-mix(in srgb, var(--lavender) 80%, var(--card));
+}
+.n5 {
+  fill: color-mix(in srgb, var(--lavender-2) 45%, var(--card));
+}
+.n6 {
+  fill: var(--lavender-2);
+}
+
+.nodeValue {
+  fill: var(--ink);
+  font-size: 9.5px;
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: var(--card);
+  stroke-width: 2.5px;
+}
+
+.probe {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 2.5;
+}

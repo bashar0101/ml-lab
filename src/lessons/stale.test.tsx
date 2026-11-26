@@ -14,6 +14,7 @@ const MODEL_PARTS: Record<string, string[]> = {
   "random-forest": ["tree-map", "forest-map", "thumb"],
   "k-means": ["centroid", "trail", "regions", "chart"],
   pca: ["direction", "projection", "axis", "mean", "curve", "explained", "projected"],
+  "neural-network": ["shade", "node-value", "probe", "edge"],
 };
 
 describe.each(Object.entries(MODEL_PARTS))("%s with stale data", (slug, parts) => {
