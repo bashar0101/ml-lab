@@ -65,7 +65,7 @@ describe("LessonWorkspace, Learn mode", () => {
   it("coming-soon lessons are not links and the current lesson is", async () => {
     renderWorkspace();
     await screen.findByText("Step 1 / 6");
-    const soon = screen.getAllByText("Recurrent Neural Network")[0];
+    const soon = screen.getAllByText("Attention & Transformers")[0];
     expect(soon.closest("a")).toBeNull();
     expect(screen.getAllByRole("link", { name: /Linear Regression/ })[0]).toHaveAttribute("href", expect.stringMatching(/^\/lessons\/linear-regression\/?$/)); // trailing slash comes from next.config at build time
   });

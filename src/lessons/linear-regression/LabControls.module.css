@@ -127,3 +127,14 @@
   inline-size: 16px;
   block-size: 16px;
 }
+
+.text {
+  inline-size: 100%;
+  padding-block: 6px;
+  padding-inline: 8px;
+  border: 1px solid var(--line-2);
+  border-radius: 7px;
+  background: var(--card);
+  font: 14px var(--font-ui);
+  letter-spacing: 0.08em;
+}
