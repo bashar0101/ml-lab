@@ -84,7 +84,10 @@ describe("LessonWorkspace, Lab mode", () => {
     advance(1200);
     expect(screen.getByText("3 / 122")).toBeVisible();
     fireEvent.change(screen.getByLabelText(/^Steps/), { target: { value: "100" } });
-    expect(screen.getByText(/\/ 40/)).toBeVisible();
+    // The course menu's progress ("0 / 40 lessons") also matches; look only outside it.
+    const chips = screen.getAllByText(/\/ 40/).filter((el) => !el.closest("nav"));
+    expect(chips).toHaveLength(1);
+    expect(chips[0]).toBeVisible();
     expect(screen.queryByText(/\/ 100/)).toBeNull();
   });
 

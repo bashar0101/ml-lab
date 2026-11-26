@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { lessons, liveLessons } from "../src/course/manifest";
+import { chapters, lessons, liveLessons } from "../src/course/manifest";
 
 test("home lists every lesson, live ones as links, and links into lesson 1", async ({ page }) => {
   const errors: string[] = [];
@@ -9,7 +9,7 @@ test("home lists every lesson, live ones as links, and links into lesson 1", asy
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Watch machines");
   await expect(page.locator("[data-lesson-status=live]")).toHaveCount(liveLessons().length);
   await expect(page.locator("[data-lesson-status=soon]")).toHaveCount(lessons.length - liveLessons().length);
-  await expect(page.locator("[data-chapter-card]")).toHaveCount(6);
+  await expect(page.locator("[data-chapter-card]")).toHaveCount(chapters.length);
   await page.getByRole("link", { name: /Start with linear regression/ }).click();
   await expect(page).toHaveURL(/\/lessons\/linear-regression\/$/);
   await expect(page.getByText("Step 1 / 6")).toBeVisible();
