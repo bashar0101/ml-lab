@@ -113,3 +113,17 @@
 .pointChip:hover {
   border-color: var(--red);
 }
+
+.check {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font: 600 12px var(--font-ui);
+  cursor: pointer;
+}
+
+.check input {
+  accent-color: var(--peach-2);
+  inline-size: 16px;
+  block-size: 16px;
+}

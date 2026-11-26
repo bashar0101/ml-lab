@@ -1,0 +1,166 @@
+{
+  "title": "Gradient Descent",
+  "description": "See how gradient descent walks downhill on a loss landscape, why it zig-zags, and how momentum and Adam fix it. Free and interactive.",
+  "youWillLearn": [
+    "What the gradient is: the direction of steepest uphill",
+    "Why every step goes against the gradient",
+    "How the learning rate decides between crawling, zig-zagging and blowing up",
+    "What momentum and Adam change, and when they help"
+  ],
+  "story": [
+    {
+      "id": "fog",
+      "rail": "Lost in fog",
+      "title": "Find the bottom, blindfolded",
+      "body": "Imagine standing on a hillside in thick fog. You want to reach the lowest point, but you can only feel the ground under your feet. The map shows the landscape from above: green is low, lavender is high. The white ball is you.",
+      "keyIdea": "Training a model is exactly this: the landscape is the **loss**, and the lowest point is the best model.",
+      "frameTag": "start",
+      "reveal": ["surface", "ball"]
+    },
+    {
+      "id": "feel",
+      "rail": "Feel slope",
+      "title": "Feel the slope",
+      "body": "Even in fog you can tell which way the ground tilts. That tilt, measured in both directions, is the **gradient**. It points straight uphill, so the red arrow points the other way: downhill.",
+      "keyIdea": "The gradient tells you which way is up. Go the opposite way.",
+      "math": "For a height `f(x, y)` the gradient is `(∂f/∂x, ∂f/∂y)`. Here `f = 0.5·x² + 5·y²`, so the gradient is `(x, 10·y)`.",
+      "frameTag": "first-grad",
+      "reveal": ["surface", "ball", "arrow"]
+    },
+    {
+      "id": "step",
+      "rail": "One step",
+      "title": "One step downhill",
+      "body": "Take a step against the slope. How far? The **learning rate** times the steepness: steep ground means a big step, flat ground a small one. Then stop, feel the slope again, and repeat.",
+      "keyIdea": "One update = new position = old position − learning rate × gradient.",
+      "math": "`x ← x − lr · ∂f/∂x` and `y ← y − lr · ∂f/∂y`, with `lr = 0.18` here.",
+      "frameTag": "first-step",
+      "reveal": ["surface", "ball", "arrow", "path"]
+    },
+    {
+      "id": "zigzag",
+      "rail": "Zig-zag",
+      "title": "Why it zig-zags",
+      "body": "This landscape is a **ravine**: the walls are steep but the floor slopes gently. The steep walls produce big steps that overshoot to the other wall, while the gentle floor produces tiny steps forward. So the ball bounces from side to side and creeps along. The chart shows the height dropping fast, then slowly.",
+      "keyIdea": "Plain gradient descent struggles when the landscape is much steeper one way than the other.",
+      "frameTag": "step-10",
+      "reveal": ["surface", "ball", "path", "chart"]
+    },
+    {
+      "id": "size",
+      "rail": "Step size",
+      "title": "Step size is everything",
+      "body": "A smaller learning rate stops the bouncing but crawls along the floor. A bigger one bounces higher and higher: on this ravine, anything above about **0.2** makes every step overshoot more than the last, and the ball flies off the map.",
+      "keyIdea": "Too small is slow. Too big explodes. The right size depends on the landscape.",
+      "math": "Across the ravine the slope is `10·y`, so each step multiplies `y` by `1 − 10·lr`. Above `lr = 0.2` that factor is bigger than 1 in size, and `y` grows.",
+      "frameTag": "step-10",
+      "reveal": ["surface", "ball", "path", "chart"]
+    },
+    {
+      "id": "arrive",
+      "rail": "Arrive",
+      "title": "It got there, slowly",
+      "body": "After 40 steps the ball reaches the bottom. Two famous upgrades make this faster. **Momentum** remembers the last steps, so the side-to-side bounces cancel out and the forward motion adds up. **Adam** scales each direction by how steep it usually is, so every direction gets a sensible step. Try them in the Lab with *Compare all three*.",
+      "keyIdea": "Almost every neural network is trained with gradient descent, usually with momentum or Adam.",
+      "frameTag": "done",
+      "reveal": ["surface", "ball", "path", "chart"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Start: standing on the hillside",
+      "body": "The height here is {f}. Press play to start walking downhill."
+    },
+    "grad": {
+      "title": "Step {step}: feel the slope",
+      "body": "The ground tilts with steepness {grad}. The arrow points downhill, against the gradient."
+    },
+    "update": {
+      "title": "Step {step}: move downhill",
+      "body": "Moved one step against the slope. The height is now {f}."
+    },
+    "diverged": {
+      "title": "It flew off the landscape",
+      "body": "Each step overshot further than the last until the numbers became enormous. Lower the learning rate and try again."
+    },
+    "done": {
+      "title": "Done: {step} steps taken",
+      "body": "The final height is {f} and the slope is {grad}. Try another landscape, another optimizer, or compare all three."
+    }
+  },
+  "stats": {
+    "step": "STEP",
+    "height": "HEIGHT",
+    "slope": "SLOPE"
+  },
+  "lab": {
+    "breakIt": "On the **Ravine**, drag the learning rate above **0.2** and press play: the ball bounces higher each step until it flies off. Then pick **Two valleys**: plain gradient descent settles in the shallow valley on the right, while **Momentum** rolls through to the deeper one. Turn on **Compare all three** to race them.",
+    "presets": {
+      "bowl": "Bowl",
+      "ravine": "Ravine",
+      "saddle": "Saddle",
+      "two-valleys": "Two valleys"
+    },
+    "params": {
+      "learningRate": {
+        "label": "Learning rate",
+        "hint": "How big each step is, compared with the slope."
+      },
+      "steps": {
+        "label": "Steps",
+        "hint": "How many times to feel the slope and step."
+      }
+    },
+    "errors": {}
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is gradient descent?",
+        "body": "Gradient descent is the method almost every machine learning model uses to learn. You write down a **loss**: one number that says how wrong the model is. Then you repeatedly nudge the model's numbers in the direction that lowers the loss fastest. That direction is the negative of the **gradient**.\n\nIn lesson 1 the landscape had two directions (slope and height of a line). A neural network has millions, but the idea is the same: feel the slope, take a small step downhill, repeat."
+      },
+      {
+        "heading": "The learning rate",
+        "body": "The learning rate decides how far each step goes. Too small and training takes forever. Too large and each step jumps over the bottom, possibly landing higher than where it started; then training **diverges**. The best value depends on how steep the landscape is, which is why it is usually tuned by trying a few values.\n\nOn a landscape that is much steeper in one direction than another (a *ravine*), no single learning rate is good for both directions. That is what the zig-zag in this lesson shows."
+      },
+      {
+        "heading": "Momentum and Adam",
+        "body": "**Momentum** keeps a running velocity: each step adds the new gradient to most of the previous velocity. Bounces that change sign cancel out; steady pushes in one direction build up speed. It also helps roll through small bumps and shallow valleys.\n\n**Adam** keeps two running averages: one of the gradient (like momentum) and one of its squared size. Dividing the first by the square root of the second gives every direction a step of similar size, whether that direction is steep or flat. It is the default choice for training most deep networks.",
+        "table": {
+          "headers": ["Optimizer", "Remembers", "Good at", "Watch out for"],
+          "rows": [
+            ["Plain", "Nothing", "Simple, predictable bowls", "Zig-zags in ravines; stuck in shallow valleys"],
+            ["Momentum", "Its recent velocity", "Ravines, small bumps", "Can overshoot and circle the bottom"],
+            ["Adam", "Average slope and average size", "Very different steepness per direction", "Can stop short of the very bottom"]
+          ]
+        }
+      },
+      {
+        "heading": "Valleys and saddles",
+        "body": "Real loss landscapes have more than one valley. Gradient descent only knows the ground under its feet, so it settles in whichever valley it rolls into first, which may not be the deepest (*Two valleys* in the Lab).\n\nA **saddle** is a point that is a minimum one way and a maximum the other way, like a horse saddle. The slope there is zero, so a ball balanced exactly on it would stay. A tiny nudge sends it off downhill (*Saddle* in the Lab). In big networks, saddles are far more common than bad valleys."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Why go against the gradient?",
+        "a": "The gradient points in the direction where the height increases fastest. We want the height (the loss) to decrease, so we step the opposite way."
+      },
+      {
+        "q": "How do I pick a learning rate?",
+        "a": "Try a few values spaced by about ×3 (0.001, 0.003, 0.01, …) and keep the largest that still makes the loss go down steadily. If the loss jumps around or grows, it is too big."
+      },
+      {
+        "q": "Does gradient descent always find the best answer?",
+        "a": "Only when the landscape has a single valley, like the bowl and the ravine here (and the loss in lesson 1). With several valleys it finds a good one, not necessarily the best."
+      },
+      {
+        "q": "What is stochastic gradient descent?",
+        "a": "With lots of data, computing the exact slope uses every example and is slow. Stochastic gradient descent estimates the slope from a small random batch of examples each step. The path gets noisier, but each step is much cheaper."
+      },
+      {
+        "q": "Is Adam always better?",
+        "a": "No. Adam is a great default, but plain gradient descent with momentum sometimes generalises better and is still used to train many image models."
+      }
+    ]
+  }
+}

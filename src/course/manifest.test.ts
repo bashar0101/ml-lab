@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { hasLessonModule } from "@/lessons/registry";
 import { chapters, lessonIndex, lessons, lessonsInChapter, liveLessons, nextLesson } from "./manifest";
 
 describe("course manifest", () => {
@@ -9,8 +10,11 @@ describe("course manifest", () => {
     expect(lessons[0].slug).toBe("linear-regression");
   });
 
-  it("only lesson 1 is live", () => {
-    expect(liveLessons().map((l) => l.slug)).toEqual(["linear-regression"]);
+  it("live lessons are a prefix of the course, each with a registered module", () => {
+    const live = liveLessons().map((l) => l.slug);
+    expect(live).toEqual(lessons.slice(0, live.length).map((l) => l.slug));
+    for (const slug of live) expect(hasLessonModule(slug), slug).toBe(true);
+    expect(live).toContain("gradient-descent");
   });
 
   it("nextLesson walks course order and ends", () => {

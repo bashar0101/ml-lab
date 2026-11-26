@@ -3,6 +3,7 @@ import type { AnyLessonModule } from "./types";
 /** Each lesson loads on demand so a lesson page only ships its own code. */
 const modules: Record<string, () => Promise<{ default: AnyLessonModule }>> = {
   "linear-regression": () => import("./linear-regression"),
+  "gradient-descent": () => import("./gradient-descent"),
 };
 
 export function hasLessonModule(slug: string): boolean {

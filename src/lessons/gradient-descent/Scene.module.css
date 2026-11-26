@@ -1,0 +1,102 @@
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  font-family: var(--font-ui);
+}
+
+.caption,
+.tick,
+.legend text {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.frame {
+  fill: none;
+  stroke: var(--line-2);
+}
+
+.b0 {
+  fill: color-mix(in srgb, var(--green) 100%, var(--stage));
+}
+.b1 {
+  fill: color-mix(in srgb, var(--green) 55%, var(--peach));
+}
+.b2 {
+  fill: color-mix(in srgb, var(--peach) 85%, var(--stage));
+}
+.b3 {
+  fill: color-mix(in srgb, var(--peach) 55%, var(--lavender));
+}
+.b4 {
+  fill: color-mix(in srgb, var(--lavender) 85%, var(--stage));
+}
+.b5 {
+  fill: color-mix(in srgb, var(--lavender) 70%, var(--line-2));
+}
+
+.contour line {
+  stroke: var(--ink);
+  stroke-opacity: 0.22;
+  stroke-width: 0.8;
+}
+
+.axis {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+
+.path,
+.series {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.plain {
+  stroke: var(--ink);
+}
+
+.momentum {
+  stroke: var(--blue);
+  stroke-dasharray: 6 4;
+}
+
+.adam {
+  stroke: var(--peach-2);
+  stroke-dasharray: 2 4;
+}
+
+.ball {
+  stroke-dasharray: none;
+  stroke-width: 1.6;
+  stroke: var(--ink);
+}
+
+.ball.plain {
+  fill: var(--card);
+}
+
+.ball.momentum {
+  fill: var(--blue);
+}
+
+.ball.adam {
+  fill: var(--peach-2);
+}
+
+.blown {
+  opacity: 0.35;
+}
+
+.arrow {
+  stroke: var(--red);
+  stroke-width: 2.6;
+}
+
+.arrowHead {
+  fill: var(--red);
+}

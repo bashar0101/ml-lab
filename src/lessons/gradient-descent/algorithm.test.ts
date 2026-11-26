@@ -21,7 +21,7 @@ describe("runGradientDescent", () => {
   for (const s of SURFACES)
     for (const opt of OPTS)
       it(`matches NumPy: ${s.id} / ${opt}`, () => {
-        const fx = fixtures[s.id as SurfaceId][opt] as Record<string, [number, number]>;
+        const fx = fixtures[s.id as SurfaceId][opt] as Record<string, number[]>;
         const t = runGradientDescent({ surface: s.id, optimizer: opt, compare: false, learningRate: s.lr, steps: 40 });
         const after = (step: number) => t.frames.filter((f) => f.codeLine.startsWith("update") && f.state.step === step)[0].state.walkers[0];
         for (const step of [1, 10, 40]) {

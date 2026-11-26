@@ -28,6 +28,7 @@ export interface Walker {
 
 export interface GdState {
   step: number;
+  surface: SurfaceId;
   /** The chosen optimizer first; the other two follow when comparing. */
   walkers: Walker[];
 }
@@ -66,7 +67,7 @@ export function runGradientDescent(p: GdParams): Trace<GdState> {
   const push = (step: number, codeLine: string, event: string, tags: string[] = [], fOverride?: number) => {
     const w = walkers[0];
     frames.push({
-      state: { step, walkers: walkers.map((q) => ({ ...q })) },
+      state: { step, surface: p.surface, walkers: walkers.map((q) => ({ ...q })) },
       codeLine,
       event,
       tags,

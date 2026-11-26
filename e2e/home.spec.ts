@@ -1,13 +1,14 @@
 import { expect, test } from "@playwright/test";
+import { lessons, liveLessons } from "../src/course/manifest";
 
-test("home lists 14 lessons with 1 live and links into lesson 1", async ({ page }) => {
+test("home lists every lesson, live ones as links, and links into lesson 1", async ({ page }) => {
   const errors: string[] = [];
   page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Watch machines");
-  await expect(page.locator("[data-lesson-status=live]")).toHaveCount(1);
-  await expect(page.locator("[data-lesson-status=soon]")).toHaveCount(13);
+  await expect(page.locator("[data-lesson-status=live]")).toHaveCount(liveLessons().length);
+  await expect(page.locator("[data-lesson-status=soon]")).toHaveCount(lessons.length - liveLessons().length);
   await expect(page.locator("[data-chapter-card]")).toHaveCount(6);
   await page.getByRole("link", { name: /Start with linear regression/ }).click();
   await expect(page).toHaveURL(/\/lessons\/linear-regression\/$/);
