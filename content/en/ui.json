@@ -308,5 +308,18 @@
   "attn.feature.fish": "fish",
   "attn.textLabel": "Your sentence",
   "attn.textHint": "2 to 12 words from: the a and cat dog bird fish it chased saw ate ran slept was hungry tired.",
-  "attn.wordLabel": "Inspect a word"
+  "attn.wordLabel": "Inspect a word",
+
+  "search.label": "Search the course",
+  "search.placeholder": "Search lessons, steps and ideas…",
+  "search.results": "Results",
+  "search.hint": "Type a word: try “softmax”, “overfitting” or “gradient”.",
+  "search.loading": "Loading the search index…",
+  "search.error": "Search is unavailable right now. Check your connection and try again.",
+  "search.empty": "No matches. Try a shorter or different word.",
+  "search.keys": "↑ ↓ to move · Enter to open · Esc to close",
+  "search.kind.lesson": "Lesson",
+  "search.kind.step": "Step",
+  "search.kind.topic": "Article",
+  "search.kind.faq": "FAQ"
 }

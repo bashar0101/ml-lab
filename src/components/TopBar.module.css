@@ -37,8 +37,20 @@
   font: 12px var(--font-ui);
 }
 
-.search:disabled {
-  cursor: default;
+.search {
+  cursor: pointer;
+  align-items: center;
+}
+
+.search:hover {
+  border-color: var(--ink);
+}
+
+.searchIcon {
+  display: none;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink);
 }
 
 .kbd {
@@ -73,9 +85,17 @@
 
 @media (max-width: 640px) {
   .search {
+    inline-size: auto;
+    margin-inline: auto 0;
+    min-inline-size: 36px;
+    block-size: 34px;
+    justify-content: center;
+  }
+  .searchLabel,
+  .search .kbd {
     display: none;
   }
-  .search + .end {
-    margin-inline-start: auto;
+  .searchIcon {
+    display: inline;
   }
 }
