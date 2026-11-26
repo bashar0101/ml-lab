@@ -61,7 +61,7 @@
       "id": "fading",
       "rail": "Fading",
       "title": "When blame fades away",
-      "body": "Training repeats this for every example, epoch after epoch. The bars show how big each layer's gradients are. Here they are similar. But every layer multiplies the blame by an activation slope, and the sigmoid's slope is at most 0.25. In the Lab, try **5 hidden layers** with **Sigmoid**: the first layer's gradient becomes hundreds of times smaller than the last's, so the early layers barely learn.",
+      "body": "Training repeats this for every example, epoch after epoch. The bars show how big each layer's gradients are: dashed for the first epoch, filled for now. Here they are similar. But every layer multiplies the blame by an activation slope, and the sigmoid's slope is at most 0.25. In the Lab, try **5 hidden layers** with **Sigmoid**: in the first epoch the first layer's gradient is hundreds of times smaller than the last's, and soon every gradient is tiny, so the network barely learns.",
       "keyIdea": "Vanishing gradients: deep networks use ReLU-like activations and careful initialisation to keep blame alive.",
       "frameTag": "done",
       "reveal": ["network", "values", "chart"]
@@ -98,7 +98,7 @@
     },
     "done": {
       "title": "Done",
-      "body": "Compare the bars: similar sizes mean every layer is learning."
+      "body": "Dashed bars show the first epoch, filled bars the latest. A first layer much shorter than the last means blame fades before it reaches the early layers; bars that are all tiny mean the network has stalled."
     }
   },
   "stats": {
@@ -107,7 +107,7 @@
     "ratio": "LAST ÷ FIRST"
   },
   "lab": {
-    "breakIt": "Set **5 hidden layers** and **Sigmoid**: the first layer's gradient is hundreds of times smaller than the last layer's, so the early layers barely change. Switch to **ReLU** or **tanh** and the bars even out.",
+    "breakIt": "Set **5 hidden layers** and **Sigmoid**: in the first epoch (dashed bars) the first layer's gradient is hundreds of times smaller than the last layer's, and soon every gradient falls below 0.001, so the whole network stalls. Switch to **tanh** and the first-epoch bars stay within 10× of each other. **ReLU** does too, but press **New random weights** once and it dies: every gradient is exactly 0 and nothing learns.",
     "presets": {
       "blobs": "Two groups",
       "moons": "Moons",

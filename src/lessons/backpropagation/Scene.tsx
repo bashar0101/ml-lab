@@ -34,6 +34,9 @@ export function Scene({ trace, index, reveal, stale }: SceneProps<BackpropState,
   const blameLayer = (l: number) => l >= 1 && L - (l - 1) <= s.shownBackward; // activation layer l ↔ weight layer l-1
   const history = s.history;
   const latest = history.at(-1);
+  const firstEpoch = history[0];
+  // log scale: 1e-5 … 1 (clamped so a huge gradient stays inside the picture)
+  const barWidth = (g: number) => Math.max(2, ((Math.log10(Math.min(1, Math.max(g, 1e-5))) + 5) / 5) * (INFO.x1 - INFO.x0 - 60));
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className={styles.svg} role="img" aria-label={t("bp.scene.label")}>
@@ -140,19 +143,21 @@ export function Scene({ trace, index, reveal, stale }: SceneProps<BackpropState,
               {t("bp.scene.chart", { epoch: history.length })}
             </text>
             {latest.map((g, l) => {
-              // log scale: 1e-5 … 1
-              const w = Math.max(2, ((Math.log10(Math.max(g, 1e-5)) + 5) / 5) * (INFO.x1 - INFO.x0 - 60));
               const y = 166 + l * 26;
               return (
                 <g key={l} data-part="grad-bar">
                   <text className={styles.tick} x={INFO.x0} y={y + 12}>
                     {t("bp.scene.layer", { n: l + 1 })}
                   </text>
-                  <rect className={styles.bar} x={INFO.x0 + 56} y={y} width={w} height={16} rx={3} />
+                  <rect className={styles.bar} x={INFO.x0 + 56} y={y + 3} width={barWidth(g)} height={10} rx={3} />
+                  <rect data-part="grad-ghost" className={styles.ghost} x={INFO.x0 + 56} y={y} width={barWidth(firstEpoch[l])} height={16} rx={3} />
                 </g>
               );
             })}
             <text className={styles.tick} x={INFO.x0} y={166 + latest.length * 26 + 14}>
+              {t("bp.scene.ghost")}
+            </text>
+            <text className={styles.tick} x={INFO.x0} y={166 + latest.length * 26 + 28}>
               {t("bp.scene.logScale")}
             </text>
           </g>
