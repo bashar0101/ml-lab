@@ -119,7 +119,7 @@ describe("registry", () => {
   it("loads linear-regression and knows what it lacks", async () => {
     expect((await loadLessonModule("linear-regression")).slug).toBe("linear-regression");
     expect(hasLessonModule("linear-regression")).toBe(true);
-    expect(hasLessonModule("recurrent-neural-network")).toBe(false);
+    expect(hasLessonModule("attention-transformers")).toBe(false);
   });
 });
 

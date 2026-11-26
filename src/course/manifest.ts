@@ -38,7 +38,7 @@ export const lessons: LessonEntry[] = [
   { slug: "neural-network", chapter: "neural", minutes: 12, level: "intermediate", status: "live" },
   { slug: "backpropagation", chapter: "neural", minutes: 12, level: "intermediate", status: "live" },
   { slug: "convolutional-neural-network", chapter: "deep", minutes: 14, level: "intermediate", status: "live" },
-  { slug: "recurrent-neural-network", chapter: "deep", minutes: 12, level: "intermediate", status: "soon" },
+  { slug: "recurrent-neural-network", chapter: "deep", minutes: 12, level: "intermediate", status: "live" },
   { slug: "attention-transformers", chapter: "deep", minutes: 15, level: "intermediate", status: "soon" },
 ];
 

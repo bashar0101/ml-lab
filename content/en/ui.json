@@ -272,5 +272,16 @@
   "cnn.drawHint": "Click squares here or on the picture to draw.",
   "cnn.drawGrid": "Drawing grid",
   "cnn.pixel": "Pixel row {r}, column {c}",
-  "cnn.filter": "Filter to follow"
+  "cnn.filter": "Filter to follow",
+
+  "rnn.scene.label": "The string unrolled letter by letter, with the network's six-number memory drawn as a coloured column after each letter; below, its answer; on the right, how often it remembers correctly for different lengths.",
+  "rnn.scene.strip": "the network reads one letter at a time; each column is its memory afterwards",
+  "rnn.scene.first": "remember me",
+  "rnn.scene.answer": "chance it started with a",
+  "rnn.scene.saysA": "It says: started with a ({pct}%)",
+  "rnn.scene.saysB": "It says: started with b ({pct}% for a)",
+  "rnn.scene.chart": "correct, by length (memory {memory})",
+  "rnn.scene.coin": "coin toss",
+  "rnn.textLabel": "Your string",
+  "rnn.textHint": "Letters a to h only; start with a or b; up to 40 letters."
 }

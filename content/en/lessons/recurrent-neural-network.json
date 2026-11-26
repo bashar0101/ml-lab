@@ -1,0 +1,153 @@
+{
+  "title": "Recurrent Neural Network",
+  "description": "Watch a recurrent network read a string one letter at a time, carrying a small memory forward, and see what happens when that memory weakens.",
+  "youWillLearn": [
+    "Why order matters for text, speech and other sequences",
+    "How a recurrent network carries a memory from step to step",
+    "What unrolling a network over time means",
+    "Why weak memory makes long sequences hard (and what LSTMs fix)"
+  ],
+  "story": [
+    {
+      "id": "order",
+      "rail": "Order",
+      "title": "Order matters",
+      "body": "In text, the order of things carries meaning: *dog bites man* is not *man bites dog*. Here is a tiny version of that problem: the network reads a string of letters, one at a time, and must answer at the end: **did the string start with a?** Everything after the first letter is noise it has to remember through.",
+      "keyIdea": "A sequence model has to remember what it has already seen.",
+      "frameTag": "start",
+      "reveal": ["letters", "hidden"]
+    },
+    {
+      "id": "memory",
+      "rail": "Memory",
+      "title": "A small memory",
+      "body": "The network keeps a **hidden state**: six numbers, drawn as a coloured column (peach negative, lavender positive). It starts empty. Reading the first letter writes something into it.",
+      "keyIdea": "The hidden state is the network's memory of everything so far.",
+      "frameTag": "first-step",
+      "reveal": ["letters", "hidden"]
+    },
+    {
+      "id": "unroll",
+      "rail": "Unroll",
+      "title": "The same cell, again and again",
+      "body": "For every next letter the network does exactly the same thing with exactly the same weights: combine the new letter with the old memory to make a new memory. Drawing one column per step like this is called **unrolling** the network through time.",
+      "keyIdea": "One cell, reused at every step: that loop is what makes it *recurrent*.",
+      "frameTag": "step-3",
+      "reveal": ["letters", "hidden"]
+    },
+    {
+      "id": "update",
+      "rail": "Update",
+      "title": "How the memory is updated",
+      "body": "Each step, the letter is turned into eight numbers (one per possible letter), multiplied by one set of weights; the old memory is multiplied by another; the two are added and squashed with tanh. The trained network has learned to write the first letter firmly into its memory and keep it there while the noise letters pass.",
+      "keyIdea": "New memory = squash(input weights × letter + memory weights × old memory).",
+      "math": "`hₜ = tanh(W_x·xₜ + W_h·hₜ₋₁ + b)`",
+      "frameTag": "step-3",
+      "reveal": ["letters", "hidden"]
+    },
+    {
+      "id": "answer",
+      "rail": "Answer",
+      "title": "Read the answer from the memory",
+      "body": "After the last letter, a final layer reads the memory and gives the chance that the string started with *a*. The chart on the right checks the trained network on many random strings: it remembers the first letter perfectly even 40 letters later.",
+      "keyIdea": "The final memory summarises the whole sequence.",
+      "math": "`p = sigmoid(v · h_T + c)`",
+      "frameTag": "done",
+      "reveal": ["letters", "hidden", "answer", "chart"]
+    },
+    {
+      "id": "fading",
+      "rail": "Fading",
+      "title": "When memory fades",
+      "body": "That memory lives in the weights that carry the old memory forward. In the Lab, turn **memory strength** down (it scales those weights). At 0.3 the network still gets short strings right, but by 8 letters it is wrong about a third of the time, and beyond 15 it is guessing. Real tasks hit the same wall: plain RNNs struggle to keep information across long gaps.",
+      "keyIdea": "Weak recurrent weights make memories fade: the motivation for LSTMs and, later, attention.",
+      "frameTag": "done",
+      "reveal": ["letters", "hidden", "answer", "chart"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Empty memory",
+      "body": "Press play to read the string one letter at a time."
+    },
+    "read": {
+      "title": "Read letter {step}",
+      "body": "The new memory is computed from this letter and the previous memory."
+    },
+    "predict": {
+      "title": "The answer",
+      "body": "Chance it started with a: {prob}."
+    }
+  },
+  "stats": {
+    "step": "LETTER",
+    "chanceA": "STARTED WITH A",
+    "memory": "MEMORY"
+  },
+  "lab": {
+    "breakIt": "Set **memory strength** to **0.3**: strings of up to about 4 letters are still right, but by 8 letters the network is wrong about a third of the time and from 15 on it's a coin toss (watch the chart). Then try the **Long** preset at 0.3 and at 1.",
+    "presets": {
+      "short": "Short",
+      "medium": "Medium",
+      "long": "Long"
+    },
+    "params": {
+      "memory": {
+        "label": "Memory strength",
+        "hint": "Scales the weights that carry memory forward. 1 = as trained."
+      }
+    },
+    "errors": {
+      "tooShort": "Type at least two letters.",
+      "tooLong": "At most 40 letters.",
+      "badLetters": "Use only the letters a to h.",
+      "badStart": "Start the string with a or b: that is the letter the network was trained to remember."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is a recurrent neural network?",
+        "body": "A recurrent neural network (RNN) processes a sequence one item at a time while keeping a **hidden state**, a memory that is updated at every step. The same weights are used at every step, so one small network can read sequences of any length: words in a sentence, notes in a melody, readings from a sensor."
+      },
+      {
+        "heading": "Unrolling and training",
+        "body": "Drawing one copy of the network per time step (*unrolling*) turns the loop into an ordinary deep network, where the depth is the sequence length. It is trained with **backpropagation through time**: the blame from the final answer flows backwards through every step. This lesson's network (6 memory numbers, trained offline on strings of 2–12 letters) learned to remember the first letter, and that skill carries over to much longer strings."
+      },
+      {
+        "heading": "Vanishing memory and gradients",
+        "body": "Every step multiplies the old memory by the recurrent weights and squashes it. If those factors shrink things, information from early steps fades, and so does the blame flowing back to them during training: the vanishing-gradient problem from lesson 11, now stretched across time.",
+        "table": {
+          "headers": ["Model", "Memory over long gaps", "Notes"],
+          "rows": [
+            ["Plain RNN", "Weak", "Simple; struggles beyond a few dozen steps on real tasks"],
+            ["LSTM / GRU", "Much better", "Gates decide what to keep, forget and output"],
+            ["Transformer", "Direct", "Attention looks back at every position at once (next lesson)"]
+          ]
+        }
+      },
+      {
+        "heading": "Where RNNs are used",
+        "body": "RNNs and especially LSTMs powered speech recognition, translation and text prediction in the 2010s. Transformers have since taken over most language tasks, but recurrent ideas live on in efficient models for long sequences and on small devices."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Why not feed the whole string in at once?",
+        "a": "Strings have different lengths, and the same pattern can appear anywhere. A recurrent network handles any length with the same small set of weights."
+      },
+      {
+        "q": "What does memory strength change?",
+        "a": "It multiplies the weights that carry the old memory into the new one. 1 is the trained network; smaller values make old information fade faster. It is a teaching control, not a training setting."
+      },
+      {
+        "q": "What is an LSTM?",
+        "a": "A recurrent cell with gates: small learned switches that decide what to write into memory, what to keep and what to read out. Gates let it hold information over hundreds of steps."
+      },
+      {
+        "q": "Why must the string start with a or b?",
+        "a": "That is the task the network was trained on: the first letter is a or b, every later letter is c to h. Other starts are outside what it has ever seen."
+      }
+    ]
+  }
+}

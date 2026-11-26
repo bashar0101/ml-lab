@@ -17,6 +17,7 @@ const MODEL_PARTS: Record<string, string[]> = {
   "neural-network": ["shade", "node-value", "probe", "edge"],
   backpropagation: ["value", "blame", "edge-grad", "grad-bar"],
   "convolutional-neural-network": ["window", "feature-cell", "pooled-map", "prob-bar"],
+  "recurrent-neural-network": ["hidden", "answer", "chart-point"],
 };
 
 describe.each(Object.entries(MODEL_PARTS))("%s with stale data", (slug, parts) => {
@@ -29,7 +30,7 @@ describe.each(Object.entries(MODEL_PARTS))("%s with stale data", (slug, parts) =
       </UiProvider>,
     );
     // The backpropagation picture is a network diagram; it has no data points to keep.
-    if (slug !== "backpropagation") expect(container.querySelectorAll("[data-part=point],[data-part=pixel]").length).toBeGreaterThan(0);
+    if (slug !== "backpropagation") expect(container.querySelectorAll("[data-part=point],[data-part=pixel],[data-part=letter]").length).toBeGreaterThan(0);
     for (const part of parts) expect(container.querySelector(`[data-part=${part}]`), part).toBeNull();
   });
 });
