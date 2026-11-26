@@ -1,0 +1,147 @@
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  font-family: var(--font-ui);
+}
+
+.caption,
+.tiny,
+.rowLabel {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.tiny {
+  font-size: 9.5px;
+}
+
+.rowLabel {
+  font-size: 10px;
+}
+
+.warn {
+  fill: var(--red);
+  font-weight: 700;
+}
+
+.token,
+.tokenSel {
+  stroke-width: 1.4;
+}
+
+.token {
+  fill: var(--card);
+  stroke: var(--line-2);
+}
+
+.tokenSel {
+  fill: color-mix(in srgb, var(--green) 55%, var(--card));
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.tokenText {
+  fill: var(--ink);
+  font-weight: 700;
+}
+
+.num {
+  fill: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.arc {
+  fill: none;
+  stroke: var(--blue);
+  stroke-linecap: round;
+}
+
+.weightBar {
+  fill: var(--blue);
+  opacity: 0.75;
+}
+
+.cellText {
+  fill: var(--ink);
+  font-size: 10px;
+}
+
+.t0,
+.t1,
+.t2,
+.t3,
+.t4,
+.t5,
+.t6 {
+  stroke: var(--line-2);
+  stroke-width: 0.6;
+}
+
+.t0 {
+  fill: var(--peach-2);
+}
+.t1 {
+  fill: color-mix(in srgb, var(--peach-2) 55%, var(--card));
+}
+.t2 {
+  fill: color-mix(in srgb, var(--peach) 75%, var(--card));
+}
+.t3 {
+  fill: var(--card);
+}
+.t4 {
+  fill: color-mix(in srgb, var(--lavender) 85%, var(--card));
+}
+.t5 {
+  fill: color-mix(in srgb, var(--lavender-2) 50%, var(--card));
+}
+.t6 {
+  fill: var(--lavender-2);
+}
+
+.h0 {
+  fill: var(--card);
+}
+.h1 {
+  fill: color-mix(in srgb, var(--blue) 15%, var(--card));
+}
+.h2 {
+  fill: color-mix(in srgb, var(--blue) 32%, var(--card));
+}
+.h3 {
+  fill: color-mix(in srgb, var(--blue) 50%, var(--card));
+}
+.h4 {
+  fill: color-mix(in srgb, var(--blue) 72%, var(--card));
+}
+.h5 {
+  fill: var(--blue);
+}
+
+.mapFrame {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.rowSel {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 1.6;
+}
+
+.mapTitle,
+.mapTitleSel {
+  font-size: 10.5px;
+}
+
+.mapTitle {
+  fill: var(--muted);
+}
+
+.mapTitleSel {
+  fill: var(--ink);
+  font-weight: 700;
+}

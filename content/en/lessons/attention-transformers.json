@@ -1,0 +1,169 @@
+{
+  "title": "Attention & Transformers",
+  "description": "See how self-attention lets each word look at every other word, how queries, keys and values work, and why a transformer needs word positions.",
+  "youWillLearn": [
+    "Why a word's meaning depends on the other words around it",
+    "How queries, keys and values decide where a word looks",
+    "How softmax turns scores into attention weights",
+    "Why transformers use several heads and add word positions"
+  ],
+  "story": [
+    {
+      "id": "context",
+      "rail": "Context",
+      "title": "A word needs context",
+      "body": "In *the cat chased the dog and it ran*, what is **it**? On its own, *it* means nothing: its vector here only says \"I point at something\". To understand it, the model has to look at the other words. **Self-attention** is how a transformer does that: every word gets to look at every word in the sentence, all at once. The weights in this lesson are set by hand so each part is easy to read; a real model learns them.",
+      "keyIdea": "Self-attention lets each word gather meaning from the other words in the sentence.",
+      "frameTag": "embed",
+      "reveal": ["vectors"]
+    },
+    {
+      "id": "query-key",
+      "rail": "Query & key",
+      "title": "Queries and keys",
+      "body": "Each word makes a **query** (what am I looking for?) and a **key** (what do I offer?). A score says how well one word's query fits another word's key: their dot product, divided by √d_k. In this head, *it* is looking for a *thing*, and the keys of *cat* and *dog* say \"I am a thing\". Nearer words get a small bonus, so *dog* (6.60) scores higher than *cat* (4.78).",
+      "keyIdea": "Score = query · key ÷ √d_k: high when what one word looks for matches what another offers.",
+      "math": "`score(i, j) = q_i · k_j / √d_k`",
+      "frameTag": "scores",
+      "reveal": ["vectors", "scores"]
+    },
+    {
+      "id": "softmax",
+      "rail": "Softmax",
+      "title": "From scores to weights",
+      "body": "Softmax turns the scores into **attention weights** that are all positive and add up to 1, and it stretches the gaps between them. *it* now puts **about 80%** of its attention on *dog* and **13%** on *cat*. The thickness of each arc shows its weight.",
+      "keyIdea": "Attention weights are a softmax of the scores: a share of attention for every word.",
+      "math": "`w_ij = exp(score_ij) / Σ_k exp(score_ik)`",
+      "frameTag": "softmax",
+      "reveal": ["vectors", "scores", "arcs"]
+    },
+    {
+      "id": "mix",
+      "rail": "Mix",
+      "title": "Blend the values",
+      "body": "Every word also has a **value**: the information it hands over (here, simply its meaning). The output for *it* is the values blended by the weights. Compare its two rows: before, *it* only said \"point\"; after attention it reads **thing 0.92, dog 0.80**. The word *it* now carries the meaning of *dog*.",
+      "keyIdea": "The output is a weighted average of the values: context flows into the word.",
+      "math": "`out_i = Σ_j w_ij · v_j`",
+      "frameTag": "mix",
+      "reveal": ["vectors", "scores", "arcs"]
+    },
+    {
+      "id": "heads",
+      "rail": "Heads",
+      "title": "Every word, several heads",
+      "body": "The same thing happens for every word at once: the grids on the right hold every word's weights, one row per word. And a transformer runs several **heads** side by side, each with its own queries and keys. Head 1 here links words to the thing they refer to; head 2 simply looks at the **previous word** (for *it*, 80% on *and*). Real models use dozens of heads and stack many layers.",
+      "keyIdea": "Many heads look for different relations in parallel; their outputs are combined.",
+      "frameTag": "all-words",
+      "reveal": ["vectors", "scores", "arcs", "matrix"]
+    },
+    {
+      "id": "order",
+      "rail": "Order",
+      "title": "Where is each word?",
+      "body": "Attention itself has no idea of order: it compares every word with every word. So each word's vector gets a **position wave** added to it, a pattern of sines and cosines that changes from slot to slot. That is how head 1 knows *dog* is nearer to *it*, and how head 2 finds the previous word. In the Lab, switch positions off and watch both heads lose their sense of place.",
+      "keyIdea": "Without position information, a transformer sees the sentence as a bag of words.",
+      "math": "`x_i = embedding(word_i) + position(i)`",
+      "frameTag": "done",
+      "reveal": ["vectors", "scores", "arcs", "matrix"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "The sentence",
+      "body": "{n} words. Press play to follow one word through attention."
+    },
+    "embed": {
+      "title": "Words become vectors",
+      "body": "Each word's meaning vector, plus a position wave."
+    },
+    "scores": {
+      "title": "Query meets keys",
+      "body": "One score per word: how well this word's query fits its key."
+    },
+    "softmax": {
+      "title": "Softmax",
+      "body": "The scores become weights that add up to 1."
+    },
+    "mix": {
+      "title": "Blend the values",
+      "body": "The output is the values mixed by those weights."
+    },
+    "all": {
+      "title": "Every word, both heads",
+      "body": "Each grid row is one word's attention. Head {head} is the one shown in detail."
+    },
+    "done": {
+      "title": "Attention done",
+      "body": "In a transformer, this output goes on to the next layer."
+    }
+  },
+  "stats": {
+    "words": "WORDS",
+    "top": "TOP WEIGHT",
+    "head": "HEAD"
+  },
+  "lab": {
+    "breakIt": "Untick **Add word positions**: *it* now splits its attention evenly between *cat* and *dog* (47% each), because it can no longer tell which one is nearer (try **Long**: three nouns, 32% each). Switch to **Head 2**: every word gets exactly the same share. With positions off, even shuffling the words leaves every word's attention exactly the same.",
+    "presets": {
+      "pronoun": "Pronoun",
+      "describe": "Describe",
+      "long": "Long"
+    },
+    "params": {
+      "positions": {
+        "label": "Add word positions",
+        "hint": "Adds each word's position wave to its vector. Off: the model sees only a bag of words."
+      }
+    },
+    "errors": {
+      "tooShort": "Type at least two words.",
+      "tooLong": "At most 12 words.",
+      "unknownWord": "This tiny model only knows 16 words: the, a, and, cat, dog, bird, fish, it, chased, saw, ate, ran, slept, was, hungry, tired."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is attention?",
+        "body": "Attention lets a model decide, for each word, which other words matter right now. Every word produces a **query**, a **key** and a **value** by multiplying its vector with three weight matrices. Scores compare queries with keys, softmax turns the scores into weights, and the weights blend the values. Because every word attends to every word in one step, a transformer does not have to pass information along one word at a time as a recurrent network does."
+      },
+      {
+        "heading": "About this lesson's model",
+        "body": "This is a single attention layer with two heads and **hand-set** weights over a 16-word vocabulary. Each word's meaning is a vector of 9 readable features (thing, action, pointer, …), and the position wave sits in 4 extra slots. Head 1 matches \"pointing\" or \"describing\" words to things, with a bonus for nearby words; head 2 matches each word to the previous one. Real transformers learn these weights from huge amounts of text, and their features are rarely this readable."
+      },
+      {
+        "heading": "Transformers",
+        "body": "A transformer stacks many layers of multi-head attention, each followed by a small neural network applied to every word. The heads' outputs are joined and mixed, then added back to each word's vector, so the meaning of every word is refined layer after layer.",
+        "table": {
+          "headers": ["Model", "How words share information", "Long-range links"],
+          "rows": [
+            ["RNN / LSTM", "One step at a time, through a memory", "Hard: memory fades"],
+            ["Transformer", "Every word looks at every word directly", "Easy, at a cost of n² comparisons"]
+          ]
+        }
+      },
+      {
+        "heading": "Where transformers are used",
+        "body": "Large language models, machine translation, speech recognition, image models (which treat image patches as words) and protein-structure prediction are all built on attention."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Why divide by √d_k?",
+        "a": "Dot products of longer vectors grow larger. Dividing by the square root of the key length keeps scores in a range where softmax still spreads attention instead of putting everything on one word."
+      },
+      {
+        "q": "Does every word really look at every word?",
+        "a": "In this kind of attention, yes: that is n × n scores for n words, which is why very long texts are expensive. Text generators also hide future words, so each word can only look back."
+      },
+      {
+        "q": "Why does the first word look mostly at itself in head 2?",
+        "a": "There is no previous word, so its best match is itself, the nearest position."
+      },
+      {
+        "q": "Are the attention weights the model's reasoning?",
+        "a": "They show where information flows inside one layer, which is useful, but in large models they are only part of the story; many layers and heads work together."
+      }
+    ]
+  }
+}
