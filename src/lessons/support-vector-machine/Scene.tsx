@@ -27,7 +27,7 @@ export function Scene({ trace, index, data, reveal, onData }: SceneProps<SvmStat
   const s = frame.state;
   const pts = data.points;
   const fits = s.alpha.length === pts.length;
-  const trained = fits && s.scale > 0;
+  const trained = fits && s.t > 0;
   const sc = makeScale(PLOT, DOMAIN, DOMAIN);
   const editable = !!onData && data.presetId === "custom";
 
@@ -110,7 +110,7 @@ export function Scene({ trace, index, data, reveal, onData }: SceneProps<SvmStat
       {show("points") &&
         pts.map((p, i) => (
           <g key={i}>
-            {show("support") && trained && s.margins[i] <= 1 + 1e-9 && (
+            {show("support") && trained && s.alpha[i] > 0 && (
               <circle data-part="support" className={styles.support} cx={sc.sx(p.x)} cy={sc.sy(p.y)} r={11} pointerEvents="none" />
             )}
             {picked.has(i) && <circle data-part="picked" className={styles.picked} cx={sc.sx(p.x)} cy={sc.sy(p.y)} r={13} pointerEvents="none" />}

@@ -15,7 +15,9 @@
       "body": "Two groups of points, nicely apart. You could draw countless straight lines between them and every one would classify all points correctly. Which line should we trust for **new** points?",
       "keyIdea": "Getting the training points right isn't enough; we want the line that is safest for points we haven't seen.",
       "frameTag": "start",
-      "reveal": ["points"]
+      "reveal": [
+        "points"
+      ]
     },
     {
       "id": "street",
@@ -25,7 +27,12 @@
       "keyIdea": "The best boundary is the one with the biggest margin to both groups.",
       "math": "The model is `f(x) = w·x + b`. The middle line is `f(x) = 0`, the edges are `f(x) = ±1`, and the street's width is `2 / |w|`, so a wide street means a small `w`.",
       "frameTag": "first-epoch",
-      "reveal": ["points", "boundary", "margins", "shade"]
+      "reveal": [
+        "points",
+        "boundary",
+        "margins",
+        "shade"
+      ]
     },
     {
       "id": "push",
@@ -33,28 +40,48 @@
       "title": "Points push the street",
       "body": "Training visits the points in random order. A point that is safely outside the street does nothing. A point **inside the street or on the wrong side** pushes the boundary away from itself (orange halo). The strip on the right shows where every point stands: on the wrong side, in the street, or safe.",
       "keyIdea": "Only points that are too close or wrong ever change the model.",
-      "math": "This is the Pegasos algorithm: for a picked point, if `y·f(x) < 1` then its push count `α` goes up by one. The model is `f(x) = Σ α·y·K(xᵢ, x) / (λt)`.",
+      "math": "This is the Pegasos algorithm: for a picked point, if `y·f(x) < 1` then its push count `α` goes up by one. The street you see is the **average** of the street over all steps so far, which keeps it from jumping around.",
       "frameTag": "epoch-5",
-      "reveal": ["points", "boundary", "margins", "shade", "strip"]
+      "reveal": [
+        "points",
+        "boundary",
+        "margins",
+        "shade",
+        "strip"
+      ]
     },
     {
       "id": "supports",
       "rail": "Supports",
       "title": "Only a few points matter",
-      "body": "When training settles, a handful of points sit on the edges of the street or inside it. They are the **support vectors** (blue circles): they hold the street up. You could delete every other point and the street would not move.",
-      "keyIdea": "The whole model is defined by its support vectors.",
+      "body": "When training settles, the boundary is built only from the points that pushed at least once: the **support vectors** (blue circles). Points that never pushed don't appear in the formula at all, so deleting them would leave the street exactly where it is. Most support vectors sit on the edges of the street or inside it; a few pushed early on and have since been left safely behind.",
+      "keyIdea": "The model is a weighted sum over its support vectors and nothing else.",
       "frameTag": "done",
-      "reveal": ["points", "boundary", "margins", "shade", "strip", "support"]
+      "reveal": [
+        "points",
+        "boundary",
+        "margins",
+        "shade",
+        "strip",
+        "support"
+      ]
     },
     {
       "id": "strictness",
       "rail": "Strictness",
       "title": "How strict should it be?",
-      "body": "Real data overlaps, so no street is perfectly clear. The setting **C** decides the trade-off. A small C accepts some points inside the street (or even on the wrong side) to keep it wide. A large C insists on fewer violations, even if the street gets narrow and twisted around odd points.",
+      "body": "Real data overlaps, so no street is perfectly clear. The setting **C** decides the trade-off. A small C accepts some points inside the street (or even on the wrong side) to keep it wide. A large C insists on fewer violations, so the street gets narrower to fit the points more strictly.",
       "keyIdea": "C balances a wide margin against training mistakes.",
       "math": "The SVM minimises `λ/2·|w|² + mean(max(0, 1 − y·f(x)))` with `λ = 1/(C·n)`: the first part wants a wide street, the second (the *hinge loss*) punishes points inside it.",
       "frameTag": "done",
-      "reveal": ["points", "boundary", "margins", "shade", "strip", "support"]
+      "reveal": [
+        "points",
+        "boundary",
+        "margins",
+        "shade",
+        "strip",
+        "support"
+      ]
     },
     {
       "id": "kernel",
@@ -64,7 +91,14 @@
       "keyIdea": "A kernel lets a linear method draw curved boundaries without ever computing new features.",
       "math": "Replace the dot product `xᵢ·x` with a kernel. The RBF kernel `K(a, b) = e^(−γ·|a − b|²)` says how close two points are; `γ` sets how far each point's influence reaches.",
       "frameTag": "done",
-      "reveal": ["points", "boundary", "margins", "shade", "strip", "support"]
+      "reveal": [
+        "points",
+        "boundary",
+        "margins",
+        "shade",
+        "strip",
+        "support"
+      ]
     }
   ],
   "events": {
@@ -74,15 +108,15 @@
     },
     "pick": {
       "title": "Epoch {epoch}: who pushes?",
-      "body": "The highlighted points were inside the street or on the wrong side, so they push the boundary this epoch."
+      "body": "The highlighted points pushed the boundary at some moment during this epoch: they were inside the street or on the wrong side when they were visited."
     },
     "update": {
       "title": "Epoch {epoch}: the street moves",
-      "body": "Accuracy {accuracy}; {supports} points are on or inside the street."
+      "body": "Accuracy {accuracy}; {inside} points are on or inside the street."
     },
     "done": {
       "title": "Done after {epoch} epochs",
-      "body": "Fraction correct {accuracy}, with {supports} support vectors. Try another C, or the curved kernel."
+      "body": "Fraction correct {accuracy}, built from {supports} support vectors. Try another C, or the curved kernel."
     }
   },
   "stats": {
@@ -91,7 +125,7 @@
     "supports": "SUPPORTS"
   },
   "lab": {
-    "breakIt": "On **Overlapping**, slide **C** down to **0.01**: the street gets so wide that many points sit inside it and some end up on the wrong side. Push C to **100** and it narrows to chase every point. Then pick **Rings** with **Curved (RBF)** and drag **Gamma** to **20**: every point grows its own little island.",
+    "breakIt": "On **Overlapping**, slide **C** down to **0.01**: the street gets so wide that many points sit inside it and some end up on the wrong side. Push C to **100** and the street narrows to fit the points more strictly. Then pick **Rings** with **Curved (RBF)** and drag **Gamma** to **20**: every point grows its own little island.",
     "presets": {
       "blobs": "Two groups",
       "overlap": "Overlapping",
@@ -131,17 +165,33 @@
         "heading": "The kernel trick",
         "body": "An SVM only ever needs to know how similar two points are, measured by a dot product. Swap that dot product for a **kernel** function and the SVM behaves as if the data had been mapped into a richer space where a straight boundary works, without ever computing that space.\n\nThe popular **RBF** (Gaussian) kernel scores two points by how close they are. Its width `γ` matters: small γ gives smooth, wide curves; large γ lets every point influence only its own neighbourhood, which can overfit badly.",
         "table": {
-          "headers": ["Kernel", "Boundary shape", "Watch out for"],
+          "headers": [
+            "Kernel",
+            "Boundary shape",
+            "Watch out for"
+          ],
           "rows": [
-            ["Linear", "Straight line", "Fails on rings, moons and other curved data"],
-            ["RBF, small γ", "Smooth curves", "Can underfit tight shapes"],
-            ["RBF, large γ", "Islands around points", "Overfits noise"]
+            [
+              "Linear",
+              "Straight line",
+              "Fails on rings, moons and other curved data"
+            ],
+            [
+              "RBF, small γ",
+              "Smooth curves",
+              "Can underfit tight shapes"
+            ],
+            [
+              "RBF, large γ",
+              "Islands around points",
+              "Overfits noise"
+            ]
           ]
         }
       },
       {
         "heading": "How it is trained here",
-        "body": "Classic SVM solvers use quadratic programming. This lesson uses **Pegasos**, a simple stochastic method that reaches the same kind of solution: visit points in random order, and whenever one sits inside the street or on the wrong side, increase its weight `α`. The points that end up with `α > 0` and sit on or inside the street are the support vectors."
+        "body": "Classic SVM solvers use quadratic programming. This lesson uses **Pegasos**, a simple stochastic method: visit points in random order, and whenever one sits inside the street or on the wrong side, increase its weight `α`. The street that is drawn is the **average** of the street over all steps, a standard trick that makes Pegasos settle instead of jittering. The points with `α > 0` are the support vectors."
       }
     ],
     "faq": [
@@ -151,7 +201,7 @@
       },
       {
         "q": "What are support vectors?",
-        "a": "The training points that lie on the edges of the street or inside it. They are the only points with a say in where the boundary goes."
+        "a": "The training points the boundary is built from: here, the ones that pushed at least once. At the exact SVM optimum they are precisely the points on the edges of the street or inside it; Pegasos gets close to that."
       },
       {
         "q": "SVM or logistic regression?",

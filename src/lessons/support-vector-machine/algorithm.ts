@@ -20,8 +20,12 @@ export interface SvmState {
   t: number;
   /** How many times each point has pushed the boundary (Pegasos multipliers). */
   alpha: number[];
-  /** 1 / (λ·t); 0 before the first step. */
-  scale: number;
+  /**
+   * The model actually drawn: f(x) = Σ coef_j·y_j·K(x_j, x). It is the Pegasos *averaged*
+   * iterate (the average of α/(λ·t) over all steps), which settles where the last iterate
+   * would keep jumping when C is large.
+   */
+  coef: number[];
   kernel: Kernel;
   gamma: number;
   mean: [number, number];
@@ -66,15 +70,27 @@ function standardise(points: LabeledPoint[]) {
 
 /** f(x, y) for the model in `s`, trained on `points`. Positive = class 1 side. */
 export function decision(s: SvmState, points: LabeledPoint[], x: number, y: number): number {
-  if (s.scale === 0) return 0;
+  if (s.t === 0) return 0;
   const K = kernelFn(s.kernel, s.gamma);
   const q = [(x - s.mean[0]) / s.std[0], (y - s.mean[1]) / s.std[1]];
   let f = 0;
   points.forEach((p, j) => {
-    if (s.alpha[j] === 0) return;
-    f += s.alpha[j] * (p.c === 1 ? 1 : -1) * K([(p.x - s.mean[0]) / s.std[0], (p.y - s.mean[1]) / s.std[1]], q);
+    if (s.coef[j] === 0) return;
+    f += s.coef[j] * (p.c === 1 ? 1 : -1) * K([(p.x - s.mean[0]) / s.std[0], (p.y - s.mean[1]) / s.std[1]], q);
   });
-  return s.scale * f;
+  return f;
+}
+
+/** For the linear kernel: the weight vector w (in standardised units) of the drawn model. */
+export function linearWeights(s: SvmState, points: LabeledPoint[]): [number, number] {
+  let w0 = 0;
+  let w1 = 0;
+  points.forEach((p, j) => {
+    const c = s.coef[j] * (p.c === 1 ? 1 : -1);
+    w0 += c * ((p.x - s.mean[0]) / s.std[0]);
+    w1 += c * ((p.y - s.mean[1]) / s.std[1]);
+  });
+  return [w0, w1];
 }
 
 export function shuffled(n: number, rand: () => number): number[] {
@@ -99,32 +115,32 @@ export function runSvm(points: LabeledPoint[], p: SvmParams): Trace<SvmState> {
   const rand = mulberry32(p.seed);
 
   const alpha = Array.from({ length: n }, () => 0);
+  // Running sum of α/(λ·t) per point, for the averaged model.
+  const sum = Array.from({ length: n }, () => 0);
   let t = 0;
   const frames: Frame<SvmState>[] = [];
 
-  const snapshot = (epoch: number, picked: number[]) => {
-    const scale = t === 0 ? 0 : 1 / (lambda * t);
-    const f = Z.map((_, i) => scale * alpha.reduce((acc, a, j) => (a === 0 ? acc : acc + a * y[j] * K[j][i]), 0));
+  const snapshot = (epoch: number) => {
+    const coef = sum.map((v) => (t === 0 ? 0 : v / t));
+    const f = Z.map((_, i) => coef.reduce((acc, c, j) => (c === 0 ? acc : acc + c * y[j] * K[j][i]), 0));
     const margins = f.map((v, i) => y[i] * v);
     let norm = 0;
-    for (let i = 0; i < n; i++) if (alpha[i]) for (let j = 0; j < n; j++) if (alpha[j]) norm += alpha[i] * alpha[j] * y[i] * y[j] * K[i][j];
+    for (let i = 0; i < n; i++) if (coef[i]) for (let j = 0; j < n; j++) if (coef[j]) norm += coef[i] * coef[j] * y[i] * y[j] * K[i][j];
     const hinge = margins.reduce((a, m) => a + Math.max(0, 1 - m), 0) / n;
-    const state: SvmState = { epoch, t, alpha: [...alpha], scale, kernel: p.kernel, gamma: p.gamma, mean, std, margins, picked };
+    const state: SvmState = { epoch, t, alpha: [...alpha], coef, kernel: p.kernel, gamma: p.gamma, mean, std, margins, picked: [] };
     const metrics = {
       epoch,
-      objective: (lambda / 2) * scale * scale * norm + hinge,
+      objective: (lambda / 2) * norm + hinge,
       accuracy: margins.filter((m) => m > 0).length / n,
-      supports: margins.filter((m) => m <= 1 + 1e-9).length,
+      supports: alpha.filter((a) => a > 0).length,
+      inside: t === 0 ? 0 : margins.filter((m) => m <= 1 + 1e-9).length,
     };
     return { state, metrics };
   };
-  const push = (epoch: number, picked: number[], codeLine: string, event: string, tags: string[] = []) =>
-    frames.push({ ...snapshot(epoch, picked), codeLine, event, tags });
 
-  push(0, [], "init", "init", ["start"]);
+  frames.push({ ...snapshot(0), codeLine: "init", event: "init", tags: ["start"] });
   for (let epoch = 1; epoch <= p.epochs; epoch++) {
-    const before = [...alpha];
-    const tBefore = t;
+    const before = snapshot(epoch - 1);
     const picked: number[] = [];
     for (const i of shuffled(n, rand)) {
       t++;
@@ -134,18 +150,14 @@ export function runSvm(points: LabeledPoint[], p: SvmParams): Trace<SvmState> {
         alpha[i] += 1;
         if (!picked.includes(i)) picked.push(i);
       }
+      for (let j = 0; j < n; j++) if (alpha[j]) sum[j] += alpha[j] / (lambda * t);
     }
-    // Show which points pushed this epoch on the boundary as it was before the epoch…
-    const after = [...alpha];
-    const tAfter = t;
-    alpha.splice(0, n, ...before);
-    t = tBefore;
-    push(epoch - 1, picked, "pick", "pick");
-    // …then the boundary after it.
-    alpha.splice(0, n, ...after);
-    t = tAfter;
-    push(epoch, picked, "update", "update", epoch === 1 ? ["first-epoch"] : epoch === 5 ? ["epoch-5"] : []);
+    // Which points pushed during this epoch, shown on the model as it was before it…
+    frames.push({ state: { ...before.state, picked }, metrics: before.metrics, codeLine: "pick", event: "pick", tags: [] });
+    // …then the model after it.
+    const after = snapshot(epoch);
+    frames.push({ state: { ...after.state, picked }, metrics: after.metrics, codeLine: "update", event: "update", tags: epoch === 1 ? ["first-epoch"] : epoch === 5 ? ["epoch-5"] : [] });
   }
-  push(p.epochs, [], "return", "done", ["done"]);
+  frames.push({ ...snapshot(p.epochs), codeLine: "return", event: "done", tags: ["done"] });
   return { frames, meta: { algorithm: "support-vector-machine", seed: p.seed, truncated: false } };
 }
