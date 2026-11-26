@@ -75,3 +75,10 @@ describe("contourSegments", () => {
     expect(contourSegments((x, y) => x * x + y * y, [-1, 1], [-1, 1], 10, 50)).toEqual([]);
   });
 });
+
+describe("moons", () => {
+  it("fits inside the box without piling up on the edges", () => {
+    const pts = makeDataset("moons");
+    expect(pts.filter((p) => p.x <= 0.3 || p.x >= 9.7 || p.y <= 0.3 || p.y >= 9.7)).toHaveLength(0);
+  });
+});

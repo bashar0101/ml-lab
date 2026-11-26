@@ -176,5 +176,18 @@
   "log.scene.sigmoid": "score squashed into a probability",
   "log.scene.score": "score z = w·x + b",
   "log.axis.x": "hours studied",
-  "log.axis.y": "hours slept"
+  "log.axis.y": "hours slept",
+
+  "knn.scene.label": "Known points of each class and a new point (star) with lines to its nearest neighbours on the left, and the vote count and the ranked nearest distances on the right.",
+  "knn.scene.votes": "votes among the k nearest",
+  "knn.scene.nearest": "the k nearest, closest first",
+  "knn.scene.more": "… and {n} more",
+  "knn.axis.x": "sweetness",
+  "knn.axis.y": "crunchiness",
+  "knn.metric": "Distance",
+  "knn.metric.euclidean": "Straight line",
+  "knn.metric.manhattan": "Manhattan",
+  "knn.queryX": "New point x",
+  "knn.queryY": "New point y",
+  "knn.moveQuery": "Move the new point"
 }

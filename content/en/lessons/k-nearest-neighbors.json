@@ -1,0 +1,163 @@
+{
+  "title": "k-Nearest Neighbors",
+  "description": "See how k-nearest neighbors classifies a new point by asking its closest neighbours to vote, and how k changes everything. Free and interactive.",
+  "youWillLearn": [
+    "How to classify by asking similar examples",
+    "What distance means, and that there is more than one kind",
+    "How k trades noise against blur",
+    "Why there is no training, and what that costs"
+  ],
+  "story": [
+    {
+      "id": "new-point",
+      "rail": "New point",
+      "title": "What fruit is this?",
+      "body": "Each point is a fruit, measured by sweetness (across) and crunchiness (up). Peach circles are **peaches**, lavender squares are **plums**. A new fruit arrives: the black star. Is it a peach or a plum?",
+      "keyIdea": "Things that measure alike are probably alike.",
+      "frameTag": "start",
+      "reveal": ["points", "query"]
+    },
+    {
+      "id": "measure",
+      "rail": "Measure",
+      "title": "Measure every distance",
+      "body": "k-nearest neighbors has no formula and no training. It simply keeps every known fruit and, when a new one arrives, measures how far it is from **each** of them.",
+      "keyIdea": "Distance is how we turn *alike* into a number.",
+      "math": "Straight-line (Euclidean) distance: `d = √((x₁ − x₂)² + (y₁ − y₂)²)`.",
+      "frameTag": "measure",
+      "reveal": ["points", "query", "distances"]
+    },
+    {
+      "id": "nearest",
+      "rail": "Nearest",
+      "title": "Keep the k closest",
+      "body": "Sort the fruits by distance and keep the closest **k**, here 5. The dashed circle reaches exactly to the 5th one; everything outside it is ignored. The list on the right ranks them.",
+      "keyIdea": "k is the one setting you choose: how many neighbours to ask.",
+      "frameTag": "nearest",
+      "reveal": ["points", "query", "nearest"]
+    },
+    {
+      "id": "vote",
+      "rail": "Vote",
+      "title": "Let them vote",
+      "body": "Each of the k neighbours votes for its own class. The bars count the votes. Here k = 5 is odd, so two classes can't tie. With an even k (or three classes) a tie is possible; then the single closest neighbour breaks it.",
+      "keyIdea": "The answer is a majority vote of the closest examples.",
+      "frameTag": "vote",
+      "reveal": ["points", "query", "nearest", "votes"]
+    },
+    {
+      "id": "decide",
+      "rail": "Decide",
+      "title": "The answer",
+      "body": "The class with the most votes wins, and the star takes its colour. That is the whole algorithm: measure, sort, vote.",
+      "keyIdea": "No training at all: all the work happens when a question is asked.",
+      "frameTag": "decide",
+      "reveal": ["points", "query", "nearest", "votes"]
+    },
+    {
+      "id": "map",
+      "rail": "Everywhere",
+      "title": "Ask the question everywhere",
+      "body": "Now imagine a new fruit at every spot on the chart and colour each spot by the answer. That is the model's map. Its borders bend around the data, so unlike logistic regression it isn't limited to straight lines.",
+      "keyIdea": "k-NN can draw any shape of border, but it has to remember all the data to do it.",
+      "frameTag": "map",
+      "reveal": ["points", "query", "votes", "map"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "A new point arrives",
+      "body": "The star is the point we want a class for. Press play to ask its neighbours."
+    },
+    "measure": {
+      "title": "Measure every distance",
+      "body": "One line to every known point. The closest one is {nearest} away."
+    },
+    "nearest": {
+      "title": "Keep the {k} closest",
+      "body": "Everything outside the dashed line is ignored."
+    },
+    "vote": {
+      "title": "Count the votes",
+      "body": "The winning class has {winnerVotes} of the {k} votes."
+    },
+    "decide": {
+      "title": "Decide",
+      "body": "The star takes the class with the most votes ({winnerVotes} of {k})."
+    },
+    "map": {
+      "title": "The whole map",
+      "body": "Every spot coloured by the class k-NN would give it. Click anywhere to move the star, or change k and watch the borders move."
+    }
+  },
+  "stats": {
+    "k": "K",
+    "nearest": "NEAREST",
+    "votes": "VOTES"
+  },
+  "lab": {
+    "breakIt": "On **Overlapping**, set **k = 1**: every stray point grows its own little island, so the map follows the noise. Then push k up to **25**: the borders get smooth, but small groups are outvoted and disappear. Try **Manhattan** distance too: the circle becomes a diamond.",
+    "presets": {
+      "blobs": "Two groups",
+      "overlap": "Overlapping",
+      "moons": "Moons",
+      "three-blobs": "Three groups"
+    },
+    "params": {
+      "k": {
+        "label": "k (neighbours)",
+        "hint": "How many of the closest points get a vote."
+      }
+    },
+    "errors": {
+      "tooFew": "Add at least two points."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is k-nearest neighbors?",
+        "body": "k-nearest neighbors (k-NN) classifies a new example by finding the **k** most similar examples it has already seen and letting them vote. It is one of the simplest machine learning methods and often a surprisingly strong one.\n\nIt doesn't learn a formula. It memorises the data and does all its work when asked a question. That makes it *lazy*: training is instant, but every prediction has to look at the whole dataset."
+      },
+      {
+        "heading": "Choosing k",
+        "body": "**Small k** (like 1) follows the data closely: every noisy point creates its own region. That is *overfitting*. **Large k** smooths the borders: it ignores noise, but also small real groups, and with k equal to all the data it predicts the majority class everywhere. That is *underfitting*.\n\nIn practice k is chosen by trying several values and measuring accuracy on examples the model hasn't seen. With two classes an odd k avoids most ties."
+      },
+      {
+        "heading": "Which distance?",
+        "body": "**Straight-line** (Euclidean) distance is the everyday one. **Manhattan** distance adds the steps along each axis, like walking city blocks; its circles are diamonds. Both only make sense when the features are on comparable scales: if one feature is measured in grams and another in kilograms, the grams will dominate. Standardise features first.",
+        "table": {
+          "headers": ["Setting", "Effect", "Risk"],
+          "rows": [
+            ["k = 1", "Borders hug every point", "Overfits noise"],
+            ["Medium k", "Smooth but flexible borders", "Needs tuning"],
+            ["k = all points", "Majority class everywhere", "Ignores the input"],
+            ["Unscaled features", "One feature dominates distance", "Wrong neighbours"]
+          ]
+        }
+      },
+      {
+        "heading": "Strengths and weaknesses",
+        "body": "k-NN needs no training, handles any number of classes and can draw borders of any shape. But predictions get slow with lots of data, it needs all the data at prediction time, and it suffers from the **curse of dimensionality**: with many features, every point is far from every other, and *nearest* stops meaning much."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Does k-NN learn anything?",
+        "a": "Not in the usual sense. Its training step just stores the data. All the work is done at prediction time."
+      },
+      {
+        "q": "Why use an odd k?",
+        "a": "With two classes an odd k can't split the vote evenly, so there are no ties. With more classes ties can still happen; here the closest neighbour breaks them."
+      },
+      {
+        "q": "Can k-NN predict numbers instead of classes?",
+        "a": "Yes: average the neighbours' values instead of voting. That is k-NN regression."
+      },
+      {
+        "q": "Is it used in practice?",
+        "a": "Very much, often in its modern form: finding the nearest neighbours of an embedding vector is how many recommendation and search systems work."
+      }
+    ]
+  }
+}
