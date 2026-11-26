@@ -3,6 +3,7 @@ import { LessonArticle } from "@/components/LessonArticle";
 import { LessonWorkspace } from "@/components/workspace/LessonWorkspace";
 import { DEFAULT_LOCALE, loadLesson, loadUi } from "@/content/load";
 import { getLesson, liveLessons } from "@/course/manifest";
+import { ogImage } from "@/og/images";
 
 export const dynamicParams = false;
 
@@ -19,7 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description: content.description,
-    openGraph: { title, description: content.description, type: "article" },
+    openGraph: { title, description: content.description, type: "article", siteName: ui["site.name"], images: [ogImage(slug, content.title)] },
+    twitter: { card: "summary_large_image", title, description: content.description },
     alternates: { canonical: `/lessons/${slug}/` },
   };
 }

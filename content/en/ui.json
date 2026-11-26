@@ -1,6 +1,8 @@
 {
   "site.name": "ML Lab",
   "site.tagline": "Machine learning, step by step",
+  "og.siteFooter": "{n} free interactive lessons",
+  "og.lessonFooter": "Lesson {n} of {total} · {minutes} min",
   "site.description": "Learn machine learning and deep learning by watching algorithms work, step by step, then experimenting with them. Free, no sign-up.",
   "nav.home": "ML Lab home",
   "nav.search": "Search lessons and ideas",

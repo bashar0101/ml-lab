@@ -60,6 +60,8 @@ Use it to:
   | 04 Finding Patterns | K-Means Clustering, Principal Component Analysis |
   | 05 Neural Networks | Neural Network, Backpropagation |
   | 06 Deep Learning | Convolutional Neural Network, Recurrent Neural Network, Attention & Transformers |
+- **Search:** press **Ctrl K** (or **/**) to search every lesson, story step, article section and FAQ, then jump straight to that step.
+- **Share previews:** every lesson has its own Open Graph image, so links show a proper card in chats and social posts.
 - **Progress tracking** saved in your own browser; no sign-up.
 - **Shareable links** to any step or to the Lab (`#step-3`, `#lab`).
 - **Light and dark themes**, keyboard shortcuts (←/→, Space, R, L), screen-reader friendly, and a phone layout.
