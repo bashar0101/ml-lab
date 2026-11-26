@@ -76,7 +76,7 @@
     },
     "predict": {
       "title": "The answer",
-      "body": "Chance it started with a: {prob}."
+      "body": "Chance it started with a: {probPct}%."
     }
   },
   "stats": {

@@ -72,7 +72,7 @@ export function runRnn(text: string, p: RnnParams): Trace<RnnState> {
       codeLine,
       event,
       tags,
-      metrics: { step, length: text.length, prob: f.prob, memory: p.memory },
+      metrics: { step, length: text.length, prob: f.prob, probPct: Math.round(f.prob * 1000) / 10, memory: p.memory },
     });
   push(0, "init", "init", ["start"]);
   for (let t = 1; t <= text.length; t++) push(t, "read", "read", t === 1 ? ["first-step"] : t === 3 ? ["step-3"] : []);

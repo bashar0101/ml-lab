@@ -13,6 +13,9 @@ const cnn: LessonModule<CnnState, CnnParams, CnnData> = {
   Scene,
   LabControls,
   code: { python, pseudo },
+  // The trace always has the same 42 frames: drawing or switching filter keeps the current step.
+  keepFrameOnData: true,
+  viewOnly: () => true,
   stats: (frame) => [
     { labelKey: "filter", value: frame.metrics.filter },
     { labelKey: "value", value: Number.isFinite(frame.metrics.value) ? frame.metrics.value : undefined },

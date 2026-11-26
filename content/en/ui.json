@@ -267,6 +267,7 @@
   "cnn.scene.probs": "how likely each digit is",
   "cnn.presets": "Digits",
   "cnn.digit": "Digit {d}",
+  "cnn.shifted": "Shifted 3",
   "cnn.noisy": "Noisy 8",
   "cnn.blank": "Blank",
   "cnn.drawHint": "Click squares here or on the picture to draw.",

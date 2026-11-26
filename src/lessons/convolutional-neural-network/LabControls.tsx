@@ -8,7 +8,10 @@ import { blankImage, digitImage, type CnnParams } from "./algorithm";
 import grid from "./LabControls.module.css";
 import type { CnnData } from "./Scene";
 
-/** Digit 8 with 15 % of pixels flipped (a fixed, repeatable pattern). */
+/** A 3 pushed into the bottom-right corner, as far as the 8 × 8 grid allows. */
+export const SHIFTED: CnnData["image"] = digitImage(3, 3, 1);
+
+/** Digit 8 with each pixel flipped at a 15 % chance (a fixed pattern: 13 of 64 squares end up flipped). */
 export function noisyEight(): CnnData["image"] {
   const rand = mulberry32(15);
   return digitImage(8, 1, 0).map((row) => row.map((v) => (rand() < 0.15 ? 1 - v : v)));
@@ -35,6 +38,9 @@ export function LabControls({ params, data, onParams, onData }: LabControlsProps
         ))}
       </div>
       <div className={styles.chips}>
+        <button type="button" className={styles.chip} aria-pressed={data.presetId === "shifted"} onClick={() => onData({ presetId: "shifted", image: SHIFTED })}>
+          {t("cnn.shifted")}
+        </button>
         <button type="button" className={styles.chip} aria-pressed={data.presetId === "noisy"} onClick={() => onData({ presetId: "noisy", image: noisyEight() })}>
           {t("cnn.noisy")}
         </button>
