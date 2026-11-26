@@ -1,4 +1,4 @@
-import { mulberry32 } from "@/engine/random";
+import { mulberry32, shuffled } from "@/engine/random";
 import type { Frame, Trace } from "@/engine/types";
 import type { LabeledPoint } from "../shared/datasets2d";
 
@@ -91,15 +91,6 @@ export function linearWeights(s: SvmState, points: LabeledPoint[]): [number, num
     w1 += c * ((p.y - s.mean[1]) / s.std[1]);
   });
   return [w0, w1];
-}
-
-export function shuffled(n: number, rand: () => number): number[] {
-  const order = Array.from({ length: n }, (_, i) => i);
-  for (let i = n - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [order[i], order[j]] = [order[j], order[i]];
-  }
-  return order;
 }
 
 export function runSvm(points: LabeledPoint[], p: SvmParams): Trace<SvmState> {

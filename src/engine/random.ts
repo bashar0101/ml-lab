@@ -9,3 +9,13 @@ export function mulberry32(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+/** Fisher–Yates shuffle of 0..n-1 driven by `rand` (same order as tools/fixtures/mulberry32.py). */
+export function shuffled(n: number, rand: () => number): number[] {
+  const order = Array.from({ length: n }, (_, i) => i);
+  for (let i = n - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return order;
+}
