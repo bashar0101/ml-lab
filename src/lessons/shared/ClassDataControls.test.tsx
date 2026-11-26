@@ -42,3 +42,15 @@ describe("ClassDataControls", () => {
     expect(onData).toHaveBeenLastCalledWith({ presetId: "custom", points: [], drawClass: 0 });
   });
 });
+
+describe("typed points", () => {
+  it("are kept inside the 0–10 chart", async () => {
+    const onData = vi.fn();
+    const data: ClassData = { presetId: "custom", points: [], drawClass: 1 };
+    wrap(<ClassDataControls data={data} onData={onData} presets={["blobs"]} labels={labels} classes={2} />);
+    await userEvent.type(screen.getByLabelText("x"), "15");
+    await userEvent.type(screen.getByLabelText("y"), "-2");
+    await userEvent.click(screen.getByRole("button", { name: "Add point" }));
+    expect(onData).toHaveBeenLastCalledWith({ ...data, points: [{ x: 10, y: 0, c: 1 }] });
+  });
+});
