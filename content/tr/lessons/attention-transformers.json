@@ -1,0 +1,169 @@
+{
+  "title": "Dikkat ve Transformer'lar",
+  "description": "Öz-dikkatin her kelimenin diğer her kelimeye bakmasını nasıl sağladığını, sorgu, anahtar ve değerlerin nasıl çalıştığını ve konumların neden gerektiğini görün.",
+  "youWillLearn": [
+    "Bir kelimenin anlamı neden çevresindeki kelimelere bağlıdır",
+    "Sorgular, anahtarlar ve değerler bir kelimenin nereye bakacağına nasıl karar verir",
+    "Softmax puanları dikkat ağırlıklarına nasıl çevirir",
+    "Transformer'lar neden birkaç kafa kullanır ve kelime konumları ekler"
+  ],
+  "story": [
+    {
+      "id": "context",
+      "rail": "Bağlam",
+      "title": "Bir kelimenin bağlama ihtiyacı var",
+      "body": "Küçük modelimiz basit İngilizce cümleler okur. *the cat chased the dog and it ran* (kedi köpeği kovaladı ve \"o\" koştu) cümlesinde **it** nedir? Tek başına *it* hiçbir şey ifade etmez: buradaki vektörü yalnızca \"bir şeyi işaret ediyorum\" der. Onu anlamak için modelin diğer kelimelere bakması gerekir. **Öz-dikkat**, bir transformer'ın bunu yapma yoludur: her kelime cümledeki her kelimeye aynı anda bakar. Bu dersteki ağırlıklar her parça kolay okunsun diye elle ayarlanmıştır; gerçek bir model onları öğrenir.",
+      "keyIdea": "Öz-dikkat, her kelimenin cümledeki diğer kelimelerden anlam toplamasını sağlar.",
+      "frameTag": "embed",
+      "reveal": ["vectors"]
+    },
+    {
+      "id": "query-key",
+      "rail": "Sorgu-anahtar",
+      "title": "Sorgular ve anahtarlar",
+      "body": "Her kelime bir **sorgu** (ne arıyorum?) ve bir **anahtar** (ne sunuyorum?) üretir. Bir puan, bir kelimenin sorgusunun başka bir kelimenin anahtarına ne kadar uyduğunu söyler: nokta çarpımları, √d_k'ya bölünmüş hâli. Bu kafada *it* bir *şey* arıyor ve *cat* ile *dog*'un anahtarları \"ben bir şeyim\" diyor. Daha yakın kelimeler küçük bir bonus alır, bu yüzden *dog* (6.60), *cat*'ten (4.78) yüksek puan alır.",
+      "keyIdea": "Puan = sorgu · anahtar ÷ √d_k: bir kelimenin aradığı, diğerinin sunduğuyla eşleştiğinde yüksek.",
+      "math": "`score(i, j) = q_i · k_j / √d_k`",
+      "frameTag": "scores",
+      "reveal": ["vectors", "scores"]
+    },
+    {
+      "id": "softmax",
+      "rail": "Softmax",
+      "title": "Puanlardan ağırlıklara",
+      "body": "Softmax puanları, hepsi pozitif ve toplamı 1 olan **dikkat ağırlıklarına** çevirir ve aralarındaki farkları açar. *it* artık dikkatinin **yaklaşık %80**'ini *dog*'a, **%13**'ünü *cat*'e veriyor. Her yayın kalınlığı ağırlığını gösterir.",
+      "keyIdea": "Dikkat ağırlıkları puanların softmax'ıdır: her kelime için bir dikkat payı.",
+      "math": "`w_ij = exp(score_ij) / Σ_k exp(score_ik)`",
+      "frameTag": "softmax",
+      "reveal": ["vectors", "scores", "arcs"]
+    },
+    {
+      "id": "mix",
+      "rail": "Karıştır",
+      "title": "Değerleri harmanla",
+      "body": "Her kelimenin bir de **değeri** vardır: devrettiği bilgi (burada basitçe anlamı). *it* için çıktı, ağırlıklarla harmanlanmış değerlerdir. İki satırını karşılaştırın: önce *it* yalnızca \"işaret\" diyordu; dikkatten sonra **şey 0.92, köpek 0.80** okuyor. *it* kelimesi artık *dog*'un anlamını taşıyor.",
+      "keyIdea": "Çıktı, değerlerin ağırlıklı ortalamasıdır: bağlam kelimenin içine akar.",
+      "math": "`out_i = Σ_j w_ij · v_j`",
+      "frameTag": "mix",
+      "reveal": ["vectors", "scores", "arcs"]
+    },
+    {
+      "id": "heads",
+      "rail": "Kafalar",
+      "title": "Her kelime, birkaç kafa",
+      "body": "Aynı şey her kelime için aynı anda olur: sağdaki ızgaralar her kelimenin ağırlıklarını, her kelimeye bir satır olmak üzere tutar. Ve bir transformer, her birinin kendi sorgu ve anahtarları olan birkaç **kafayı** yan yana çalıştırır. Buradaki kafa 1 kelimeleri işaret ettikleri şeye bağlar; kafa 2 ise basitçe **önceki kelimeye** bakar (*it* için %80 *and*'e). Gerçek modeller onlarca kafa kullanır ve birçok katmanı üst üste koyar.",
+      "keyIdea": "Birçok kafa paralel olarak farklı ilişkiler arar; çıktıları birleştirilir.",
+      "frameTag": "all-words",
+      "reveal": ["vectors", "scores", "arcs", "matrix"]
+    },
+    {
+      "id": "order",
+      "rail": "Sıra",
+      "title": "Her kelime nerede?",
+      "body": "Dikkatin kendisinin sıradan haberi yoktur: her kelimeyi her kelimeyle karşılaştırır. Bu yüzden her kelimenin vektörüne bir **konum dalgası** eklenir: yuvadan yuvaya değişen bir sinüs ve kosinüs deseni. Kafa 1, *dog*'un *it*'e daha yakın olduğunu böyle bilir; kafa 2 önceki kelimeyi böyle bulur. Laboratuvarda konumları kapatın ve iki kafanın da yer duygusunu kaybettiğini izleyin.",
+      "keyIdea": "Konum bilgisi olmadan bir transformer cümleyi bir kelime torbası olarak görür.",
+      "math": "`x_i = embedding(word_i) + position(i)`",
+      "frameTag": "done",
+      "reveal": ["vectors", "scores", "arcs", "matrix"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Cümle",
+      "body": "{n} kelime. Bir kelimeyi dikkat boyunca izlemek için oynat'a basın."
+    },
+    "embed": {
+      "title": "Kelimeler vektöre dönüşür",
+      "body": "Her kelimenin anlam vektörü, artı bir konum dalgası."
+    },
+    "scores": {
+      "title": "Sorgu anahtarlarla buluşur",
+      "body": "Her kelime için bir puan: bu kelimenin sorgusunun onun anahtarına ne kadar uyduğu."
+    },
+    "softmax": {
+      "title": "Softmax",
+      "body": "Puanlar toplamı 1 olan ağırlıklara dönüşür."
+    },
+    "mix": {
+      "title": "Değerleri harmanla",
+      "body": "Çıktı, o ağırlıklarla karıştırılmış değerlerdir."
+    },
+    "all": {
+      "title": "Her kelime, iki kafa",
+      "body": "Her ızgara satırı bir kelimenin dikkatidir. Ayrıntılı gösterilen kafa {head}."
+    },
+    "done": {
+      "title": "Dikkat tamamlandı",
+      "body": "Bir transformer'da bu çıktı bir sonraki katmana gider."
+    }
+  },
+  "stats": {
+    "words": "KELİME",
+    "top": "EN YÜKSEK AĞIRLIK",
+    "head": "KAFA"
+  },
+  "lab": {
+    "breakIt": "**Kelime konumlarını ekle** işaretini kaldırın: *it* artık dikkatini *cat* ile *dog* arasında eşit bölüyor (her birine %47), çünkü hangisinin daha yakın olduğunu ayırt edemiyor (**Uzun**'u deneyin: üç isim, her birine %32). **Kafa 2**'ye geçin: her kelime tam olarak aynı payı alır. Konumlar kapalıyken kelimelerin sırasını karıştırmak bile her kelimenin dikkatini tamamen aynı bırakır.",
+    "presets": {
+      "pronoun": "Zamir",
+      "describe": "Niteleme",
+      "long": "Uzun"
+    },
+    "params": {
+      "positions": {
+        "label": "Kelime konumlarını ekle",
+        "hint": "Her kelimenin konum dalgasını vektörüne ekler. Kapalı: model yalnızca bir kelime torbası görür."
+      }
+    },
+    "errors": {
+      "tooShort": "En az iki kelime yazın.",
+      "tooLong": "En fazla 12 kelime.",
+      "unknownWord": "Bu küçük model yalnızca 16 İngilizce kelime bilir: the, a, and, cat, dog, bird, fish, it, chased, saw, ate, ran, slept, was, hungry, tired."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Dikkat nedir?",
+        "body": "Dikkat, bir modelin her kelime için şu anda hangi diğer kelimelerin önemli olduğuna karar vermesini sağlar. Her kelime, vektörünü üç ağırlık matrisiyle çarparak bir **sorgu**, bir **anahtar** ve bir **değer** üretir. Puanlar sorguları anahtarlarla karşılaştırır, softmax puanları ağırlıklara çevirir ve ağırlıklar değerleri harmanlar. Her kelime tek adımda her kelimeye dikkat ettiği için bir transformer, tekrarlayan bir ağın yaptığı gibi bilgiyi kelime kelime aktarmak zorunda kalmaz."
+      },
+      {
+        "heading": "Bu dersin modeli hakkında",
+        "body": "Bu, 16 İngilizce kelimelik bir sözcük dağarcığı üzerinde iki kafalı ve **elle ayarlanmış** ağırlıklara sahip tek bir dikkat katmanıdır. Her kelimenin anlamı 9 okunabilir özellikten (şey, eylem, işaret, …) oluşan bir vektördür ve konum dalgası 4 ek yuvada durur. Kafa 1 \"işaret eden\" ya da \"niteleyen\" kelimeleri şeylerle eşleştirir ve yakın kelimelere bonus verir; kafa 2 her kelimeyi bir öncekiyle eşleştirir. Gerçek transformer'lar bu ağırlıkları devasa miktarda metinden öğrenir ve özellikleri nadiren bu kadar okunabilirdir."
+      },
+      {
+        "heading": "Transformer'lar",
+        "body": "Bir transformer, her birinin ardından her kelimeye uygulanan küçük bir sinir ağı gelen birçok çok kafalı dikkat katmanını üst üste koyar. Kafaların çıktıları birleştirilip karıştırılır, sonra her kelimenin vektörüne geri eklenir; böylece her kelimenin anlamı katman katman inceltilir.",
+        "table": {
+          "headers": ["Model", "Kelimeler bilgiyi nasıl paylaşır", "Uzak bağlantılar"],
+          "rows": [
+            ["RNN / LSTM", "Bir bellek aracılığıyla, adım adım", "Zor: bellek söner"],
+            ["Transformer", "Her kelime her kelimeye doğrudan bakar", "Kolay, n² karşılaştırma pahasına"]
+          ]
+        }
+      },
+      {
+        "heading": "Transformer'lar nerede kullanılır",
+        "body": "Büyük dil modelleri, makine çevirisi, konuşma tanıma, görüntü modelleri (görüntü yamalarını kelime gibi ele alan) ve protein yapısı tahmini, hepsi dikkat üzerine kuruludur."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Neden √d_k'ya bölünür?",
+        "a": "Daha uzun vektörlerin nokta çarpımları daha büyük olur. Anahtar uzunluğunun kareköküne bölmek, puanları softmax'ın dikkati tek bir kelimeye yığmak yerine hâlâ yaydığı bir aralıkta tutar."
+      },
+      {
+        "q": "Her kelime gerçekten her kelimeye bakıyor mu?",
+        "a": "Bu tür dikkatte evet: n kelime için n × n puan; çok uzun metinlerin pahalı olmasının nedeni budur. Metin üreticileri ayrıca gelecekteki kelimeleri gizler, böylece her kelime yalnızca geriye bakabilir."
+      },
+      {
+        "q": "İlk kelime kafa 2'de neden çoğunlukla kendine bakar?",
+        "a": "Önceki bir kelime yoktur, bu yüzden en iyi eşleşmesi kendisidir, en yakın konum."
+      },
+      {
+        "q": "Dikkat ağırlıkları modelin akıl yürütmesi mi?",
+        "a": "Tek bir katmanın içinde bilginin nereye aktığını gösterirler, bu yararlıdır; ama büyük modellerde hikâyenin yalnızca bir parçasıdırlar: birçok katman ve kafa birlikte çalışır."
+      }
+    ]
+  }
+}

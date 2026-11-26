@@ -1,0 +1,160 @@
+{
+  "title": "Evrişimli Sinir Ağı",
+  "description": "Küçük bir evrişimli ağın elle çizilmiş bir rakamı okumasını izleyin: filtreler kayar, ReLU ve havuzlama küçültür, son katman karar verir.",
+  "youWillLearn": [
+    "Bir görüntü nasıl bir sayı ızgarasına dönüşür",
+    "Filtre (çekirdek) nedir ve görüntü üzerinde nasıl kayar",
+    "Özellik haritaları, ReLU ve havuzlama ne yapar",
+    "Aynı küçük filtre bir deseni neden her yerde fark edebilir"
+  ],
+  "story": [
+    {
+      "id": "pixels",
+      "rail": "Pikseller",
+      "title": "Bir resim bir sayı ızgarasıdır",
+      "body": "Bir bilgisayar için bu rakam yalnızca 64 sayıdır: mürekkep olan yerde 1, olmayan yerde 0. Normal bir ağ bu 64 sayıyı birbiriyle ilgisiz girdiler olarak ele alırdı. Ama piksellerin komşuları vardır ve kenarlar, köşeler gibi şekiller komşu piksellerden oluşur.",
+      "keyIdea": "Görüntülerin yapısı vardır: yakın pikseller birbirine aittir.",
+      "frameTag": "start",
+      "reveal": ["image"]
+    },
+    {
+      "id": "kernel",
+      "rail": "Filtre",
+      "title": "Küçük bir filtre bir yamaya bakar",
+      "body": "Bir **filtre** (ya da çekirdek), 3 × 3'lük minicik bir ağırlık ızgarasıdır. Onu görüntünün 3 × 3'lük bir yamasına (mavi kutu) koyun, her pikseli üzerindeki ağırlıkla çarpın ve hepsini toplayın. Büyük bir sonuç, yamanın filtrenin desenine uyduğu anlamına gelir. Bu dört filtre eğitim sırasında öğrenildi.",
+      "keyIdea": "Bir filtre = küçük bir desen dedektörü.",
+      "math": "9 kare üzerinden `value = Σ pixel × weight + bias`.",
+      "frameTag": "conv-first",
+      "reveal": ["image", "window", "kernel", "featuremap"]
+    },
+    {
+      "id": "slide",
+      "rail": "Kaydır",
+      "title": "Onu her yere kaydır",
+      "body": "Şimdi aynı filtreyi bütün görüntü boyunca her seferinde bir kare kaydırın: 6 × 6 = 36 konum. Her konum bir sayı verir ve hepsi birlikte bir **özellik haritası** oluşturur: bu desenin resimde nerede göründüğünün haritası.",
+      "keyIdea": "Aynı ağırlıklar her konumda yeniden kullanılır, böylece bir desen nerede olursa olsun bulunur.",
+      "frameTag": "conv-done",
+      "reveal": ["image", "window", "kernel", "featuremap"]
+    },
+    {
+      "id": "relu",
+      "rail": "ReLU",
+      "title": "Eşleşmeleri tut",
+      "body": "Negatif sayılar *bu desen değil* demektir. ReLU onları basitçe 0 yapar ve pozitif eşleşmeleri tutar. Geriye kalan, filtrenin nerede tetiklendiğini vurgular.",
+      "keyIdea": "ReLU: max(value, 0).",
+      "frameTag": "relu",
+      "reveal": ["image", "kernel", "featuremap"]
+    },
+    {
+      "id": "pool",
+      "rail": "Havuzla",
+      "title": "Küçült: maksimum havuzlama",
+      "body": "Maksimum havuzlama 6 × 6'lık haritayı 2 × 2'lik bloklara böler ve her birinin yalnızca en büyük değerini tutar; sonuç 3 × 3 olur. Ağ, desenin tam karesini değil, bir bölgede görünüp *görünmediğini* tutar; böylece çizimin küçük kaymaları daha az önemli olur.",
+      "keyIdea": "Havuzlama ağı küçük kaymalara karşı daha toleranslı yapar.",
+      "frameTag": "pool",
+      "reveal": ["image", "kernel", "featuremap", "pooled"]
+    },
+    {
+      "id": "decide",
+      "rail": "Karar ver",
+      "title": "Birleştir ve karar ver",
+      "body": "Dört filtrenin hepsi aynısını yapar ve dört küçük havuzlanmış harita verir: toplam 36 sayı. Son bir katman bunları her rakam için bir puanda tartar ve softmax puanları olasılıklara çevirir. En uzun çubuk ağın cevabıdır.",
+      "keyIdea": "Filtreler parçaları bulur; son katman parçaları bir kararda birleştirir.",
+      "math": "`probs = softmax(W · features + b)`",
+      "frameTag": "dense",
+      "reveal": ["image", "pooled", "probs"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Çizim",
+      "body": "Her kare için bir tane, 64 sayı. Filtre {filter}'i üzerinde kaydırmak için oynat'a basın."
+    },
+    "conv": {
+      "title": "Bu noktada filtre {filter}",
+      "body": "9 pikseli filtrenin ağırlıklarıyla çarp, topla ve filtrenin sapmasını ekle: {value}."
+    },
+    "relu": {
+      "title": "ReLU",
+      "body": "Negatif değerler 0 olur; pozitif eşleşmeler kalır."
+    },
+    "pool": {
+      "title": "Maksimum havuzlama",
+      "body": "Her 2 × 2 blok yalnızca en büyük değerini tutar."
+    },
+    "maps": {
+      "title": "Dört filtrenin hepsi",
+      "body": "Her filtre kendi havuzlanmış haritasını üretti: toplam 36 sayı."
+    },
+    "dense": {
+      "title": "Cevap: {prediction}",
+      "body": "Ağ bunun bir {prediction} olduğundan %{confidencePct} emin."
+    },
+    "done": {
+      "title": "Bitti",
+      "body": "Laboratuvarda kendi rakamınızı çizin ve her sayının değişmesini izleyin."
+    }
+  },
+  "stats": {
+    "filter": "FİLTRE",
+    "value": "BURADAKİ DEĞER",
+    "prediction": "CEVAP"
+  },
+  "lab": {
+    "breakIt": "**Gürültülü 8**'i yükleyin: 64 karesinin 13'ü ters çevrilmişken (yaklaşık %20) ağ hâlâ 8 der, ama yalnızca yaklaşık üçte iki emin, 0 da hemen arkasında. Birçok gürültülü rakam üzerinde doğruluğu %93'ten yaklaşık %53'e düşer, çünkü yalnızca hafif gürültüyle eğitildi. Sonra temiz bir rakamdan kareleri tek tek silin, ta ki cevap değişene kadar.",
+    "presets": {},
+    "params": {},
+    "errors": {}
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Evrişimli sinir ağı nedir?",
+        "body": "Evrişimli sinir ağı (CNN), görüntüler gibi ızgara biçimli veriler için kurulmuş bir sinir ağıdır. Her pikseli her nörona bağlamak yerine görüntü üzerinde küçük **filtreler** kaydırır. Her filtre bir desen dedektörüdür ve aynı ağırlıklar her yerde kullanıldığı için bir desen nerede görünürse görünsün tanınır."
+      },
+      {
+        "heading": "Yapı taşları",
+        "body": "**Evrişim** her filtreyi görüntü üzerinde kaydırarak bir özellik haritası oluşturur. **ReLU** pozitif eşleşmeleri tutar. **Havuzlama** her haritayı küçültür, böylece küçük kaymalar daha az önemli olur. Gerçek CNN'ler bu tür birçok katmanı üst üste koyar: ilk filtreler kenarları bulur, sonrakiler kenarları köşelere, eğrilere ve sonunda bütün nesnelere birleştirir. Son bir tam bağlantılı katman özellikleri sınıf puanlarına çevirir.",
+        "table": {
+          "headers": ["Adım", "Girdi", "Çıktı", "Amaç"],
+          "rows": [
+            ["Evrişim", "8 × 8 görüntü", "6 × 6'lık 4 harita", "Desen bul"],
+            ["ReLU", "6 × 6 haritalar", "6 × 6 haritalar", "Pozitif eşleşmeleri tut"],
+            ["Maks. havuzlama 2 × 2", "6 × 6 haritalar", "3 × 3 haritalar", "Küçült, kaymaları tolere et"],
+            ["Yoğun + softmax", "36 sayı", "10 olasılık", "Karar ver"]
+          ]
+        }
+      },
+      {
+        "heading": "Bu dersin ağı",
+        "body": "Buradaki ağ minicik: dört 3 × 3 filtre, bir havuzlama adımı ve bir çıktı katmanı; toplamda yaklaşık 400 sayı. Elle çizilmiş 5 × 7'lik bir yazı tipinden üretilmiş, rastgele yerlere konmuş ve birkaç pikseli ters çevrilmiş 4,000 rakam üzerinde çevrimdışı eğitildi. Aynı türden yeni rakamlarda yaklaşık %93'e ulaşır. Tarayıcınız her adımı bu ağırlıklardan yeniden hesaplar."
+      },
+      {
+        "heading": "Evrişimler neden bu kadar iyi çalışır",
+        "body": "Tek bir filtreyi bütün görüntüde paylaşmak, tam bağlantılı bir katmandan çok daha az ağırlık demektir ve yararlı bir varsayımı içine yerleştirir: bir kedinin kulağı resmin neresinde olursa olsun bir kedi kulağı gibi görünür. CNN'lerin görüntü tanımada derin öğrenme devrimine öncülük etmesinin nedeni budur."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Filtreleri kim seçti?",
+        "a": "Kimse: önceki derslerdeki ağırlıklar gibi gradyan inişi ve geri yayılımla öğrenildiler. Eğitim, rakamları birbirinden ayırmaya hangi desenlerin yardımcı olduğunu keşfetti."
+      },
+      {
+        "q": "Haritalar neden görüntüden küçük?",
+        "a": "3 × 3'lük bir filtre 8 genişliğindeki bir görüntüde (dolgu olmadan) 6 konuma sığar. Havuzlama sonra boyutu yeniden yarıya indirir."
+      },
+      {
+        "q": "Bir CNN bir rakamı görüntünün herhangi bir yerinde tanıyabilir mi?",
+        "a": "Belirli sınırlar içinde. Paylaşılan filtreler ve havuzlama onu küçük kaymalara karşı toleranslı yapar; bu yüzden burada her rakam 8 × 8 ızgaranın izin verdiği her yere kaydırıldığında hâlâ çalışır (**Kaydırılmış 3**'ü deneyin). Büyük kaymalar, döndürmeler ya da çok farklı yazı stilleri, onlara benzeyen eğitim örnekleri gerektirir."
+      },
+      {
+        "q": "Boş bir tuval neden 1 diyor?",
+        "a": "Son katman %100'ü on rakam arasında paylaştırmak zorunda; \"burada hiçbir şey yok\" diye bir cevabı yok ve eğitimde hiç boş ızgara görmedi. Boş ızgara ona en çok ince bir 1'e benziyor, bu yüzden yaklaşık %90 emin 1 diyor. Gerçek sistemler bir \"hiçbiri\" sınıfı ekler ya da düşük güvenli cevapları yok sayar."
+      },
+      {
+        "q": "Fotoğraf uygulamaları yüzleri böyle mi tanıyor?",
+        "a": "Aynı fikir muazzam ölçüde büyütülmüş hâliyle: milyonlarca ağırlık, onlarca katman, milyonlarca eğitim görüntüsü ve artık bağlantılar ile dikkat gibi daha yeni tasarımlar."
+      }
+    ]
+  }
+}

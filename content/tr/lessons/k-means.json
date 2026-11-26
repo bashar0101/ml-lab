@@ -1,0 +1,158 @@
+{
+  "title": "K-Ortalamalar Kümeleme",
+  "description": "K-ortalamaların etiketsiz verilerde nasıl grup bulduğunu izleyin: merkezler koy, her noktayı en yakınına ata, merkezleri taşı, tekrarla.",
+  "youWillLearn": [
+    "Etiketsiz öğrenme (kümeleme) ne demektir",
+    "K-ortalamaların dönüşümlü iki adımı",
+    "Neden her zaman durur ve neyi küçültür",
+    "Başlangıç merkezleri ve k seçimi neden önemlidir"
+  ],
+  "story": [
+    {
+      "id": "no-labels",
+      "rail": "Etiket yok",
+      "title": "Cevap verilmedi",
+      "body": "Şimdiye kadar her nokta bir sınıfla geldi. Burada kimse bize bir şey söylemiyor: bunlar yalnızca noktalar, iki sayıyla tanımlanmış müşteriler gibi. Bilgisayar doğal **grupları** kendi başına bulabilir mi?",
+      "keyIdea": "Etiketsiz verilerde grup bulmaya **kümeleme** denir: denetimsiz öğrenme.",
+      "frameTag": "start",
+      "reveal": ["points"]
+    },
+    {
+      "id": "centres",
+      "rail": "Merkezler",
+      "title": "k merkez bırak",
+      "body": "Kaç grup arayacağımıza biz karar veririz: **k = 3**. K-ortalamalar 3 merkez yerleştirerek başlar (numaralı ✕ işaretleri), burada rastgele seçilmiş 3 noktanın üzerine. Neredeyse kesinlikle yanlış yerlerdeler. Sorun değil.",
+      "keyIdea": "Her grup tek bir merkez noktasıyla tanımlanacak.",
+      "frameTag": "start",
+      "reveal": ["points", "centroids"]
+    },
+    {
+      "id": "join",
+      "rail": "Katıl",
+      "title": "Herkes en yakın merkeze katılır",
+      "body": "Birinci adım: her nokta kendisine en yakın merkeze katılır ve onun rengini alır. Gölgeli arka plan, haritadaki her noktanın hangi merkeze ait olduğunu gösterir.",
+      "keyIdea": "Atama adımı: noktalar en yakın merkezi seçer.",
+      "math": "`x` noktası `argminⱼ |x − cⱼ|²` kümesine katılır.",
+      "frameTag": "first-assign",
+      "reveal": ["points", "centroids", "regions"]
+    },
+    {
+      "id": "move",
+      "rail": "Taşı",
+      "title": "Merkezler ortaya taşınır",
+      "body": "İkinci adım: her merkez, ona katılan noktaların ortasına (ortalama konumuna) taşınır. Kesikli çizgiler her merkezin nereden geldiğini gösterir.",
+      "keyIdea": "Güncelleme adımı: her merkez noktalarının ortalaması olur; adı da buradan gelir: k-*ortalamalar*.",
+      "math": "`cⱼ = mean of all points in cluster j`.",
+      "frameTag": "first-update",
+      "reveal": ["points", "centroids", "regions", "trails"]
+    },
+    {
+      "id": "repeat",
+      "rail": "Tekrarla",
+      "title": "Kimse kıpırdamayana kadar tekrarla",
+      "body": "Katıl, taşı, katıl, taşı. Grafik, her noktadan merkezine olan toplam kare mesafeyi izler: yalnızca düşebilir, bu yüzden süreç durmak zorundadır. Tam bir tur hiçbir noktanın grubunu değiştirmediğinde durur.",
+      "keyIdea": "İki adım da aynı puanı düşürür, bu yüzden k-ortalamalar her zaman, genellikle birkaç turda yerleşir.",
+      "math": "K-ortalamalar **eylemsizliği** `Σ |x − c(x)|²` küçültür. En yakın merkeze katılmak ve ortalamaya taşınmak, her biri onu düşürür ya da değiştirmez.",
+      "frameTag": "done",
+      "reveal": ["points", "centroids", "regions", "trails", "chart"]
+    },
+    {
+      "id": "limits",
+      "rail": "Sınırlar",
+      "title": "K-ortalamaların göremedikleri",
+      "body": "K-ortalamalar, grupların benzer boyutlarda yuvarlak kümeler olduğunu varsayar ve k'yi sizin seçmenizi ister. Ayrıca *en yakın* alçak noktaya yerleşir, bu yüzden kötü bir başlangıç kötü bir cevap verebilir. Laboratuvar üçünü de bozmanıza izin verir.",
+      "keyIdea": "Yerleşmek en iyisi demek değildir: birkaç başlangıç deneyin ve en düşük eylemsizliği tutun.",
+      "frameTag": "done",
+      "reveal": ["points", "centroids", "regions", "trails", "chart"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Merkezler bırakıldı",
+      "body": "k merkez yerleştirildi. Turları başlatmak için oynat'a basın."
+    },
+    "assign": {
+      "title": "Tur {iteration}: noktalar en yakın merkezlerine katılıyor",
+      "body": "Bu turda {changed} nokta grup değiştirdi."
+    },
+    "update": {
+      "title": "Tur {iteration}: merkezler ortaya taşınıyor",
+      "body": "Toplam kare mesafe şimdi {inertia}."
+    },
+    "done": {
+      "title": "{iteration} turdan sonra yerleşti",
+      "body": "Hiçbir nokta grup değiştirmedi, bu yüzden merkezler bir daha hareket etmeyecek. Son toplam kare mesafe {inertia}."
+    }
+  },
+  "stats": {
+    "iteration": "TUR",
+    "inertia": "EYLEMSİZLİK",
+    "changed": "DEĞİŞEN"
+  },
+  "lab": {
+    "breakIt": "**k = 2** ile **Hilaller**'i seçin: k-ortalamalar onları düz bir çizgiyle keser ve noktaların dörtte birini ya da fazlasını yanlış hilale koyar, çünkü yalnızca yuvarlak kümeleri bilir. **Dengesiz**'i seçin ve birkaç kez **Yeni rastgele başlangıç**'a basın: bazı başlangıçlar büyük dağınık grubu ikiye böler ve küçük bir grubu yarılardan birine katar. Sonra **Üç grup**'ta **k = 6** yapın: tüm merkezlerini kullanmak için gerçek grupları seve seve böler.",
+    "presets": {
+      "three-blobs": "Üç grup",
+      "blobs": "İki grup",
+      "moons": "Hilaller",
+      "circles": "Halkalar",
+      "uneven": "Dengesiz"
+    },
+    "params": {
+      "k": {
+        "label": "k (küme)",
+        "hint": "Kaç grup aranacağı."
+      }
+    },
+    "errors": {
+      "tooFew": "En az iki nokta ekleyin."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "K-ortalamalar nedir?",
+        "body": "K-ortalamalar, etiketsiz verileri **k gruba** böler; böylece bir gruptaki noktalar grubun merkezine yakın olur. İki basit adım arasında gidip gelir: her noktayı en yakın merkezine ata, sonra her merkezi noktalarının ortalamasına taşı. Müşterileri gruplamaktan görüntüleri sıkıştırmaya (her piksel rengi kendi kümesinin merkeziyle değiştirilir) kadar en yaygın kullanılan kümeleme yöntemidir."
+      },
+      {
+        "heading": "Neden her zaman durur",
+        "body": "İki adım da yalnızca **eylemsizliği**, yani her noktadan merkezine olan kare mesafelerin toplamını düşürebilir. Noktaları bölmenin sonlu sayıda yolu vardır, bu yüzden süreç sonunda değişmeyi bırakmak zorundadır. Ama *yerel* bir minimumda durur: en yakın iyi düzende, en iyisinde olmak zorunda değil."
+      },
+      {
+        "heading": "İyi başlamak: k-means++",
+        "body": "Rastgele başlangıç merkezlerinden ikisi aynı gruba düşebilir, bir başka gruba hiç düşmeyebilir. **k-means++** ilk merkezi rastgele, sonraki her merkezi ise daha önce seçilmiş merkezlere olan kare mesafesiyle orantılı bir olasılıkla seçer; böylece merkezler dağılır. Ortalamada daha iyi sonuçlar verir ve çoğu kütüphanede varsayılandır. K-ortalamaları birkaç kez çalıştırıp en düşük eylemsizliği tutmak da yardımcı olur.",
+        "table": {
+          "headers": ["Sorun", "Belirti", "Çözüm"],
+          "rows": [
+            ["Şanssız başlangıç", "İki merkez bir grubu paylaşır", "k-means++, birkaç yeniden başlatma"],
+            ["Yanlış k", "Gruplar bölünür ya da birleşir", "Birkaç k deneyin, eylemsizlikte bir dirsek arayın"],
+            ["Yuvarlak olmayan şekiller", "Hilallerin ya da halkaların içinden düz keser", "DBSCAN gibi yoğunluğa dayalı bir yöntem kullanın"],
+            ["Farklı ölçeklerde özellikler", "Tek bir özellik mesafeye hâkim olur", "Önce özellikleri standartlaştırın"]
+          ]
+        }
+      },
+      {
+        "heading": "k'yi seçmek",
+        "body": "Eylemsizlik k büyüdükçe hep düşer (k nokta sayısına eşitken sıfırdır), bu yüzden onu sadece küçültemezsiniz. Yaygın bir hile **dirsek**tir: eylemsizliği k'ye karşı çizin ve bir küme daha eklemenin artık pek yardım etmediği noktayı seçin. Çoğu zaman doğru k problemin kendisinden gelir: kaç beden tişört üretileceği, kaç müşteri segmentinin hedefleneceği."
+      }
+    ],
+    "faq": [
+      {
+        "q": "K-ortalamalar denetimli mi, denetimsiz mi?",
+        "a": "Denetimsiz: hiçbir etiket görmez. Bulduğu gruplar insanların önemsediği kategorilerle örtüşebilir de örtüşmeyebilir de."
+      },
+      {
+        "q": "Her zaman en iyi kümelemeyi bulur mu?",
+        "a": "Hayır. Her zaman durur, ama başlangıç merkezlerine bağlı yerel bir minimumda. Bu yüzden kütüphaneler onu birkaç kez çalıştırır."
+      },
+      {
+        "q": "Boş bir kümeye ne olur?",
+        "a": "Bir merkeze hiçbir nokta katılmazsa taşınacağı bir ortalama yoktur. Burada olduğu yerde kalır; kütüphaneler genellikle onu uzaktaki bir noktaya taşır."
+      },
+      {
+        "q": "Neden kare mesafe?",
+        "a": "Kare mesafeyle bir grubun en iyi merkezi tam olarak ortalamasıdır; bu da güncelleme adımını basitleştirir. Düz mesafe kullanmak farklı bir yöntem verir (k-medyanlar)."
+      }
+    ]
+  }
+}

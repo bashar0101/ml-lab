@@ -1,0 +1,153 @@
+{
+  "title": "Tekrarlayan Sinir Ağı",
+  "description": "Tekrarlayan bir ağın bir diziyi harf harf okumasını, küçük bir belleği ileri taşımasını ve o bellek zayıfladığında ne olduğunu izleyin.",
+  "youWillLearn": [
+    "Metin, konuşma ve diğer dizilerde sıra neden önemlidir",
+    "Tekrarlayan bir ağ belleği adımdan adıma nasıl taşır",
+    "Bir ağı zaman boyunca açmak ne demektir",
+    "Zayıf bellek uzun dizileri neden zorlaştırır (ve LSTM neyi düzeltir)"
+  ],
+  "story": [
+    {
+      "id": "order",
+      "rail": "Sıra",
+      "title": "Sıra önemlidir",
+      "body": "Metinde şeylerin sırası anlam taşır: *köpek adamı ısırdı*, *adam köpeği ısırdı* ile aynı değildir. İşte bu problemin minik bir versiyonu: ağ bir harf dizisini her seferinde bir harf okur ve sonunda cevap vermelidir: **dizi a ile mi başladı?** İlk harften sonraki her şey, hatırlayarak içinden geçmesi gereken gürültüdür.",
+      "keyIdea": "Bir dizi modeli daha önce gördüğünü hatırlamak zorundadır.",
+      "frameTag": "start",
+      "reveal": ["letters", "hidden"]
+    },
+    {
+      "id": "memory",
+      "rail": "Bellek",
+      "title": "Küçük bir bellek",
+      "body": "Ağ bir **gizli durum** tutar: renkli bir sütun olarak çizilmiş altı sayı (şeftali negatif, lavanta pozitif). Boş başlar. İlk harfi okumak içine bir şey yazar.",
+      "keyIdea": "Gizli durum, ağın şimdiye kadarki her şeye dair belleğidir.",
+      "frameTag": "first-step",
+      "reveal": ["letters", "hidden"]
+    },
+    {
+      "id": "unroll",
+      "rail": "Aç",
+      "title": "Aynı hücre, tekrar tekrar",
+      "body": "Her yeni harf için ağ tam olarak aynı ağırlıklarla tam olarak aynı şeyi yapar: yeni bir bellek oluşturmak için yeni harfi eski bellekle birleştirir. Böyle her adım için bir sütun çizmeye ağı zaman boyunca **açmak** denir.",
+      "keyIdea": "Her adımda yeniden kullanılan tek bir hücre: onu *tekrarlayan* yapan bu döngüdür.",
+      "frameTag": "step-3",
+      "reveal": ["letters", "hidden"]
+    },
+    {
+      "id": "update",
+      "rail": "Güncelle",
+      "title": "Bellek nasıl güncellenir",
+      "body": "Her adımda harf sekiz sayıya (olası her harf için bir tane) çevrilir ve bir ağırlık kümesiyle çarpılır; eski bellek bir başkasıyla çarpılır; ikisi toplanır ve tanh ile sıkıştırılır. Eğitilmiş ağ, ilk harfi belleğine sağlam biçimde yazmayı ve gürültü harfleri geçerken onu orada tutmayı öğrenmiştir.",
+      "keyIdea": "Yeni bellek = sıkıştır(girdi ağırlıkları × harf + bellek ağırlıkları × eski bellek).",
+      "math": "`hₜ = tanh(W_x·xₜ + W_h·hₜ₋₁ + b)`",
+      "frameTag": "step-3",
+      "reveal": ["letters", "hidden"]
+    },
+    {
+      "id": "answer",
+      "rail": "Cevap",
+      "title": "Cevabı bellekten oku",
+      "body": "Son harften sonra son bir katman belleği okur ve dizinin *a* ile başlamış olma olasılığını verir. Sağdaki grafik eğitilmiş ağı birçok rastgele dizi üzerinde sınar: ilk harfi 40 harf sonra bile kusursuz hatırlar.",
+      "keyIdea": "Son bellek bütün diziyi özetler.",
+      "math": "`p = sigmoid(v · h_T + c)`",
+      "frameTag": "done",
+      "reveal": ["letters", "hidden", "answer", "chart"]
+    },
+    {
+      "id": "fading",
+      "rail": "Sönme",
+      "title": "Bellek söndüğünde",
+      "body": "Bu bellek, eski belleği ileri taşıyan ağırlıklarda yaşar. Laboratuvarda **bellek gücünü** düşürün (o ağırlıkları ölçekler). 0.3'te ağ kısa dizileri hâlâ doğru bilir, ama 8 harfe gelindiğinde zamanın yaklaşık üçte birinde yanılır ve 15'ten sonra tahmin yürütür. Gerçek görevler de aynı duvara çarpar: düz RNN'ler bilgiyi uzun aralıklar boyunca tutmakta zorlanır.",
+      "keyIdea": "Zayıf tekrarlayan ağırlıklar anıları söndürür: LSTM'lerin ve daha sonra dikkatin çıkış noktası.",
+      "frameTag": "done",
+      "reveal": ["letters", "hidden", "answer", "chart"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Boş bellek",
+      "body": "Diziyi harf harf okumak için oynat'a basın."
+    },
+    "read": {
+      "title": "{step}. harfi oku",
+      "body": "Yeni bellek bu harften ve önceki bellekten hesaplanır."
+    },
+    "predict": {
+      "title": "Cevap",
+      "body": "a ile başlamış olma olasılığı: %{probPct}."
+    }
+  },
+  "stats": {
+    "step": "HARF",
+    "chanceA": "A İLE BAŞLADI",
+    "memory": "BELLEK"
+  },
+  "lab": {
+    "breakIt": "**Bellek gücü**'nü **0.3** yapın: yaklaşık 4 harfe kadar diziler hâlâ doğru, ama 8 harfte ağ zamanın yaklaşık üçte birinde yanılır ve 15'ten itibaren yazı turaya döner (grafiği izleyin). Sonra **Uzun** hazır ayarını 0.3'te ve 1'de deneyin.",
+    "presets": {
+      "short": "Kısa",
+      "medium": "Orta",
+      "long": "Uzun"
+    },
+    "params": {
+      "memory": {
+        "label": "Bellek gücü",
+        "hint": "Belleği ileri taşıyan ağırlıkları ölçekler. 1 = eğitildiği gibi."
+      }
+    },
+    "errors": {
+      "tooShort": "En az iki harf yazın.",
+      "tooLong": "En fazla 40 harf.",
+      "badLetters": "Yalnızca a ile h arasındaki harfleri kullanın.",
+      "badStart": "Diziye a veya b ile başlayın: ağın hatırlamak üzere eğitildiği harf odur."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Tekrarlayan sinir ağı nedir?",
+        "body": "Tekrarlayan sinir ağı (RNN), bir diziyi her adımda güncellenen bir bellek olan bir **gizli durum** tutarak her seferinde bir öğe işler. Her adımda aynı ağırlıklar kullanılır, bu yüzden tek bir küçük ağ her uzunlukta dizi okuyabilir: bir cümledeki kelimeler, bir melodideki notalar, bir sensörden gelen ölçümler."
+      },
+      {
+        "heading": "Açma ve eğitim",
+        "body": "Her zaman adımı için ağın bir kopyasını çizmek (*açmak*), döngüyü derinliği dizi uzunluğu olan sıradan bir derin ağa çevirir. **Zaman içinde geri yayılım** ile eğitilir: son cevaptaki suç her adımdan geriye akar. Bu dersin ağı (bellek için 6 sayı, 2 ile 12 harf arası diziler üzerinde çevrimdışı eğitildi) ilk harfi hatırlamayı öğrendi ve bu beceri çok daha uzun dizilere de taşınır."
+      },
+      {
+        "heading": "Sönen bellek ve gradyanlar",
+        "body": "Her adım eski belleği tekrarlayan ağırlıklarla çarpar ve sıkıştırır. Bu çarpanlar şeyleri küçültüyorsa erken adımlardaki bilgi söner; eğitim sırasında onlara geri akan suç da söner: ders 11'deki kaybolan gradyan problemi, şimdi zaman boyunca uzanmış hâliyle.",
+        "table": {
+          "headers": ["Model", "Uzun aralıklarda bellek", "Notlar"],
+          "rows": [
+            ["Düz RNN", "Zayıf", "Basit; gerçek görevlerde birkaç düzine adımdan sonra zorlanır"],
+            ["LSTM / GRU", "Çok daha iyi", "Kapılar neyin tutulacağına, unutulacağına ve çıkarılacağına karar verir"],
+            ["Transformer", "Doğrudan", "Dikkat her konuma aynı anda geriye bakar (sonraki ders)"]
+          ]
+        }
+      },
+      {
+        "heading": "RNN'ler nerede kullanılır",
+        "body": "RNN'ler ve özellikle LSTM'ler 2010'larda konuşma tanımayı, çeviriyi ve metin tahminini güçlendirdi. Transformer'lar o zamandan beri çoğu dil görevini devraldı, ama tekrarlayan fikirler uzun diziler için verimli modellerde ve küçük cihazlarda yaşamaya devam ediyor."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Neden bütün diziyi bir kerede vermiyoruz?",
+        "a": "Dizilerin uzunlukları farklıdır ve aynı desen her yerde görünebilir. Tekrarlayan bir ağ her uzunluğu aynı küçük ağırlık kümesiyle ele alır."
+      },
+      {
+        "q": "Bellek gücü neyi değiştirir?",
+        "a": "Eski belleği yenisine taşıyan ağırlıkları çarpar. 1 eğitilmiş ağdır; daha küçük değerler eski bilginin daha hızlı sönmesine yol açar. Bir eğitim ayarı değil, bir öğretim kontrolüdür."
+      },
+      {
+        "q": "LSTM nedir?",
+        "a": "Kapıları olan tekrarlayan bir hücre: belleğe neyin yazılacağına, neyin tutulacağına ve neyin okunacağına karar veren küçük, öğrenilmiş anahtarlar. Kapılar bilgiyi yüzlerce adım boyunca tutmasını sağlar."
+      },
+      {
+        "q": "Dizi neden a veya b ile başlamalı?",
+        "a": "Ağın eğitildiği görev budur: ilk harf a veya b, sonraki her harf c ile h arası. Başka başlangıçlar onun hiç görmediği şeylerin dışında kalır."
+      }
+    ]
+  }
+}

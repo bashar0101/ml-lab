@@ -1,0 +1,177 @@
+{
+  "title": "Geri Yayılım",
+  "description": "Bir sinir ağında tek bir eğitim adımını izleyin: ileri geçiş, kayıp, geriye akan suç ve her ağırlığın gradyanı.",
+  "youWillLearn": [
+    "Bir ağın hatası her ağırlığa kadar nasıl geri izlenir",
+    "Çıktıdaki suç neden basitçe tahmin eksi gerçektir",
+    "Zincir kuralı suçu katmandan katmana nasıl aktarır",
+    "Derin sigmoid ağları başta neden yavaş öğrenir (kaybolan gradyanlar)"
+  ],
+  "story": [
+    {
+      "id": "guess",
+      "rail": "Tahmin",
+      "title": "Bir tahmin yap",
+      "body": "Bir eğitim örneği alın. İki sayısı soldan girer ve ağın içinden katman katman akar: her nöron ağırlıklı bir toplam hesaplar ve onu sıkıştırır. Sonunda bir olasılık çıkar. Bu, önceki dersteki ileri geçiştir; şimdi sayılar üzerine yazılmış.",
+      "keyIdea": "Öğrenme normal bir tahminle başlar.",
+      "frameTag": "forward-out",
+      "reveal": ["network", "values"]
+    },
+    {
+      "id": "how-wrong",
+      "rail": "Hata ne kadar",
+      "title": "Ne kadar yanlıştı?",
+      "body": "Tahmini log-kayıp ile doğru cevapla karşılaştırın: ağ kendinden emin ve haklıysa küçük, kendinden emin ve yanlışsa büyük. Gelişmek için her ağırlığın bu sayıyı düşürmek üzere hangi yöne hareket edeceğini bilmesi gerekir.",
+      "keyIdea": "Tek bir sayı, kayıp, ağdaki her ağırlığa bağlıdır.",
+      "math": "`loss = −[y·log(p) + (1 − y)·log(1 − p)]`",
+      "frameTag": "loss",
+      "reveal": ["network", "values"]
+    },
+    {
+      "id": "blame-output",
+      "rail": "Çıktı suçu",
+      "title": "Suç çıktıda başlar",
+      "body": "Geriye doğru çalışın. Önce çıktı nöronunun toplamının ne kadar suçlu olduğunu sorun. Log-kayıplı bir sigmoid çıktı için cevap son derece basittir: **tahmin eksi gerçek**. Mavi etiket δ bu suçtur.",
+      "keyIdea": "Çıktı suçu δ = p − y: çok yüksek pozitif suç, çok düşük negatif suç verir.",
+      "math": "`∂loss/∂z_out = p − y` (sigmoid'in eğimi log-kayıpla sadeleşir).",
+      "frameTag": "backward-out",
+      "reveal": ["network", "values", "blame"]
+    },
+    {
+      "id": "pass-back",
+      "rail": "Geri aktar",
+      "title": "Suçu geri aktar",
+      "body": "Her gizli nöron, onları bağlayan ağırlıkla orantılı ve kendi aktivasyonunun ne kadar dik olduğuyla ölçeklenmiş olarak çıktının suçundan bir pay alır. Bu, kalkülüsteki **zincir kuralı**dır; sağdan sola her seferinde bir katmana uygulanır. Bu yüzden adı *geri* yayılımdır.",
+      "keyIdea": "Suç, değerlerin ileri aktığı aynı bağlantılar boyunca geriye akar.",
+      "math": "`δ_hidden = (Wᵀ · δ_next) × act′(z_hidden)`",
+      "frameTag": "backward-hidden",
+      "reveal": ["network", "values", "blame"]
+    },
+    {
+      "id": "every-weight",
+      "rail": "Her ağırlık",
+      "title": "Her ağırlık gradyanını alır",
+      "body": "Bir ağırlığın gradyanı, beslediği nöronun suçu çarpı içinden akan değerdir. Bağlantıların üzerindeki turuncu sayılar bu gradyanlardır. Sonra her ağırlık, tıpkı ders 2'deki gradyan inişi gibi, gradyanının tersine küçük bir adım atar.",
+      "keyIdea": "Tek bir geri geçiş her ağırlığın gradyanını aynı anda verir.",
+      "math": "`∂loss/∂w = δ_to × a_from`, sonra `w ← w − lr·∂loss/∂w`.",
+      "frameTag": "grads",
+      "reveal": ["network", "values", "blame", "grads"]
+    },
+    {
+      "id": "fading",
+      "rail": "Sönme",
+      "title": "Suç sönüp gittiğinde",
+      "body": "Eğitim bunu her örnek için, dönem dönem tekrarlar. Çubuklar her katmanın gradyanlarının ne kadar büyük olduğunu gösterir: kesikli olanlar ilk dönem, dolu olanlar şimdiki. Burada benzerler. Ama her katman suçu bir aktivasyon eğimiyle çarpar ve sigmoid'in eğimi en fazla 0.25'tir. Laboratuvarda **Sigmoid** ile **5 gizli katman** deneyin: ilk dönemde ilk katmanın gradyanı sonuncununkinden yüzlerce kat küçüktür ve kısa sürede her gradyan minicik olur, bu yüzden ağ zar zor öğrenir.",
+      "keyIdea": "Kaybolan gradyanlar: derin ağlar suçu canlı tutmak için ReLU benzeri aktivasyonlar ve dikkatli başlatma kullanır.",
+      "frameTag": "done",
+      "reveal": ["network", "values", "chart"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Bir örnek, bir ağ",
+      "body": "Örneği ileri, sonra suçu geri göndermek için oynat'a basın."
+    },
+    "forward": {
+      "title": "İleri geçiş",
+      "body": "Değerler bir katman sağa akar."
+    },
+    "loss": {
+      "title": "Kayıp",
+      "body": "Tahmin {prediction} idi; bu örnek için kayıp {loss}."
+    },
+    "backward": {
+      "title": "Geri geçiş",
+      "body": "Suç (δ) bir katman sola akar."
+    },
+    "grads": {
+      "title": "Her ağırlığın gradyanı",
+      "body": "Her bağlantının gradyanı = vardığı yerdeki suç × başladığı yerdeki değer."
+    },
+    "update": {
+      "title": "Yokuş aşağı tek adım",
+      "body": "Her ağırlık gradyanının tersine biraz hareket etti."
+    },
+    "epoch": {
+      "title": "Eğitim: dönem {epoch}",
+      "body": "Son katmanın gradyanı ilk katmanınkinin {ratio} katı."
+    },
+    "done": {
+      "title": "Bitti",
+      "body": "Kesikli çubuklar ilk dönemi, dolu çubuklar en sonuncusunu gösterir. Sonuncudan çok daha kısa bir ilk katman, suçun ilk katmanlara ulaşmadan söndüğü anlamına gelir; hepsi minicik çubuklar ağın durduğu anlamına gelir."
+    }
+  },
+  "stats": {
+    "prediction": "TAHMİN",
+    "loss": "KAYIP",
+    "ratio": "SON ÷ İLK"
+  },
+  "lab": {
+    "breakIt": "**5 gizli katman** ve **Sigmoid** ayarlayın: ilk dönemde (kesikli çubuklar) ilk katmanın gradyanı son katmanınkinden yüzlerce kat küçüktür ve kısa sürede her gradyan 0.001'in altına düşer, böylece bütün ağ durur. **tanh**'a geçin; ilk dönemin çubukları birbirinin 10× yakınında kalır. **ReLU** da öyle, ama bir kez **Yeni rastgele ağırlıklar**'a basın ve ölür: her gradyan tam olarak 0'dır ve hiçbir şey öğrenilmez.",
+    "presets": {
+      "blobs": "İki grup",
+      "moons": "Hilaller",
+      "circles": "Halkalar"
+    },
+    "params": {
+      "depth": {
+        "label": "Gizli katmanlar",
+        "hint": "Girdi ile çıktı arasında üçer nöronluk katmanlar."
+      },
+      "learningRate": {
+        "label": "Öğrenme oranı",
+        "hint": "Her ağırlık için adım büyüklüğü."
+      }
+    },
+    "errors": {
+      "tooFew": "En az dört nokta ekleyin.",
+      "oneClass": "İki sınıftan da nokta ekleyin."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Geri yayılım nedir?",
+        "body": "Geri yayılım, bir sinir ağındaki her ağırlık için, o ağırlık biraz değişirse kaybın nasıl değişeceğini, yani gradyanı hesaplayan algoritmadır. Gradyan inişi sonra bu gradyanları ağırlıkları güncellemek için kullanır. Neredeyse her sinir ağı bu şekilde eğitilir."
+      },
+      {
+        "heading": "Önce ileri, sonra geri",
+        "body": "Bir **ileri geçiş** her nöronun değerini hesaplar ve hatırlar. Bir **geri geçiş** kayıptan başlar ve girdilere doğru ilerler; her nöronun *suçunu* δ hesaplar: o nöronun ağırlıklı toplamı değiştiğinde kaybın ne kadar değiştiği. Her katmanın suçu, zincir kuralıyla bir sonraki katmanın suçundan gelir; bu yüzden geri geçişin tamamı, kaç ağırlık olursa olsun, kabaca ileri geçiş kadar maliyetlidir."
+      },
+      {
+        "heading": "Kaybolan ve patlayan gradyanlar",
+        "body": "Geriye doğru her adım suçu ağırlıklarla ve aktivasyon eğimleriyle çarpar. Bu çarpanlar küçükse suç katman katman küçülür ve ilk katmanlar zar zor öğrenir: **kaybolan gradyanlar**. Büyükse kontrolden çıkar: **patlayan gradyanlar**.",
+        "table": {
+          "headers": ["Neden", "Etki", "Yaygın çözüm"],
+          "rows": [
+            ["Derin yığınlarda sigmoid / tanh", "İlk katmanlar çok yavaş öğrenir", "ReLU aktivasyonları, dikkatli başlatma"],
+            ["Büyük ağırlıklar", "Gradyanlar patlar, eğitim ıraksar", "Daha küçük öğrenme oranı, gradyan kırpma"],
+            ["Çok derin ağlar", "İki sorun birden", "Artık bağlantılar, normalleştirme katmanları"]
+          ]
+        }
+      },
+      {
+        "heading": "Otomatik türev alma",
+        "body": "Artık kimse geri geçişleri elle yazmıyor. PyTorch ve JAX gibi kütüphaneler ileri hesaplamayı kaydeder ve geri yayılımı otomatik olarak çalıştırır (*otomatik türev*). Yine de onu anlamak önemlidir: bazı ağların neden iyi eğitildiğini, bazılarının neden eğitilmediğini açıklar."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Geri yayılım gradyan inişiyle aynı şey mi?",
+        "a": "Hayır. Geri yayılım gradyanları hesaplar; gradyan inişi (ya da Adam vb.) onları ağırlıkları değiştirmek için kullanır."
+      },
+      {
+        "q": "Çıktı suçu neden sadece p − y?",
+        "a": "Sigmoid'in eğimi ve log-kaybın türevi birbirini düzgünce götürür. Bu ikilinin evet/hayır çıktıları için standart seçim olmasının bir nedeni budur."
+      },
+      {
+        "q": "Beyin geri yayılım kullanıyor mu?",
+        "a": "Muhtemelen tam bu biçimde değil. Beynin birçok katman boyunca katkıyı nasıl dağıttığı hâlâ açık bir araştırma sorusudur."
+      },
+      {
+        "q": "Kaybolan gradyanlar nedir?",
+        "a": "Suç birçok katmandan geriye akarken küçüldüğünde, ilk katmanlar neredeyse hiç öğrenme sinyali almaz. ReLU aktivasyonları, iyi başlatma ve artık bağlantılar olağan çarelerdir."
+      }
+    ]
+  }
+}

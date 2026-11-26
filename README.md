@@ -33,6 +33,10 @@ Use it to:
 
 ![Attention & Transformers lesson: attention arcs from "it" to every word, its vector before and after attention, and both heads' attention grids](docs/images/lesson-attention.png)
 
+**In Arabic:** the whole page mirrors right-to-left while the charts and code keep reading left to right.
+
+![The linear regression lesson in Arabic: course list on the right, the story card on the left, and the charts unchanged](docs/images/lesson-arabic.png)
+
 <details>
 <summary><b>The whole home page</b></summary>
 
@@ -68,7 +72,7 @@ Use it to:
 - **Shareable links** to any step or to the Lab (`#step-3`, `#lab`).
 - **Light and dark themes**, keyboard shortcuts (←/→, Space, R, L), screen-reader friendly, and a phone layout.
 - **Fast and static:** every lesson is a pre-rendered page that search engines can index; every lesson page ships under 200 KB of JavaScript.
-- **Ready for translation:** all text lives in JSON files under `content/`, and the CSS supports right-to-left languages.
+- **Three languages:** English, Arabic (right-to-left) and Turkish, switched from the top bar. Every lesson is translated; English pages keep their URLs and the others live under `/ar/` and `/tr/`. Charts, code and maths stay left-to-right in every language.
 
 ## Getting Started
 
@@ -114,9 +118,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ```
 ml-lab/
-├── content/en/              # All text: UI strings and one JSON file per lesson
-│   ├── ui.json
-│   └── lessons/             # linear-regression.json … attention-transformers.json
+├── content/                 # All text, one folder per language (en, ar, tr)
+│   └── en/
+│       ├── ui.json          # Interface strings
+│       └── lessons/         # linear-regression.json … attention-transformers.json
 ├── e2e/                     # Playwright browser tests
 ├── scripts/                 # Build helpers (JS budget check, export fix)
 ├── tools/fixtures/          # NumPy scripts that produce reference results
@@ -136,6 +141,12 @@ ml-lab/
 │   └── styles/              # Design tokens and global CSS
 └── docs/superpowers/        # Design spec and implementation plans
 ```
+
+### Adding a language
+
+1. Add the code to `LOCALES` in `src/i18n/locales.ts` (and to `scripts/stamp-locales.mjs` with its text direction).
+2. Copy `content/en/ui.json` to `content/<code>/ui.json` and translate it; lessons go in `content/<code>/lessons/`. A lesson that is not translated yet is shown in English with a notice.
+3. `src/content/translations.test.ts` checks that every translation keeps the same keys, placeholders, formulas and numbers as the English.
 
 ### Adding a lesson
 
