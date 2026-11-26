@@ -6,7 +6,7 @@ export interface LabeledPoint {
   c: 0 | 1 | 2;
 }
 
-export type Dataset2DId = "blobs" | "overlap" | "circles" | "moons" | "xor" | "three-blobs" | "uneven";
+export type Dataset2DId = "blobs" | "overlap" | "circles" | "moons" | "xor" | "three-blobs" | "uneven" | "ellipse" | "round" | "stripes";
 
 const clamp = (v: number) => Math.min(9.7, Math.max(0.3, v));
 const round = (v: number) => Math.round(v * 100) / 100;
@@ -57,6 +57,27 @@ export function makeDataset(id: Dataset2DId, seed = 1, n = 40): LabeledPoint[] {
       // One big loose group and two small tight ones: k-means likes equal-sized round groups.
       const small = Math.max(2, Math.floor(n / 8));
       return [...blob(3.6, 5, 1.3, 0, n - 2 * small), ...blob(8, 8, 0.35, 1, small), ...blob(8.2, 2.2, 0.35, 1, small)];
+    }
+    case "ellipse": {
+      // A stretched, tilted cloud (about 35°): one direction clearly dominates.
+      const a = (35 * Math.PI) / 180;
+      return Array.from({ length: n }, () => {
+        const u = gauss() * 2.1;
+        const v = gauss() * 0.55;
+        return pt(5 + u * Math.cos(a) - v * Math.sin(a), 5 + u * Math.sin(a) + v * Math.cos(a), 0);
+      });
+    }
+    case "round":
+      return blob(5, 5, 1.6, 0, n);
+    case "stripes": {
+      // Two long parallel stripes, slightly tilted: the spread is along them, the classes across.
+      const a = (12 * Math.PI) / 180;
+      return Array.from({ length: n }, (_, i) => {
+        const c = (i % 2) as 0 | 1;
+        const u = -3.8 + rand() * 7.6;
+        const v = (c ? 0.75 : -0.75) + gauss() * 0.18;
+        return pt(5 + u * Math.cos(a) - v * Math.sin(a), 5 + u * Math.sin(a) + v * Math.cos(a), c);
+      });
     }
     case "three-blobs": {
       const t = Math.floor(n / 3);
