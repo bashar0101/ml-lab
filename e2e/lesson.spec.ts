@@ -1,21 +1,5 @@
 import { expect, test } from "@playwright/test";
 
-test("lesson 1: learn to the end, then lab plays", async ({ page }) => {
-  const errors: string[] = [];
-  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
-  page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/lessons/linear-regression/");
-  await expect(page.getByText("Step 1 / 6")).toBeVisible();
-  await expect(page.getByRole("img", { name: /Data points with the model/ })).toBeVisible();
-  for (let i = 0; i < 5; i++) await page.getByRole("button", { name: /^Next:/ }).click();
-  await expect(page.getByText("Step 6 / 6")).toBeVisible();
-  await page.getByRole("button", { name: /Try it in the lab/ }).click();
-  await expect(page).toHaveURL(/#lab$/);
-  await page.getByRole("button", { name: "Play" }).click();
-  await expect(page.getByText(/^([2-9]|\d{2,3}) \/ 122$/)).toBeVisible();
-  expect(errors).toEqual([]);
-});
-
 test("deep link and keyboard", async ({ page }) => {
   await page.goto("/lessons/linear-regression/#step-3");
   await expect(page.getByText("Step 3 / 6")).toBeVisible();

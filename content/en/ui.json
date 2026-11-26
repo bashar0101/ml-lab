@@ -154,5 +154,17 @@
   "lr.axis.size": "size (m²)",
   "lr.axis.price": "price (thousands)",
   "lr.scene.label": "Data points with the model's line on the left, and the loss bowl with the path taken downhill on the right.",
-  "lr.scene.bowl": "loss for every possible line"
+  "lr.scene.bowl": "loss for every possible line",
+
+  "gd.scene.label": "A top-down map of the landscape with the path taken downhill on the left, and the height after each step on the right.",
+  "gd.scene.map": "the landscape, seen from above",
+  "gd.scene.chart": "height after each step",
+  "gd.scene.steps": "steps",
+  "gd.surface": "Landscape",
+  "gd.optimizer": "Optimizer",
+  "gd.optimizer.plain": "Plain",
+  "gd.optimizer.momentum": "Momentum",
+  "gd.optimizer.adam": "Adam",
+  "gd.compare": "Compare all three",
+  "gd.clickHint": "Click the map to choose where to start."
 }
