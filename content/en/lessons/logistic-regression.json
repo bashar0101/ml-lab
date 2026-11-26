@@ -15,7 +15,9 @@
       "body": "Each point is a student: how many hours they studied (across) and slept (up). Peach circles **failed** the exam, lavender squares **passed**. A new student tells you their two numbers. Pass or fail?",
       "keyIdea": "This is **classification**: the answer is a category, not a number.",
       "frameTag": "start",
-      "reveal": ["points"]
+      "reveal": [
+        "points"
+      ]
     },
     {
       "id": "score",
@@ -25,7 +27,11 @@
       "keyIdea": "A straight line splits the plane into two sides, one per class.",
       "math": "`z = w₁·studied + w₂·slept + b`. The line is where `z = 0`.",
       "frameTag": "first-update",
-      "reveal": ["points", "boundary", "shade"]
+      "reveal": [
+        "points",
+        "boundary",
+        "shade"
+      ]
     },
     {
       "id": "squash",
@@ -35,7 +41,12 @@
       "keyIdea": "Logistic regression = a line's score, squashed by the sigmoid into a probability.",
       "math": "`p = σ(z) = 1 / (1 + e^(−z))`",
       "frameTag": "first-update",
-      "reveal": ["points", "boundary", "shade", "sigmoid"]
+      "reveal": [
+        "points",
+        "boundary",
+        "shade",
+        "sigmoid"
+      ]
     },
     {
       "id": "surprise",
@@ -45,7 +56,12 @@
       "keyIdea": "Log-loss rewards being right *and* being honest about how sure you are.",
       "math": "For one student `loss = −[y·log(p) + (1 − y)·log(1 − p)]`, with `y = 1` for pass. Average over everyone.",
       "frameTag": "first-update",
-      "reveal": ["points", "boundary", "shade", "sigmoid"]
+      "reveal": [
+        "points",
+        "boundary",
+        "shade",
+        "sigmoid"
+      ]
     },
     {
       "id": "learn",
@@ -55,7 +71,12 @@
       "keyIdea": "Different model, same recipe: a loss plus gradient descent.",
       "math": "The gradient is beautifully simple: `∂loss/∂w = mean((p − y)·x)` and `∂loss/∂b = mean(p − y)`.",
       "frameTag": "update-10",
-      "reveal": ["points", "boundary", "shade", "sigmoid"]
+      "reveal": [
+        "points",
+        "boundary",
+        "shade",
+        "sigmoid"
+      ]
     },
     {
       "id": "result",
@@ -64,7 +85,12 @@
       "body": "The model now gives every student a probability of passing. Where the groups overlap, it is honestly unsure (pale shading) and a few students land on the wrong side. That is the limit of a straight line, and in the Lab you can find data where a line fails completely.",
       "keyIdea": "Logistic regression is the building block of neural networks: each neuron is one of these.",
       "frameTag": "done",
-      "reveal": ["points", "boundary", "shade", "sigmoid"]
+      "reveal": [
+        "points",
+        "boundary",
+        "shade",
+        "sigmoid"
+      ]
     }
   ],
   "events": {
@@ -99,7 +125,7 @@
     "accuracy": "ACCURACY"
   },
   "lab": {
-    "breakIt": "Pick **Rings**: one class sits inside a circle of the other. No straight line can separate them, so accuracy stays near a coin flip however long you train. Then try a huge learning rate on **Two groups** and watch the line snap around.",
+    "breakIt": "Pick **Rings**: one class sits inside a circle of the other. No straight line can separate them, so accuracy stays near a coin flip however long you train. Then go back to **Overlapping** and drag the **Threshold**: the line slides without retraining, and you trade students wrongly called *pass* for students wrongly called *fail*.",
     "presets": {
       "blobs": "Two groups",
       "overlap": "Overlapping",
@@ -136,18 +162,38 @@
       },
       {
         "heading": "Training with log-loss",
-        "body": "Logistic regression is trained by gradient descent on the **log-loss** (also called cross-entropy). For each point it takes `−log` of the probability the model gave to the true class: near 0 when the model was confidently right, very large when it was confidently wrong.\n\nSquared error would also work in principle, but with the sigmoid it creates flat regions where learning stalls. Log-loss gives a smooth bowl with one bottom, so gradient descent always finds the best line."
+        "body": "Logistic regression is trained by gradient descent on the **log-loss** (also called cross-entropy). For each point it takes `−log` of the probability the model gave to the true class: near 0 when the model was confidently right, very large when it was confidently wrong.\n\nSquared error would also work in principle, but with the sigmoid it creates flat regions where learning stalls. Log-loss gives a smooth bowl without false valleys, so gradient descent heads steadily towards the best line (on perfectly separable data the bottom is infinitely far away, so the weights keep growing)."
       },
       {
         "heading": "When to use it, and when not to",
         "body": "Logistic regression is fast, hard to overfit with few inputs, and its weights are easy to read: a positive weight pushes towards class B.",
         "table": {
-          "headers": ["Situation", "Works?", "Why"],
+          "headers": [
+            "Situation",
+            "Works?",
+            "Why"
+          ],
           "rows": [
-            ["Classes separable by a straight line", "Yes", "That is exactly the shape it can draw"],
-            ["You need probabilities, not just labels", "Yes", "The sigmoid output is a calibrated probability"],
-            ["Classes in rings, spirals or islands", "No", "A single straight boundary can't bend; add features or use a tree or network"],
-            ["Very many inputs, few examples", "With care", "Add regularisation so weights don't grow wild"]
+            [
+              "Classes separable by a straight line",
+              "Yes",
+              "That is exactly the shape it can draw"
+            ],
+            [
+              "You need probabilities, not just labels",
+              "Yes",
+              "The sigmoid output is a probability, usually well calibrated"
+            ],
+            [
+              "Classes in rings, spirals or islands",
+              "No",
+              "A single straight boundary can't bend; add features or use a tree or network"
+            ],
+            [
+              "Very many inputs, few examples",
+              "With care",
+              "Add regularisation so weights don't grow wild"
+            ]
           ]
         }
       },

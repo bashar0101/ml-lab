@@ -45,6 +45,8 @@ export interface LessonModule<S = unknown, P = unknown, D = unknown> {
   LabControls: ComponentType<LabControlsProps<P, D>>;
   code: { python: CodeLine[]; pseudo: CodeLine[] };
   stats(frame: Frame<S>, params?: P): StatChip[];
+  /** True when going from `prev` to `next` only changes how the run is shown (playback keeps its place). */
+  viewOnly?(prev: P, next: P): boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
