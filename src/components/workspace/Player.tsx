@@ -42,7 +42,7 @@ export function Player({ state, dispatch }: { state: PlayerState; dispatch: Disp
         aria-label={t("player.scrubber")}
         onChange={(e) => dispatch({ type: "seek", index: Number(e.target.value) })}
       />
-      <span className={styles.counter}>{t("player.counter", { n: state.index + 1, total: state.length })}</span>
+      <span className={styles.counter} dir="ltr">{t("player.counter", { n: state.index + 1, total: state.length })}</span>
       <div className={styles.speeds} role="group" aria-label={t("player.speed")}>
         {SPEEDS.map((s) => (
           <button

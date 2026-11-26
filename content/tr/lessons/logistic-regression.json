@@ -1,0 +1,178 @@
+{
+  "title": "Lojistik Regresyon",
+  "description": "Lojistik regresyonun iki sınıfı ayıran bir doğruyu öğrenmesini ve sigmoid ile puanları olasılığa çevirmesini izleyin. Ücretsiz ve etkileşimli.",
+  "youWillLearn": [
+    "Bir doğru iki tür noktayı nasıl ayırabilir",
+    "Sigmoid herhangi bir puanı nasıl olasılığa çevirir",
+    "Log-kayıp neden kendinden emin hataları cezalandırır",
+    "Düz bir doğru neden her veri kümesini ayıramaz"
+  ],
+  "story": [
+    {
+      "id": "problem",
+      "rail": "Geçer mi?",
+      "title": "Bu öğrenci geçecek mi?",
+      "body": "Her nokta bir öğrenci: kaç saat çalıştığı (yatay) ve kaç saat uyuduğu (dikey). Şeftali renkli daireler sınavdan **kaldı**, lavanta kareler **geçti**. Yeni bir öğrenci size iki sayısını söylüyor. Geçti mi kaldı mı?",
+      "keyIdea": "Bu **sınıflandırma**dır: cevap bir sayı değil, bir kategoridir.",
+      "frameTag": "start",
+      "reveal": ["points"]
+    },
+    {
+      "id": "score",
+      "rail": "Puan",
+      "title": "Bir doğru çiz, bir puan al",
+      "body": "İki sayıyı tek bir **puan**da birleştirin: her birinden biraz, artı bir başlangıç değeri. Mavi doğrunun üzerinde puan tam 0'dır. Bir tarafta pozitif (*geçti*'ye yatkın), diğer tarafta negatif (*kaldı*'ya yatkın). Arka plandaki gölgeleme her noktanın hangi yöne yattığını gösterir.",
+      "keyIdea": "Düz bir doğru düzlemi her sınıfa bir taraf olmak üzere ikiye böler.",
+      "math": "`z = w₁·studied + w₂·slept + b`. Doğru, `z = 0` olan yerdir.",
+      "frameTag": "first-update",
+      "reveal": ["points", "boundary", "shade"]
+    },
+    {
+      "id": "squash",
+      "rail": "Sıkıştır",
+      "title": "Onu bir olasılığa sıkıştır",
+      "body": "Bir puan −7 veya 12 gibi herhangi bir sayı olabilir. Bir olasılık ise 0 ile 1 arasında olmalıdır. Sağdaki S biçimli **sigmoid** eğrisi sıkıştırmayı yapar: büyük pozitif puanlar neredeyse 1, büyük negatifler neredeyse 0 olur ve 0 puanı tam 0.5 olur. Her öğrenci eğrinin üzerine yerleştirilir.",
+      "keyIdea": "Lojistik regresyon = bir doğrunun puanı, sigmoid ile olasılığa sıkıştırılmış hâli.",
+      "math": "`p = σ(z) = 1 / (1 + e^(−z))`",
+      "frameTag": "first-update",
+      "reveal": ["points", "boundary", "shade", "sigmoid"]
+    },
+    {
+      "id": "surprise",
+      "rail": "Şaşkınlık",
+      "title": "Kendinden emin hatalar en pahalısıdır",
+      "body": "Öğrenmek için bir kayba ihtiyacımız var. Lojistik regresyon **log-kayıp** kullanır: modelin gerçek karşısında ne kadar şaşırdığı. Geçen bir öğrenci için %90 geçer demek az maliyetlidir. Geçen bir öğrenci için %99 *kalır* demek çok maliyetlidir. Halkalı noktalar şu anda yanlış tarafta olanlardır.",
+      "keyIdea": "Log-kayıp hem haklı olmayı *hem de* ne kadar emin olduğunuz konusunda dürüst olmayı ödüllendirir.",
+      "math": "Bir öğrenci için `loss = −[y·log(p) + (1 − y)·log(1 − p)]`; geçen için `y = 1`. Herkesin ortalamasını alın.",
+      "frameTag": "first-update",
+      "reveal": ["points", "boundary", "shade", "sigmoid"]
+    },
+    {
+      "id": "learn",
+      "rail": "Öğren",
+      "title": "Yine yokuş aşağı",
+      "body": "Eğitim, ilk iki dersteki gradyan inişinin aynısıdır: kaybı ölç, doğruyu hangi yöne çevirip kaydıracağını bul, küçük bir adım at. On adımdan sonra doğru dönüp iki grubun arasına yerleşmiştir.",
+      "keyIdea": "Farklı model, aynı tarif: bir kayıp artı gradyan inişi.",
+      "math": "Gradyan son derece basittir: `∂loss/∂w = mean((p − y)·x)` ve `∂loss/∂b = mean(p − y)`.",
+      "frameTag": "update-10",
+      "reveal": ["points", "boundary", "shade", "sigmoid"]
+    },
+    {
+      "id": "result",
+      "rail": "Doğru",
+      "title": "Bir doğru ve bir olasılık",
+      "body": "Model artık her öğrenciye bir geçme olasılığı veriyor. Grupların örtüştüğü yerde dürüstçe emin değil (soluk gölgeleme) ve birkaç öğrenci yanlış tarafa düşüyor. Bu düz bir doğrunun sınırıdır; laboratuvarda doğrunun tamamen başarısız olduğu veriler bulabilirsiniz.",
+      "keyIdea": "Lojistik regresyon sinir ağlarının yapı taşıdır: her nöron bunlardan biridir.",
+      "frameTag": "done",
+      "reveal": ["points", "boundary", "shade", "sigmoid"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Başlangıç: henüz fikir yok",
+      "body": "w = 0 ve b = 0 iken her puan 0'dır, bu yüzden her öğrenci %50 alır. Kayıp {loss}."
+    },
+    "predict": {
+      "title": "Adım {step}: puanla ve sıkıştır",
+      "body": "Her öğrenci doğrudan bir puan alır; bu puan geçme olasılığına sıkıştırılır."
+    },
+    "error": {
+      "title": "Adım {step}: gerçekle karşılaştır",
+      "body": "Hata = olasılık − gerçek cevap (geçti için 1, kaldı için 0). Kendinden emin hatalar en büyük hataları verir."
+    },
+    "update": {
+      "title": "Adım {step}: doğruyu çevir ve kaydır",
+      "body": "Kayıp şimdi {loss} ve doğru tarafta olan öğrencilerin oranı {accuracy}."
+    },
+    "diverged": {
+      "title": "Sayılar patladı",
+      "body": "Ağırlıklar devasa boyutlara ulaştı. Öğrenme oranını düşürüp tekrar deneyin."
+    },
+    "done": {
+      "title": "Bitti: {step} adım",
+      "body": "Son kayıp {loss}; doğru sınıflandırılan oranı {accuracy}. Bir hata türünü diğeriyle takas etmek için eşiği kaydırın."
+    }
+  },
+  "stats": {
+    "step": "ADIM",
+    "loss": "KAYIP",
+    "accuracy": "DOĞRULUK"
+  },
+  "lab": {
+    "breakIt": "**Halkalar**'ı seçin: bir sınıf diğerinin oluşturduğu bir çemberin içinde. Hiçbir düz doğru onları ayıramaz, bu yüzden ne kadar eğitirseniz eğitin doğruluk yazı tura civarında kalır. Sonra **Örtüşen**'e dönün ve **Eşik**'i sürükleyin: doğru yeniden eğitim olmadan kayar ve yanlışlıkla *geçti* denen öğrencileri yanlışlıkla *kaldı* denenlerle takas edersiniz.",
+    "presets": {
+      "blobs": "İki grup",
+      "overlap": "Örtüşen",
+      "circles": "Halkalar"
+    },
+    "params": {
+      "learningRate": {
+        "label": "Öğrenme oranı",
+        "hint": "Yokuş aşağı her adımın büyüklüğü."
+      },
+      "steps": {
+        "label": "Adımlar",
+        "hint": "Kaç kez puanlanıp karşılaştırılıp güncelleneceği."
+      },
+      "threshold": {
+        "label": "Eşik",
+        "hint": "Bir noktaya B sınıfı demek için gereken olasılık. Doğruyu yeniden eğitmeden kaydırır."
+      }
+    },
+    "errors": {
+      "tooFew": "En az dört nokta ekleyin.",
+      "oneClass": "İki sınıftan da nokta ekleyin: modelin farkı öğrenmesi için her birinden örneğe ihtiyacı var."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Lojistik regresyon nedir?",
+        "body": "Lojistik regresyon, bir şeyin bir sınıfa ait olma **olasılığını** tahmin eder: bu e-posta istenmeyen mi, bu hastada hastalık var mı, bu öğrenci geçecek mi. Adına rağmen sayı tahmini için değil, sınıflandırma için kullanılır.\n\nİki aşamada çalışır. Önce, tıpkı doğrusal regresyon gibi, girdilerin ağırlıklı toplamı olarak bir puan hesaplar. Sonra bu puanı sigmoid fonksiyonuyla 0 ile 1 arasında bir sayıya sıkıştırır."
+      },
+      {
+        "heading": "Sigmoid ve karar sınırı",
+        "body": "Sigmoid `σ(z) = 1 / (1 + e^(−z))` S biçimli bir eğridir. Hiçbir zaman tam olarak 0 veya 1'e ulaşmaz ve puan 0 olduğunda tam 0.5'e eşittir.\n\nEvet/hayır kararı vermek için genellikle 0.5 olan bir **eşik** seçersiniz. Olasılığı bunun üzerinde olan tüm noktalara B sınıfı denir. Olasılığın eşiğe eşit olduğu noktaların kümesi düz bir doğrudur (daha çok girdiyle bir düzlem): **karar sınırı**. Eşiği yükseltmek modeli *evet* demekte daha temkinli yapar."
+      },
+      {
+        "heading": "Log-kayıp ile eğitim",
+        "body": "Lojistik regresyon, **log-kayıp** (çapraz entropi de denir) üzerinde gradyan inişiyle eğitilir. Her nokta için modelin doğru sınıfa verdiği olasılığın `−log` değerini alır: model kendinden emin ve haklıyken 0'a yakın, kendinden emin ve yanlışken çok büyük.\n\nKare hata da ilke olarak işe yarardı, ama sigmoid ile birlikte öğrenmenin durduğu düz bölgeler yaratır. Log-kayıp sahte vadileri olmayan pürüzsüz bir çanak verir; böylece gradyan inişi en iyi doğruya doğru düzenli ilerler (tamamen ayrılabilir verilerde dip sonsuz uzaktadır, bu yüzden ağırlıklar büyümeye devam eder)."
+      },
+      {
+        "heading": "Ne zaman kullanılır, ne zaman kullanılmaz",
+        "body": "Lojistik regresyon hızlıdır, az girdiyle aşırı öğrenmesi zordur ve ağırlıkları kolay okunur: pozitif bir ağırlık B sınıfına doğru iter.",
+        "table": {
+          "headers": ["Durum", "İşe yarar mı?", "Neden"],
+          "rows": [
+            ["Düz bir doğruyla ayrılabilen sınıflar", "Evet", "Çizebildiği şekil tam olarak budur"],
+            ["Yalnızca etiket değil olasılık gerekiyor", "Evet", "Sigmoid çıktısı bir olasılıktır ve genellikle iyi kalibre edilmiştir"],
+            ["Halka, sarmal veya ada şeklinde sınıflar", "Hayır", "Tek bir düz sınır bükülemez; özellik ekleyin veya bir ağaç ya da ağ kullanın"],
+            ["Çok sayıda girdi, az örnek", "Dikkatle", "Ağırlıklar çılgınca büyümesin diye düzenlileştirme ekleyin"]
+          ]
+        }
+      },
+      {
+        "heading": "Sık yapılan hatalar",
+        "body": "**Yalnızca doğruluğa bakmak**: e-postaların %95'i istenmeyen değilse, her zaman *istenmeyen değil* diyen bir model %95 doğrudur ve işe yaramaz. **Eşiğin bir seçim olduğunu unutmak**: tıpta hasta birini kaçırmak yanlış alarmdan çok daha kötü olabilir, bu yüzden eşik daha düşük olmalıdır. **Tamamen ayrılabilir veriler**: model her zaman daha emin olabileceği için ağırlıklar sonsuza dek büyür; düzenlileştirme veya erken durdurma bunu düzeltir."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Sınıflandırıyorsa neden regresyon deniyor?",
+        "a": "Tarihsel olarak log-olasılık oranı üzerine bir regresyondur: `z` puanı, tıpkı doğrusal regresyondaki gibi girdilerin doğrusal bir fonksiyonudur. Sınıflandırma, olasılığına bir eşik uygulanmasından gelir."
+      },
+      {
+        "q": "Eşik ne işe yarar?",
+        "a": "Modelin bir noktaya B sınıfı demeden önce ne kadar emin olması gerektiğine karar verir. Onu kaydırmak, yeniden eğitmeden karar doğrusunu kaydırır ve yanlış alarmları kaçırılanlarla takas eder."
+      },
+      {
+        "q": "İkiden fazla sınıfla başa çıkabilir mi?",
+        "a": "Evet: çok terimli (softmax) regresyon her sınıfa kendi puanını verir ve tüm puanları toplamı 1 olan olasılıklara çevirir. Bu, sınıflandırma yapan çoğu sinir ağının tam olarak son katmanıdır."
+      },
+      {
+        "q": "Bunun sinir ağlarıyla ilişkisi nedir?",
+        "a": "Bir lojistik regresyon, sigmoid aktivasyonlu bir yapay nörondur. Bir sinir ağı bunlardan pek çoğunu üst üste koyar; bu da eğri sınırlar çizmesini sağlar."
+      }
+    ]
+  }
+}

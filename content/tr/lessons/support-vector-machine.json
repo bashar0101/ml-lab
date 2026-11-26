@@ -1,0 +1,166 @@
+{
+  "title": "Destek Vektör Makinesi",
+  "description": "Destek vektör makinesinin iki sınıf arasındaki en geniş sokağı nasıl bulduğunu, onu hangi noktaların taşıdığını ve çekirdek hilesini görün.",
+  "youWillLearn": [
+    "Sınıflar arasındaki en geniş boşluk neden en güvenli sınırdır",
+    "Destek vektörleri nedir ve neden yalnızca onlar önemlidir",
+    "C, geniş bir sokağı hatalarla nasıl takas eder",
+    "Çekirdek hilesi eğri sınırları nasıl çizer"
+  ],
+  "story": [
+    {
+      "id": "many-lines",
+      "rail": "Birçok doğru",
+      "title": "Birçok doğru onları ayırır",
+      "body": "Birbirinden güzelce ayrık iki nokta grubu. Aralarına sayısız düz doğru çizebilirsiniz ve her biri tüm noktaları doğru sınıflandırır. **Yeni** noktalar için hangi doğruya güvenmeliyiz?",
+      "keyIdea": "Eğitim noktalarını doğru bilmek yetmez; görmediğimiz noktalar için en güvenli doğruyu istiyoruz.",
+      "frameTag": "start",
+      "reveal": ["points"]
+    },
+    {
+      "id": "street",
+      "rail": "En geniş sokak",
+      "title": "En geniş sokağı inşa et",
+      "body": "Bir destek vektör makinesi grupları ayıran en geniş **sokağı** arar: düz mavi çizgi ortadan geçer, kesikli çizgiler de kenarlarıdır. Geniş bir sokak, eskilerden biraz uzağa düşen yeni noktalara yer bırakır.",
+      "keyIdea": "En iyi sınır, iki gruba da en büyük paya sahip olandır.",
+      "math": "Model `f(x) = w·x + b`. Orta çizgi `f(x) = 0`, kenarlar `f(x) = ±1` ve sokağın genişliği `2 / |w|`; yani geniş sokak küçük bir `w` demektir.",
+      "frameTag": "first-epoch",
+      "reveal": ["points", "boundary", "margins", "shade"]
+    },
+    {
+      "id": "push",
+      "rail": "İt",
+      "title": "Noktalar sokağı iter",
+      "body": "Eğitim noktaları rastgele sırayla ziyaret eder. Sokağın güvenle dışında kalan bir nokta hiçbir şey yapmaz. **Sokağın içindeki veya yanlış taraftaki** bir nokta sınırı kendinden uzağa iter (turuncu hale). Sağdaki şerit her noktanın nerede durduğunu gösterir: yanlış tarafta, sokakta ya da güvende.",
+      "keyIdea": "Modeli yalnızca çok yakın ya da yanlış olan noktalar değiştirir.",
+      "math": "Bu Pegasos algoritmasıdır: seçilen bir nokta için `y·f(x) < 1` ise itme sayısı `α` bir artar. Gördüğünüz sokak, şimdiye kadarki tüm adımlardaki sokağın **ortalamasıdır**; bu, sokağın zıplamasını önler.",
+      "frameTag": "epoch-5",
+      "reveal": ["points", "boundary", "margins", "shade", "strip"]
+    },
+    {
+      "id": "supports",
+      "rail": "Destekler",
+      "title": "Yalnızca birkaç nokta önemli",
+      "body": "Sokağın formülü yalnızca daire içine alınmış noktalar üzerinden ağırlıklı bir toplamdır: **destek vektörleri**, yani eğitim sırasında bir an itmiş olan noktalar. Kesin SVM çözümünde bunlar tam olarak sokağın kenarlarındaki veya içindeki noktalar olurdu. Bu hızlı eğitim yöntemi buna yaklaşır; bu yüzden daire içindeki birkaç nokta erken itmiş ve sonra geride kalmıştır.",
+      "keyIdea": "Sınır destek vektörlerinden kurulur; diğer noktalar formülüne hiç girmez.",
+      "frameTag": "done",
+      "reveal": ["points", "boundary", "margins", "shade", "strip", "support"]
+    },
+    {
+      "id": "strictness",
+      "rail": "Katılık",
+      "title": "Ne kadar katı olmalı?",
+      "body": "Gerçek veriler örtüşür, bu yüzden hiçbir sokak tamamen boş değildir. Ödünleşimi **C** ayarı belirler. Küçük bir C, sokağı geniş tutmak için bazı noktaları sokağın içinde (hatta yanlış tarafta) kabul eder. Büyük bir C daha az ihlalde ısrar eder, bu yüzden sokak noktalara daha katı uymak için daralır.",
+      "keyIdea": "C, geniş bir payı eğitim hatalarına karşı dengeler.",
+      "math": "SVM, `λ = 1/(C·n)` ile `λ/2·|w|² + mean(max(0, 1 − y·f(x)))` ifadesini küçültür: ilk kısım geniş bir sokak ister, ikincisi (*menteşe kaybı*) içindeki noktaları cezalandırır.",
+      "frameTag": "done",
+      "reveal": ["points", "boundary", "margins", "shade", "strip", "support"]
+    },
+    {
+      "id": "kernel",
+      "rail": "Çekirdek",
+      "title": "Sokağı bükmek",
+      "body": "Ya düz bir sokak yoksa, örneğin bir grup diğerinin oluşturduğu bir halkanın içindeyse? **Çekirdek hilesi** benzerliği daha akıllıca ölçer; böylece aynı algoritma eğri sokaklar çizer. Laboratuvarda deneyin: **Halkalar**'ı, sonra **Eğri (RBF)**'yi seçin.",
+      "keyIdea": "Bir çekirdek, doğrusal bir yöntemin hiç yeni özellik hesaplamadan eğri sınırlar çizmesini sağlar.",
+      "math": "`xᵢ·x` nokta çarpımını bir çekirdekle değiştirin. RBF çekirdeği `K(a, b) = e^(−γ·|a − b|²)` iki noktanın ne kadar yakın olduğunu söyler; `γ` her noktanın etkisinin ne kadar uzağa ulaşacağını belirler.",
+      "frameTag": "done",
+      "reveal": ["points", "boundary", "margins", "shade", "strip", "support"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Başlangıç: henüz sınır yok",
+      "body": "Her nokta her dönemde bir kez ziyaret edilecek. Başlamak için oynat'a basın."
+    },
+    "pick": {
+      "title": "Dönem {epoch}: kim itiyor?",
+      "body": "Vurgulanan noktalar bu dönem içinde bir an sınırı itti: ziyaret edildiklerinde sokağın içinde veya yanlış taraftaydılar."
+    },
+    "update": {
+      "title": "Dönem {epoch}: sokak hareket ediyor",
+      "body": "Doğruluk {accuracy}; {inside} nokta sokağın üzerinde ya da içinde."
+    },
+    "done": {
+      "title": "{epoch} dönemden sonra bitti",
+      "body": "Doğru oranı {accuracy}; {supports} destek vektöründen kurulmuş. Başka bir C ya da eğri çekirdeği deneyin."
+    }
+  },
+  "stats": {
+    "epoch": "DÖNEM",
+    "accuracy": "DOĞRULUK",
+    "supports": "DESTEKLER"
+  },
+  "lab": {
+    "breakIt": "**Örtüşen**'de **C**'yi **0.01**'e indirin: sokak o kadar genişler ki birçok nokta içinde kalır ve bazıları yanlış tarafa düşer. C'yi **100**'e çıkarın; sokak noktalara daha katı uymak için daralır. Sonra **Halkalar**'ı **Eğri (RBF)** ile seçin ve **Gama**'yı **20**'ye sürükleyin: her nokta kendi küçük adasını oluşturur.",
+    "presets": {
+      "blobs": "İki grup",
+      "overlap": "Örtüşen",
+      "circles": "Halkalar",
+      "moons": "Hilaller"
+    },
+    "params": {
+      "C": {
+        "label": "C (katılık)",
+        "hint": "Küçük = geniş sokak, bazı hatalara izin verilir. Büyük = dar, katı sokak."
+      },
+      "gamma": {
+        "label": "Gama (erişim)",
+        "hint": "Her noktanın etkisinin ne kadar uzağa ulaştığı. Büyük = çok yerel, kıvrımlı sınırlar."
+      },
+      "epochs": {
+        "label": "Dönemler",
+        "hint": "Her noktanın kaç kez ziyaret edileceği."
+      }
+    },
+    "errors": {
+      "tooFew": "En az dört nokta ekleyin.",
+      "oneClass": "İki sınıftan da nokta ekleyin: bir grup ile hiçlik arasında sokak olmaz."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Destek vektör makinesi nedir?",
+        "body": "Destek vektör makinesi (SVM), iki sınıfı **mümkün olan en geniş payla** ayıran bir sınıflandırıcıdır. Veriyi bölen tüm sınırlar arasından, iki sınıfın en yakın noktalarından en uzakta kalanı seçer.\n\nBu en yakın noktalar **destek vektörleri**dir. Sınırı yalnızca onlar belirler; bu da SVM'leri kompakt ve az özellikle çok sağlam yapar."
+      },
+      {
+        "heading": "Yumuşak paylar ve C",
+        "body": "Tamamen ayrılabilir veri nadirdir. **Yumuşak paylı** bir SVM, bazı noktaların sokağın içinde veya yanlış tarafta olmasına izin verir ve her biri için bir ceza öder: *menteşe kaybı*. Bedeli **C** parametresi belirler. Küçük C: ucuz ihlaller, geniş sokak, daha pürüzsüz sınır. Büyük C: pahalı ihlaller, eğitim noktalarına uymak için bükülen dar sokak ve aşırı öğrenme riski."
+      },
+      {
+        "heading": "Çekirdek hilesi",
+        "body": "Bir SVM'nin yalnızca iki noktanın ne kadar benzer olduğunu, bir nokta çarpımıyla ölçülmüş olarak bilmesi gerekir. Bu nokta çarpımını bir **çekirdek** fonksiyonuyla değiştirin; SVM, veri düz bir sınırın işe yaradığı daha zengin bir uzaya taşınmış gibi davranır, o uzayı hiç hesaplamadan.\n\nPopüler **RBF** (Gauss) çekirdeği iki noktayı ne kadar yakın olduklarına göre puanlar. Genişliği `γ` önemlidir: küçük γ pürüzsüz, geniş eğriler verir; büyük γ her noktanın yalnızca kendi çevresini etkilemesine yol açar ve kötü biçimde aşırı öğrenebilir.",
+        "table": {
+          "headers": ["Çekirdek", "Sınır şekli", "Dikkat edilecek"],
+          "rows": [
+            ["Doğrusal", "Düz doğru", "Halkalarda, hilallerde ve diğer eğri verilerde başarısız olur"],
+            ["RBF, küçük γ", "Pürüzsüz eğriler", "Sıkı şekilleri eksik öğrenebilir"],
+            ["RBF, büyük γ", "Noktaların etrafında adalar", "Gürültüyü ezberler"]
+          ]
+        }
+      },
+      {
+        "heading": "Burada nasıl eğitiliyor",
+        "body": "Klasik SVM çözücüleri ikinci dereceden programlama kullanır. Bu ders basit bir stokastik yöntem olan **Pegasos**'u kullanır: noktaları rastgele sırayla ziyaret edin ve biri sokağın içinde veya yanlış taraftaysa ağırlığı `α`'yı artırın. Çizilen sokak, tüm adımlardaki sokağın **ortalamasıdır**; bu, Pegasos'un titremek yerine yerleşmesini sağlayan standart bir hiledir. `α > 0` olan noktalar destek vektörleridir."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Daha geniş bir pay neden daha iyidir?",
+        "a": "Yeni veriler hiçbir zaman eğitim verileriyle tam olarak aynı değildir. Geniş bir sokak bu gürültüye yer bırakır, bu yüzden yeni noktaların yanlış tarafa düşme olasılığı azalır. Öğrenme kuramı da bunu destekler: daha geniş paylar görülmemiş veriler için daha iyi garantiler verir."
+      },
+      {
+        "q": "Destek vektörleri nedir?",
+        "a": "Sınırın kurulduğu eğitim noktaları: burada, en az bir kez itmiş olanlar. Kesin SVM optimumunda bunlar tam olarak sokağın kenarlarındaki veya içindeki noktalardır; Pegasos buna yaklaşır."
+      },
+      {
+        "q": "SVM mi, lojistik regresyon mu?",
+        "a": "Doğrusal çekirdekle genellikle benzer sınırlar verirler. Lojistik regresyon olasılık verir; SVM bir pay verir ve yalnızca en zor noktalara bağlıdır. Çekirdeklerle SVM'ler, düz lojistik regresyonun çizemediği eğri sınırlar çizer."
+      },
+      {
+        "q": "SVM'ler hâlâ kullanılıyor mu?",
+        "a": "Evet, özellikle metin sınıflandırma ve biyoinformatik gibi çok özellikli küçük ve orta ölçekli veri kümelerinde. Devasa görüntü veya metin veri kümelerinde ise yerlerini büyük ölçüde sinir ağları aldı."
+      }
+    ]
+  }
+}

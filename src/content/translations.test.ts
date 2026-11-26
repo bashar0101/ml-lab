@@ -9,6 +9,8 @@ const dir = path.join(process.cwd(), "content");
 const json = (...p: string[]) => JSON.parse(readFileSync(path.join(dir, ...p), "utf8"));
 const placeholders = (s: string) => [...s.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
 const bold = (s: string) => (s.match(/\*\*/g) ?? []).length;
+/** Formulas and code in backticks stay exactly as written. */
+const code = (s: string) => s.match(/`[^`]*`/g) ?? [];
 /** Numbers as written in the English text (claims are measured, so they must survive translation). */
 const numbers = (s: string) => [...new Set(s.replace(/`[^`]*`/g, "").match(/\d+(?:\.\d+)?/g) ?? [])];
 
@@ -44,6 +46,7 @@ function texts(c: LessonContent): Record<string, string> {
     out[`story.${s.id}.title`] = s.title;
     out[`story.${s.id}.body`] = s.body;
     out[`story.${s.id}.keyIdea`] = s.keyIdea;
+    if (s.math) out[`story.${s.id}.math`] = s.math;
   });
   for (const [k, e] of Object.entries(c.events)) {
     out[`event.${k}.title`] = e.title;
@@ -87,16 +90,14 @@ describe.each(pairs)("%s translation of %s", (locale, slug) => {
     );
   });
 
-  it("keeps the maths exactly", () => {
-    expect(target.story.map((s) => s.math ?? null)).toEqual(source.story.map((s) => s.math ?? null));
-  });
-
-  it("keeps every {placeholder}, **bold** pair and every number the English text states", () => {
+  it("keeps every {placeholder}, formula, **bold** pair and every number the English text states", () => {
     const a = texts(source);
     const b = texts(target);
     expect(Object.keys(b).sort()).toEqual(Object.keys(a).sort());
     for (const k of Object.keys(a)) {
       expect(placeholders(b[k]), k).toEqual(placeholders(a[k]));
+      // Word order differs between languages, so formulas may appear in another order.
+      expect(code(b[k]).sort(), k).toEqual(code(a[k]).sort());
       expect(bold(b[k]) % 2, k).toBe(0);
       for (const n of numbers(a[k])) expect(b[k], `${k} lost the number ${n}`).toContain(n);
     }

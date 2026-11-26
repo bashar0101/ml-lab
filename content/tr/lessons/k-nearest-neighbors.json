@@ -1,0 +1,163 @@
+{
+  "title": "k-En Yakın Komşu",
+  "description": "k-en yakın komşunun yeni bir noktayı en yakın komşularına oylatarak nasıl sınıflandırdığını ve k'nin her şeyi nasıl değiştirdiğini görün.",
+  "youWillLearn": [
+    "Benzer örneklere sorarak nasıl sınıflandırılır",
+    "Mesafe ne demektir ve birden fazla türü olduğu",
+    "k, gürültü ile bulanıklık arasında nasıl denge kurar",
+    "Neden eğitim yoktur ve bunun bedeli nedir"
+  ],
+  "story": [
+    {
+      "id": "new-point",
+      "rail": "Yeni nokta",
+      "title": "Bu hangi meyve?",
+      "body": "Her nokta bir meyve; tatlılık (yatay) ve çıtırlık (dikey) ile ölçülmüş. Şeftali renkli daireler **şeftali**, lavanta kareler **erik**. Yeni bir meyve geldi: siyah yıldız. Şeftali mi, erik mi?",
+      "keyIdea": "Ölçüleri benzeyen şeyler muhtemelen birbirine benzer.",
+      "frameTag": "start",
+      "reveal": ["points", "query"]
+    },
+    {
+      "id": "measure",
+      "rail": "Ölç",
+      "title": "Her mesafeyi ölç",
+      "body": "k-en yakın komşunun formülü de eğitimi de yoktur. Bilinen her meyveyi saklar ve yeni biri geldiğinde onun **her birine** ne kadar uzak olduğunu ölçer.",
+      "keyIdea": "Mesafe, *benzer* kavramını sayıya çevirme yolumuzdur.",
+      "math": "Düz çizgi (Öklid) mesafesi: `d = √((x₁ − x₂)² + (y₁ − y₂)²)`.",
+      "frameTag": "measure",
+      "reveal": ["points", "query", "distances"]
+    },
+    {
+      "id": "nearest",
+      "rail": "En yakın",
+      "title": "En yakın k tanesini tut",
+      "body": "Meyveleri mesafeye göre sıralayın ve en yakın **k** tanesini, burada 5'ini tutun. Kesikli çember tam 5. meyveye uzanır; dışındaki her şey yok sayılır. Sağdaki liste onları sıralar.",
+      "keyIdea": "k, seçtiğiniz tek ayardır: kaç komşuya sorulacağı.",
+      "frameTag": "nearest",
+      "reveal": ["points", "query", "nearest"]
+    },
+    {
+      "id": "vote",
+      "rail": "Oyla",
+      "title": "Oylasınlar",
+      "body": "k komşunun her biri kendi sınıfına oy verir. Çubuklar oyları sayar. Burada k = 5 tek sayıdır, bu yüzden iki sınıf berabere kalamaz. Çift bir k (veya üç sınıf) ile beraberlik mümkündür; o zaman tek başına en yakın komşu bozar.",
+      "keyIdea": "Cevap, en yakın örneklerin çoğunluk oyudur.",
+      "frameTag": "vote",
+      "reveal": ["points", "query", "nearest", "votes"]
+    },
+    {
+      "id": "decide",
+      "rail": "Karar",
+      "title": "Cevap",
+      "body": "En çok oyu alan sınıf kazanır ve yıldız onun rengini alır. Algoritmanın tamamı budur: ölç, sırala, oyla.",
+      "keyIdea": "Hiç eğitim yok: bütün iş bir soru sorulduğunda olur.",
+      "frameTag": "decide",
+      "reveal": ["points", "query", "nearest", "votes"]
+    },
+    {
+      "id": "map",
+      "rail": "Her yerde",
+      "title": "Soruyu her yerde sor",
+      "body": "Şimdi grafiğin her noktasında yeni bir meyve olduğunu düşünün ve her noktayı cevaba göre boyayın. Bu, modelin haritasıdır. Sınırları verilerin etrafında bükülür; bu yüzden lojistik regresyonun aksine düz doğrularla sınırlı değildir.",
+      "keyIdea": "k-NN her şekilde sınır çizebilir, ama bunun için bütün veriyi hatırlaması gerekir.",
+      "frameTag": "map",
+      "reveal": ["points", "query", "votes", "map"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Yeni bir nokta geliyor",
+      "body": "Yıldız, sınıfını bulmak istediğimiz noktadır. Komşularına sormak için oynat'a basın."
+    },
+    "measure": {
+      "title": "Her mesafeyi ölç",
+      "body": "Bilinen her noktaya bir çizgi. En yakını {nearest} uzaklıkta."
+    },
+    "nearest": {
+      "title": "En yakın {k} taneyi tut",
+      "body": "Kesikli çizginin dışındaki her şey yok sayılır."
+    },
+    "vote": {
+      "title": "Oyları say",
+      "body": "Kazanan sınıf {k} oyun {winnerVotes} tanesini aldı."
+    },
+    "decide": {
+      "title": "Karar ver",
+      "body": "Yıldız en çok oyu alan sınıfı alır ({k} oydan {winnerVotes})."
+    },
+    "map": {
+      "title": "Haritanın tamamı",
+      "body": "Her nokta, k-NN'nin ona vereceği sınıfa göre boyandı. Yıldızı taşımak için herhangi bir yere tıklayın ya da k'yi değiştirip sınırların kaymasını izleyin."
+    }
+  },
+  "stats": {
+    "k": "K",
+    "nearest": "EN YAKIN",
+    "votes": "OYLAR"
+  },
+  "lab": {
+    "breakIt": "**Örtüşen**'de **k = 1** yapın: her başıboş nokta kendi küçük adasını oluşturur ve harita gürültüyü izler. Sonra k'yi **25**'e çıkarın: sınırlar pürüzsüzleşir ama küçük gruplar oylamada yenilip kaybolur. **Manhattan** mesafesini de deneyin: çember bir eşkenar dörtgene dönüşür.",
+    "presets": {
+      "blobs": "İki grup",
+      "overlap": "Örtüşen",
+      "moons": "Hilaller",
+      "three-blobs": "Üç grup"
+    },
+    "params": {
+      "k": {
+        "label": "k (komşular)",
+        "hint": "En yakın noktalardan kaçının oy kullanacağı."
+      }
+    },
+    "errors": {
+      "tooFew": "En az iki nokta ekleyin."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "k-en yakın komşu nedir?",
+        "body": "k-en yakın komşu (k-NN), yeni bir örneği daha önce gördüğü en benzer **k** örneği bulup onlara oy verdirerek sınıflandırır. En basit makine öğrenmesi yöntemlerinden biridir ve çoğu zaman şaşırtıcı derecede güçlüdür.\n\nBir formül öğrenmez. Veriyi ezberler ve bütün işini bir soru sorulduğunda yapar. Bu onu *tembel* yapar: eğitim anında biter, ama her tahminin bütün veri kümesine bakması gerekir."
+      },
+      {
+        "heading": "k'yi seçmek",
+        "body": "**Küçük k** (1 gibi) veriyi yakından izler: her gürültülü nokta kendi bölgesini oluşturur. Bu *aşırı öğrenme*dir. **Büyük k** sınırları yumuşatır: gürültüyü yok sayar ama küçük gerçek grupları da yok sayar; k bütün veriye eşit olduğunda her yerde çoğunluk sınıfını tahmin eder. Bu *eksik öğrenme*dir.\n\nUygulamada k, birkaç değer denenip modelin görmediği örnekler üzerinde doğruluk ölçülerek seçilir. İki sınıfla tek bir k beraberliklerin çoğunu önler."
+      },
+      {
+        "heading": "Hangi mesafe?",
+        "body": "**Düz çizgi** (Öklid) mesafesi gündelik olanıdır. **Manhattan** mesafesi, şehir blokları arasında yürür gibi her eksen boyunca atılan adımları toplar; çemberleri eşkenar dörtgendir. İkisi de ancak özellikler benzer ölçeklerdeyse anlamlıdır: bir özellik gramla, diğeri kilogramla ölçülüyorsa gramlar baskın çıkar. Önce özellikleri standartlaştırın.",
+        "table": {
+          "headers": ["Ayar", "Etkisi", "Riski"],
+          "rows": [
+            ["k = 1", "Sınırlar her noktaya sarılır", "Gürültüyü ezberler"],
+            ["Orta k", "Pürüzsüz ama esnek sınırlar", "Ayar gerektirir"],
+            ["k = tüm noktalar", "Her yerde çoğunluk sınıfı", "Girdiyi yok sayar"],
+            ["Ölçeklenmemiş özellikler", "Tek bir özellik mesafeye hâkim olur", "Yanlış komşular"]
+          ]
+        }
+      },
+      {
+        "heading": "Güçlü ve zayıf yanları",
+        "body": "k-NN eğitim gerektirmez, istenen sayıda sınıfla çalışır ve her şekilde sınır çizebilir. Ama çok veriyle tahminler yavaşlar, tahmin anında bütün veriye ihtiyaç duyar ve **boyut laneti**nden muzdariptir: çok sayıda özellikle her nokta diğer her noktadan uzaktır ve *en yakın* kavramı anlamını yitirir."
+      }
+    ],
+    "faq": [
+      {
+        "q": "k-NN bir şey öğreniyor mu?",
+        "a": "Olağan anlamda hayır. Eğitim adımı yalnızca veriyi saklar. Bütün iş tahmin anında yapılır."
+      },
+      {
+        "q": "Neden tek bir k kullanılır?",
+        "a": "İki sınıfla tek bir k oyları eşit bölemez, bu yüzden beraberlik olmaz. Daha fazla sınıfla beraberlik yine olabilir; burada en yakın komşu onu bozar."
+      },
+      {
+        "q": "k-NN sınıf yerine sayı tahmin edebilir mi?",
+        "a": "Evet: oylamak yerine komşuların değerlerinin ortalamasını alın. Bu, k-NN regresyonudur."
+      },
+      {
+        "q": "Uygulamada kullanılıyor mu?",
+        "a": "Çok, genellikle modern biçimiyle: bir gömme vektörünün en yakın komşularını bulmak, birçok öneri ve arama sisteminin çalışma şeklidir."
+      }
+    ]
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "title": "Rastgele Orman",
+  "description": "Bir rastgele ormanın rastgele örneklerden birçok farklı karar ağacı büyütmesini ve onlara oy verdirmesini izleyin. Ücretsiz ve etkileşimli.",
+  "youWillLearn": [
+    "Tek bir derin ağaç neden oynaktır, bir ağaç kalabalığı neden istikrarlıdır",
+    "Bootstrap örneği nedir",
+    "Her soru neden rastgele bir özelliğe bakar",
+    "Torba dışı noktalar nasıl ücretsiz bir doğruluk kontrolü sağlar"
+  ],
+  "story": [
+    {
+      "id": "crowd",
+      "rail": "Kalabalık",
+      "title": "Tek bir uzmana değil, kalabalığa sor",
+      "body": "Önceki derste tek bir karar ağacı noktaları sınıflandırmayı öğrendi ama oynaktı: birkaç noktayı taşıyın, tamamen değişebilir. Bir **rastgele orman**, her biri biraz farklı birçok ağaç büyütür ve onlara oy verdirir. Tek tek hatalar birbirini götürme eğilimindedir.",
+      "keyIdea": "Birlikte oy veren birçok kusurlu, farklı model tek bir modeli yener.",
+      "frameTag": "start",
+      "reveal": ["points"]
+    },
+    {
+      "id": "bootstrap",
+      "rail": "Bootstrap",
+      "title": "Her ağaç kendi örneğini alır",
+      "body": "Ağaçları farklı kılmak için her biri bir **bootstrap örneği** üzerinde eğitilir: nokta sayısı kadar kez, yerine koyarak rastgele nokta çekin. Bazı noktalar iki kez veya daha fazla çekilir (×2 rozetleri) ve kabaca üçte biri hiç çekilmez (soluk).",
+      "keyIdea": "Aynı veri, farklı rastgele örnekler, farklı ağaçlar.",
+      "math": "Bir noktanın `n` çekilişte hiç çekilmeme olasılığı `(1 − 1/n)ⁿ ≈ e⁻¹ ≈ 37 %`.",
+      "frameTag": "first-sample",
+      "reveal": ["points", "sample", "thumbs"]
+    },
+    {
+      "id": "random-questions",
+      "rail": "Rastgele soru",
+      "title": "Sorular da rastgele",
+      "body": "İkinci bir rastgelelik dozu: her düğümde ağaç yalnızca **rastgele seçilmiş tek bir özellik** hakkında, x ya da y, soru sorabilir. Bu, her ağacın aynı güçlü ilk soruyu sormasını engeller; böylece ağaçlar gerçekten farklı düşünür. İşte ilk ağacın tek başına haritası.",
+      "keyIdea": "Farklı örnekler artı farklı sorular, farklı hatalar yapan ağaçlar üretir.",
+      "frameTag": "first-tree",
+      "reveal": ["points", "tree", "thumbs"]
+    },
+    {
+      "id": "vote",
+      "rail": "Oyla",
+      "title": "Ağaçlar oylasın",
+      "body": "Beş ağaçla her nokta beş oy alır. Gölgeleme her sınıfa oy veren ağaçların payını gösterir: hemfikir oldukları yerde güçlü renk, bölündükleri yerde soluk. Sağdaki küçük haritalar tek tek ağaçlardır: her biri kendince köşeli ve tuhaftır.",
+      "keyIdea": "Ormanın cevabı çoğunluk oyudur; oy payı bir güven ölçüsü gibi çalışır.",
+      "frameTag": "five-trees",
+      "reveal": ["points", "forest", "thumbs"]
+    },
+    {
+      "id": "many",
+      "rail": "Çok ağaç",
+      "title": "Daha çok ağaç, daha pürüzsüz harita",
+      "body": "On beş ağaçtan sonra harita, tek bir ağacın merdiveninden daha pürüzsüzdür ve gürültülü noktaların etrafındaki adalar büyük ölçüde oylamayla silinmiştir. Ağaç eklemek bir ormanı asla daha fazla aşırı öğrenmeye itmez; yalnızca oylamayı daha istikrarlı yapar, daha fazla hesaplama karşılığında.",
+      "keyIdea": "Yüksek varyanslı birçok modelin ortalamasını almak varyansı düşürür. Buna **bagging** denir.",
+      "frameTag": "done",
+      "reveal": ["points", "forest", "thumbs"]
+    },
+    {
+      "id": "oob",
+      "rail": "Torba dışı",
+      "title": "Ücretsiz bir test: torba dışı",
+      "body": "Her nokta, ağaçların yaklaşık üçte biri tarafından dışarıda bırakıldı. Onu sınıflandırmasını yalnızca *o* ağaçlara sorun; hiç görmedikleri bir nokta için dürüst bir tahmin elde edersiniz. Tüm noktaların ortalaması **torba dışı doğruluk**tur (OOB): hiçbir veriyi ayırmadan bir test puanı.",
+      "keyIdea": "Eğitim doğruluğu pohpohlar; torba dışı doğruluk gerçeği söyler.",
+      "frameTag": "done",
+      "reveal": ["points", "forest", "thumbs"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "Boş bir orman",
+      "body": "Ağaçları tek tek büyütmek için oynat'a basın."
+    },
+    "sample": {
+      "title": "Ağaç {tree}: bir bootstrap örneği çek",
+      "body": "Rozetler birden fazla çekilen noktaları gösterir; soluk noktalar bu ağaç için çekilmedi."
+    },
+    "grow": {
+      "title": "Ağacı büyüt",
+      "body": "Bu ağacın kendi haritası: yalnızca kendi örneğini gördü ve her soru rastgele bir özellik kullandı."
+    },
+    "vote": {
+      "title": "Orman oyluyor",
+      "body": "Şimdiye kadar {trees} ağaç; orman eğitim noktalarının {accuracy} kadarını doğru biliyor."
+    },
+    "done": {
+      "title": "Bitmiş orman",
+      "body": "Eğitim doğruluğu {accuracy}, torba dışı doğruluk {oob}. 1 ağaca karşı 50 ağacı deneyin."
+    }
+  },
+  "stats": {
+    "trees": "AĞAÇLAR",
+    "accuracy": "DOĞRULUK",
+    "oob": "TORBA DIŞI"
+  },
+  "lab": {
+    "breakIt": "**Örtüşen**'de **Maksimum derinlik 8** ve **Ağaçlar 1** yapın: tek bir derin ağaç her gürültülü noktanın etrafına adalar oyar. Şimdi **50 ağaca** kaydırın: adalar pürüzsüz bir sınırda kaybolur ve karşılaştırılacak dürüst puan torba dışı doğruluktur. Tek bir ağacın tohumdan tohuma ne kadar değiştiğini, 50 ağacın ise ne kadar az değiştiğini görmek için **Yeni rastgele orman**'a basın.",
+    "presets": {
+      "overlap": "Örtüşen",
+      "moons": "Hilaller",
+      "xor": "Dama tahtası",
+      "circles": "Halkalar"
+    },
+    "params": {
+      "trees": {
+        "label": "Ağaçlar",
+        "hint": "Kaç ağacın oy vereceği."
+      },
+      "maxDepth": {
+        "label": "Maksimum derinlik",
+        "hint": "Her ağacın art arda kaç soru sorabileceği."
+      }
+    },
+    "errors": {
+      "tooFew": "En az dört nokta ekleyin.",
+      "oneClass": "İki sınıftan da nokta ekleyin."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "Rastgele orman nedir?",
+        "body": "Rastgele orman, oyları birleştirilen bir karar ağaçları topluluğudur. Her ağaç verinin rastgele bir **bootstrap örneği** üzerinde eğitilir ve her düğümde özelliklerin yalnızca rastgele bir alt kümesi kullanılabilir. Rastgelelik ağaçları farklı kılar; oylama onları, herhangi bir tek ağaçtan çok daha istikrarlı ve genellikle daha doğru bir modelde birleştirir."
+      },
+      {
+        "heading": "Ortalama almak neden işe yarar",
+        "body": "Derin bir karar ağacının *yanlılığı* düşüktür (neredeyse her şekle uyabilir) ama *varyansı* yüksektir (veriyle çok değişir). Hataları aynı olmayan birçok modelin ortalamasını almak, yanlılığı düşük tutarken varyansı düşürür. Bu **bagging**'dir (bootstrap ile toplama). Rastgele özellik seçimi ağaçların hatalarını daha az ilişkili yapar; bu da ortalamayı daha da etkili kılar."
+      },
+      {
+        "heading": "Torba dışı değerlendirme",
+        "body": "Her bootstrap örneği noktaların yaklaşık %37'sini dışarıda bırakır. Her nokta için, onu görmemiş ağaçlar onu yeniymiş gibi sınıflandırabilir. Doğru bildikleri noktaların payı **torba dışı doğruluk**tur: ormanın görülmemiş verilerde nasıl performans gösterdiğinin adil ve ücretsiz bir tahmini.",
+        "table": {
+          "headers": ["Ayar", "Artırmanın etkisi"],
+          "rows": [
+            ["Ağaç sayısı", "Daha istikrarlı, daha pürüzsüz oylar; asla daha fazla aşırı öğrenme yok; daha yavaş"],
+            ["Maksimum derinlik", "Her ağaç daha çok ayrıntıya uyar; oylama gürültüyü ortalayarak siler"],
+            ["Soru başına özellik", "Daha çok özellik = birbirine daha benzer ağaçlar = oylamadan daha az fayda"]
+          ]
+        }
+      },
+      {
+        "heading": "Güçlü ve zayıf yanları",
+        "body": "Rastgele ormanlar tablo biçimli veriler için en güvenilir yöntemler arasındadır: az ayar, özellik ölçeklemeye gerek yok, gürültüye dayanıklı ve her özelliğin ne kadar yardımcı olduğunu raporlarlar. Tek bir ağaçtan daha zor okunurlar, saklaması daha büyüktür ve tüm ağaç yöntemleri gibi gördükleri değer aralığının dışına çıkarım yapamazlar."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Bir rastgele orman daha çok ağaç ekleyerek aşırı öğrenebilir mi?",
+        "a": "Hayır. Daha fazla ağaç yalnızca ortalama oyu daha istikrarlı yapar. Ormanlar çok gürültülü verilerde çok derin ağaçlar yüzünden yine aşırı öğrenebilir, ama sebep ağaç sayısı değildir."
+      },
+      {
+        "q": "Her soruda neden rastgele bir özellik seçilir?",
+        "a": "Bu olmasaydı her ağaç önce aynı en güçlü soruyu seçer ve ağaçlar birbirine çok benzerdi. Seçimi kısıtlamak onları farklı düşündürür; böylece oy verirken hataları birbirini götürür."
+      },
+      {
+        "q": "Yalnızca iki özellikle neden tek bir rastgele özellik?",
+        "a": "Olağan kural, soru başına özellik sayısının yaklaşık kareköküdür; iki özellikle bu bire yuvarlanır. Gerçek veri kümelerinde genellikle yüzlerce özellik vardır."
+      },
+      {
+        "q": "Bunun gradyan artırmadan farkı nedir?",
+        "a": "Bir orman ağaçlarını birbirinden bağımsız büyütür ve ortalamasını alır. Artırma ise ağaçları birbiri ardına büyütür, her biri öncekilerin hatalarını düzeltir. İkisi de popülerdir; artırma çoğu zaman yarışmaları kazanır, ormanlar daha az ayar ister."
+      }
+    ]
+  }
+}
