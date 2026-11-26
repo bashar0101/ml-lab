@@ -200,5 +200,15 @@
   "svm.axis.y": "feature 2",
   "svm.kernel": "Kernel",
   "svm.kernel.linear": "Straight (linear)",
-  "svm.kernel.rbf": "Curved (RBF)"
+  "svm.kernel.rbf": "Curved (RBF)",
+
+  "dt.scene.label": "Points with the boxes the tree cuts the plane into on the left, and the tree of yes/no questions on the right.",
+  "dt.scene.tree": "the tree of questions",
+  "dt.scene.rule": "{feature} < {t}?",
+  "dt.scene.leaf": "{n} pts",
+  "dt.scene.yes": "yes",
+  "dt.scene.no": "no",
+  "dt.scene.candidate": "{feature} < {t}: gini {gini}",
+  "dt.feature.0": "x",
+  "dt.feature.1": "y"
 }
