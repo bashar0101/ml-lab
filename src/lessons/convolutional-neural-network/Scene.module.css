@@ -1,0 +1,114 @@
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  font-family: var(--font-ui);
+}
+
+.caption {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.on,
+.off,
+.empty,
+.t0,
+.t1,
+.t2,
+.t3,
+.t4,
+.t5,
+.t6 {
+  stroke: var(--line-2);
+  stroke-width: 0.8;
+}
+
+.on {
+  fill: var(--ink);
+}
+
+.off,
+.empty {
+  fill: var(--card);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.numOn,
+.numOff {
+  font-size: 9px;
+}
+
+.numOn {
+  fill: var(--card);
+}
+
+.numOff {
+  fill: var(--line-2);
+}
+
+.t0 {
+  fill: var(--peach-2);
+}
+.t1 {
+  fill: color-mix(in srgb, var(--peach-2) 55%, var(--card));
+}
+.t2 {
+  fill: color-mix(in srgb, var(--peach) 75%, var(--card));
+}
+.t3 {
+  fill: var(--card);
+}
+.t4 {
+  fill: color-mix(in srgb, var(--lavender) 85%, var(--card));
+}
+.t5 {
+  fill: color-mix(in srgb, var(--lavender-2) 50%, var(--card));
+}
+.t6 {
+  fill: var(--lavender-2);
+}
+
+.small,
+.tiny {
+  fill: var(--ink);
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: var(--card);
+  stroke-width: 2px;
+}
+
+.small {
+  font-size: 9.5px;
+}
+
+.tiny {
+  font-size: 8.5px;
+}
+
+.window {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 3;
+}
+
+.digit {
+  fill: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.barBack {
+  fill: var(--line);
+}
+
+.bar {
+  fill: var(--line-2);
+}
+
+.barBest {
+  fill: var(--peach-2);
+}

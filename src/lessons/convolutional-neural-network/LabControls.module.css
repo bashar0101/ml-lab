@@ -1,0 +1,30 @@
+.digits {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+}
+
+.digits button {
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+  inline-size: 100%;
+  max-inline-size: 200px;
+}
+
+.cell {
+  aspect-ratio: 1;
+  border: 1px solid var(--line-2);
+  border-radius: 2px;
+  background: var(--card);
+  padding: 0;
+  cursor: pointer;
+}
+
+.cell[aria-pressed="true"] {
+  background: var(--ink);
+}

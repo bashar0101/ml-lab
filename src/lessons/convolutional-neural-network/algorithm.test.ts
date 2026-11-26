@@ -68,3 +68,13 @@ describe("runCnn", () => {
     expect(fixtures.report.noise15).toBeLessThan(0.65);
   });
 });
+
+describe("break-it claim", () => {
+  it("the Noisy 8 preset is still an 8, but only about two-thirds sure, with 0 a real contender", async () => {
+    const { noisyEight } = await import("./LabControls");
+    const p = forwardCnn(noisyEight()).probs;
+    expect(p.indexOf(Math.max(...p))).toBe(8);
+    expect(p[8]).toBeLessThan(0.8);
+    expect(p[0]).toBeGreaterThan(0.2);
+  });
+});
