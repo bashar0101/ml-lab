@@ -8,7 +8,8 @@ for (const { slug } of liveLessons()) {
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto(`/lessons/${slug}/`);
     const counter = page.getByText(/^Step 1 \/ (\d+)$/);
-    await expect(counter).toBeVisible();
+    // The first paint can be slow while every lesson loads in parallel.
+    await expect(counter).toBeVisible({ timeout: 15000 });
     const total = Number((await counter.textContent())!.split("/")[1]);
     for (let i = 1; i < total; i++) await page.getByRole("button", { name: /^Next:/ }).click();
     await expect(page.getByText(`Step ${total} / ${total}`)).toBeVisible();

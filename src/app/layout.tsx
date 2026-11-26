@@ -39,7 +39,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <TopBar
             strings={{
               home: ui["nav.home"],
-              search: ui["nav.search"],
               toLight: ui["theme.toLight"],
               toDark: ui["theme.toDark"],
             }}
