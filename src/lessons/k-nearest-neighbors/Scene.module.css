@@ -1,0 +1,77 @@
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  font-family: var(--font-ui);
+}
+
+.caption,
+.count {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.count {
+  fill: var(--ink-2);
+}
+
+.m0 {
+  fill: color-mix(in srgb, var(--peach) 55%, var(--stage));
+}
+.m1 {
+  fill: color-mix(in srgb, var(--lavender) 60%, var(--stage));
+}
+.m2 {
+  fill: color-mix(in srgb, var(--green) 55%, var(--stage));
+}
+
+.distance {
+  stroke: var(--muted);
+  stroke-width: 0.8;
+  stroke-dasharray: 3 3;
+}
+
+.neighbour {
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+
+.radius {
+  fill: color-mix(in srgb, var(--blue) 8%, transparent);
+  stroke: var(--blue);
+  stroke-width: 1.6;
+  stroke-dasharray: 6 4;
+}
+
+.query {
+  fill: var(--ink);
+  stroke: var(--card);
+  stroke-width: 1.5;
+}
+
+.q0 {
+  fill: var(--peach-2);
+}
+.q1 {
+  fill: var(--lavender-2);
+}
+.q2 {
+  fill: var(--green-2);
+}
+
+.bar0 {
+  fill: var(--peach);
+  stroke: var(--ink);
+}
+.bar1 {
+  fill: var(--lavender);
+  stroke: var(--ink);
+}
+.bar2 {
+  fill: var(--green);
+  stroke: var(--ink);
+}
+
+.distBar {
+  fill: var(--line-2);
+}

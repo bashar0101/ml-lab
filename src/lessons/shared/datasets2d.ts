@@ -41,7 +41,8 @@ export function makeDataset(id: Dataset2DId, seed = 1, n = 40): LabeledPoint[] {
         const t = rand() * Math.PI;
         const x = upper ? Math.cos(t) : 1 - Math.cos(t);
         const y = upper ? Math.sin(t) : 0.5 - Math.sin(t);
-        return pt(2.2 + x * 2.8 + gauss() * 0.25, 4.3 + y * 2.8 + gauss() * 0.25, upper ? 0 : 1);
+        // Moons span x ∈ [−1, 2], y ∈ [−0.5, 1]; map that onto [1.5, 8.5] × [3, 7].
+        return pt(1.5 + (x + 1) * 2.33 + gauss() * 0.25, 3 + (y + 0.5) * 2.67 + gauss() * 0.25, upper ? 0 : 1);
       });
     case "xor": {
       const q = Math.floor(n / 4);
