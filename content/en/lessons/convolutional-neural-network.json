@@ -1,0 +1,156 @@
+{
+  "title": "Convolutional Neural Network",
+  "description": "Watch a tiny convolutional network read a hand-drawn digit: filters slide over the pixels, ReLU and pooling shrink the result, and a final layer decides.",
+  "youWillLearn": [
+    "How an image becomes a grid of numbers",
+    "What a filter (kernel) is and how it slides across an image",
+    "What feature maps, ReLU and pooling do",
+    "Why the same small filter can spot a pattern anywhere"
+  ],
+  "story": [
+    {
+      "id": "pixels",
+      "rail": "Pixels",
+      "title": "A picture is a grid of numbers",
+      "body": "To a computer this digit is just 64 numbers: 1 where there is ink, 0 where there isn't. A normal network would treat those 64 numbers as unrelated inputs. But pixels have neighbours, and shapes like edges and corners are made of neighbouring pixels.",
+      "keyIdea": "Images have structure: nearby pixels belong together.",
+      "frameTag": "start",
+      "reveal": ["image"]
+    },
+    {
+      "id": "kernel",
+      "rail": "Filter",
+      "title": "A small filter looks at one patch",
+      "body": "A **filter** (or kernel) is a tiny 3 × 3 grid of weights. Place it on a 3 × 3 patch of the image (blue box), multiply each pixel by the weight on top of it, and add everything up. A big result means the patch matches the filter's pattern. These four filters were learned during training.",
+      "keyIdea": "One filter = one small pattern detector.",
+      "math": "`value = Σ pixel × weight + bias` over the 9 squares.",
+      "frameTag": "conv-first",
+      "reveal": ["image", "window", "kernel", "featuremap"]
+    },
+    {
+      "id": "slide",
+      "rail": "Slide",
+      "title": "Slide it everywhere",
+      "body": "Now slide the same filter one square at a time across the whole image: 6 × 6 = 36 positions. Each position gives one number, and together they form a **feature map**: a map of where in the picture this pattern appears.",
+      "keyIdea": "The same weights are reused at every position, so a pattern is found wherever it is.",
+      "frameTag": "conv-done",
+      "reveal": ["image", "window", "kernel", "featuremap"]
+    },
+    {
+      "id": "relu",
+      "rail": "ReLU",
+      "title": "Keep the matches",
+      "body": "Negative numbers mean *this is not the pattern*. ReLU simply sets them to 0 and keeps the positive matches. What remains highlights where the filter fired.",
+      "keyIdea": "ReLU: max(value, 0).",
+      "frameTag": "relu",
+      "reveal": ["image", "kernel", "featuremap"]
+    },
+    {
+      "id": "pool",
+      "rail": "Pool",
+      "title": "Shrink it: max-pooling",
+      "body": "Max-pooling cuts the 6 × 6 map into 2 × 2 blocks and keeps only the biggest value of each, giving 3 × 3. The network keeps *whether* the pattern appeared in a region, not its exact square, so small shifts of the drawing matter less.",
+      "keyIdea": "Pooling makes the network more tolerant of small shifts.",
+      "frameTag": "pool",
+      "reveal": ["image", "kernel", "featuremap", "pooled"]
+    },
+    {
+      "id": "decide",
+      "rail": "Decide",
+      "title": "Combine and decide",
+      "body": "All four filters do the same, giving four small pooled maps: 36 numbers in total. A final layer weighs them into one score per digit, and softmax turns the scores into probabilities. The tallest bar is the network's answer.",
+      "keyIdea": "Filters find parts; the last layer puts the parts together into a decision.",
+      "math": "`probs = softmax(W · features + b)`",
+      "frameTag": "dense",
+      "reveal": ["image", "pooled", "probs"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "The drawing",
+      "body": "64 numbers, one per square. Press play to slide filter {filter} across it."
+    },
+    "conv": {
+      "title": "Filter {filter} at this spot",
+      "body": "Multiply the 9 pixels by the filter's weights and add: {value}."
+    },
+    "relu": {
+      "title": "ReLU",
+      "body": "Negative values become 0; positive matches stay."
+    },
+    "pool": {
+      "title": "Max-pooling",
+      "body": "Each 2 × 2 block keeps only its biggest value."
+    },
+    "maps": {
+      "title": "All four filters",
+      "body": "Each filter produced its own pooled map: 36 numbers in total."
+    },
+    "dense": {
+      "title": "The answer: {prediction}",
+      "body": "The network is {confidence} sure it is a {prediction}."
+    },
+    "done": {
+      "title": "Done",
+      "body": "Draw your own digit in the Lab and watch every number change."
+    }
+  },
+  "stats": {
+    "filter": "FILTER",
+    "value": "VALUE HERE",
+    "prediction": "ANSWER"
+  },
+  "lab": {
+    "breakIt": "Load **Noisy 8**: with about 15 % of its squares flipped the network still says 8, but only about two-thirds sure, with 0 close behind. Over many noisy digits its accuracy falls from 93 % to about 53 %, because it only ever trained on light noise. Then erase squares from a clean digit, one at a time, until the answer flips.",
+    "presets": {},
+    "params": {},
+    "errors": {}
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is a convolutional neural network?",
+        "body": "A convolutional neural network (CNN) is a neural network built for grid-shaped data such as images. Instead of connecting every pixel to every neuron, it slides small **filters** across the image. Each filter is a pattern detector, and because the same weights are used everywhere, a pattern is recognised wherever it appears."
+      },
+      {
+        "heading": "The building blocks",
+        "body": "**Convolution** slides each filter over the image to make a feature map. **ReLU** keeps the positive matches. **Pooling** shrinks each map so small shifts matter less. Real CNNs stack many such layers: early filters find edges, later ones combine edges into corners, curves and finally whole objects. A final fully-connected layer turns the features into class scores.",
+        "table": {
+          "headers": ["Step", "Input", "Output", "Purpose"],
+          "rows": [
+            ["Convolution", "8 × 8 image", "4 maps of 6 × 6", "Find patterns"],
+            ["ReLU", "6 × 6 maps", "6 × 6 maps", "Keep positive matches"],
+            ["Max-pool 2 × 2", "6 × 6 maps", "3 × 3 maps", "Shrink, tolerate shifts"],
+            ["Dense + softmax", "36 numbers", "10 probabilities", "Decide"]
+          ]
+        }
+      },
+      {
+        "heading": "This lesson's network",
+        "body": "The network here is tiny: four 3 × 3 filters, one pooling step and one output layer, about 400 numbers in total. It was trained offline on 4,000 digits generated from a hand-drawn 5 × 7 font, placed at random spots with a few flipped pixels. It reaches about 93 % on new digits of the same kind. Your browser recomputes every step from those weights."
+      },
+      {
+        "heading": "Why convolutions work so well",
+        "body": "Sharing one filter across the whole image means far fewer weights than a fully-connected layer, and it builds in a useful assumption: a cat's ear looks like a cat's ear wherever it is in the picture. That is why CNNs led the deep learning revolution in image recognition."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Who chose the filters?",
+        "a": "Nobody: they were learned by gradient descent and backpropagation, exactly like the weights in the earlier lessons. Training discovered which patterns help tell digits apart."
+      },
+      {
+        "q": "Why are the maps smaller than the image?",
+        "a": "A 3 × 3 filter fits in 6 positions across an 8-wide image (without padding). Pooling then halves the size again."
+      },
+      {
+        "q": "Can a CNN recognise a digit anywhere in the image?",
+        "a": "Within limits. Shared filters and pooling make it tolerant of small shifts, which is why shifted digits still work here. Large shifts, rotations or very different styles need training examples like them."
+      },
+      {
+        "q": "Is this how photo apps recognise faces?",
+        "a": "The same idea scaled up enormously: millions of weights, dozens of layers, millions of training images, plus newer designs such as residual connections and attention."
+      }
+    ]
+  }
+}

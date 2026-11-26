@@ -254,5 +254,23 @@
   "bp.scene.loss": "loss = {loss}",
   "bp.scene.chart": "gradient size per layer (epoch {epoch})",
   "bp.scene.layer": "layer {n}",
-  "bp.scene.logScale": "log scale: each step ×10"
+  "bp.scene.logScale": "log scale: each step ×10",
+
+  "cnn.scene.label": "The 8 by 8 drawing as numbers with the sliding 3 by 3 window, the filter's weights, the feature map filling in, the pooled maps, and the probability of each digit.",
+  "cnn.scene.image": "the drawing (1 = ink)",
+  "cnn.scene.kernel": "filter {n}",
+  "cnn.scene.map": "feature map",
+  "cnn.scene.relu": "after ReLU",
+  "cnn.scene.pooled": "pooled (max of each 2 × 2)",
+  "cnn.scene.allMaps": "all four pooled maps",
+  "cnn.scene.filter": "Filter {n}",
+  "cnn.scene.probs": "how likely each digit is",
+  "cnn.presets": "Digits",
+  "cnn.digit": "Digit {d}",
+  "cnn.noisy": "Noisy 8",
+  "cnn.blank": "Blank",
+  "cnn.drawHint": "Click squares here or on the picture to draw.",
+  "cnn.drawGrid": "Drawing grid",
+  "cnn.pixel": "Pixel row {r}, column {c}",
+  "cnn.filter": "Filter to follow"
 }
