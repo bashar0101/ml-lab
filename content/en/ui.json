@@ -126,6 +126,18 @@
   "home.faq.4.q": "Do I need to know Python?",
   "home.faq.4.a": "No. Every lesson shows plain-words pseudocode next to the Python, and the story never depends on reading code.",
   "home.footer": "Free. No sign-up. Runs in your browser.",
+  "footer.contact": "Contact",
+  "footer.privacy": "Privacy",
+  "footer.terms": "Terms of Service",
+  "footer.github": "GitHub",
+
+  "privacy.title": "Privacy",
+  "privacy.description": "What ML Lab does and does not collect.",
+  "privacy.body": "ML Lab is a free, static website. It has no accounts, no sign-up, no ads and no analytics.\n\n**What we collect:** nothing. The site does not use cookies, tracking pixels or third-party analytics, and nothing you do in a lesson is sent to a server.\n\n**What stays on your device:** your lesson progress and your light or dark theme choice are saved in your own browser (local storage) so the site remembers them next time. You can remove them at any time by clearing this site's data in your browser.\n\n**Your data in the Lab:** points you draw and settings you change are used only inside your browser to run the lesson. They are never uploaded.\n\n**Hosting:** the company that hosts the site may keep standard server logs (such as IP addresses and request times) to deliver pages and keep the service running. We do not use those logs to identify or track you.\n\n**Contact:** questions about privacy can be sent using the Contact link at the bottom of every page.\n\nIf this policy changes, the new version will be posted on this page.",
+
+  "terms.title": "Terms of Service",
+  "terms.description": "The terms for using ML Lab.",
+  "terms.body": "By using ML Lab you agree to these terms.\n\n**Free to use:** ML Lab is free for personal and educational use, including in classrooms. No account is needed.\n\n**Educational content:** lessons explain machine learning ideas for learning purposes. They are simplified on purpose and are not professional, financial or engineering advice.\n\n**As is:** the site is provided as is, without warranties of any kind. We do our best to keep lessons correct and the site available, but we cannot guarantee it is error-free or always online.\n\n**Source code:** the code is open source under the MIT License; see the GitHub link at the bottom of every page. Lesson text and illustrations belong to ML Lab unless stated otherwise.\n\n**Fair use:** please don't try to disrupt the site or use it to harm others.\n\n**Changes:** these terms may be updated; the latest version is always on this page.\n\n**Contact:** use the Contact link at the bottom of every page.",
 
   "about.title": "About ML Lab",
   "about.description": "Why ML Lab exists and how its lessons work.",

@@ -45,7 +45,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
           {children}
-          <Footer name={ui["site.name"]} line={ui["home.footer"]} about={ui["nav.about"]} />
+          <Footer
+            strings={{
+              name: ui["site.name"],
+              line: ui["home.footer"],
+              about: ui["nav.about"],
+              contact: ui["footer.contact"],
+              privacy: ui["footer.privacy"],
+              terms: ui["footer.terms"],
+              github: ui["footer.github"],
+            }}
+          />
         </UiProvider>
       </body>
     </html>

@@ -50,3 +50,14 @@ test("sitemap and robots", async ({ request }) => {
   expect(sitemap).toContain("/about/");
   expect(await (await request.get("/robots.txt")).text()).toContain("Sitemap:");
 });
+
+test("footer has Contact, Privacy, Terms of Service and GitHub links that work", async ({ page }) => {
+  await page.goto("/");
+  const footer = page.getByRole("contentinfo");
+  await expect(footer.getByRole("link", { name: "Contact" })).toHaveAttribute("href", /^mailto:.+@.+/);
+  await expect(footer.getByRole("link", { name: "GitHub" })).toHaveAttribute("href", "https://github.com/bashar0101");
+  await footer.getByRole("link", { name: "Privacy" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Privacy" })).toBeVisible();
+  await page.getByRole("contentinfo").getByRole("link", { name: "Terms of Service" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Terms of Service" })).toBeVisible();
+});

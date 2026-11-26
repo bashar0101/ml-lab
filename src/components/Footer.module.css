@@ -16,3 +16,17 @@
   font: 400 20px var(--font-display);
   color: var(--ink);
 }
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.links a {
+  color: var(--ink-2);
+}
+
+.links a:hover {
+  color: var(--ink);
+}

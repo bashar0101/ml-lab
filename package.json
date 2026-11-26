@@ -33,5 +33,7 @@
     "typescript": "^5",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^5.1.2"
-  }
+  },
+  "license": "MIT",
+  "description": "Learn machine learning by watching algorithms work, step by step."
 }
