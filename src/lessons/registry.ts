@@ -8,6 +8,7 @@ const modules: Record<string, () => Promise<{ default: AnyLessonModule }>> = {
   "k-nearest-neighbors": () => import("./k-nearest-neighbors"),
   "support-vector-machine": () => import("./support-vector-machine"),
   "decision-tree": () => import("./decision-tree"),
+  "random-forest": () => import("./random-forest"),
 };
 
 export function hasLessonModule(slug: string): boolean {

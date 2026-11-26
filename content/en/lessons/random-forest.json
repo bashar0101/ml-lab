@@ -1,0 +1,163 @@
+{
+  "title": "Random Forest",
+  "description": "Watch a random forest grow many different decision trees from random samples and let them vote. Free and interactive.",
+  "youWillLearn": [
+    "Why one deep tree is jumpy and a crowd of trees is steady",
+    "What a bootstrap sample is",
+    "Why each question looks at a random feature",
+    "How out-of-bag points give a free accuracy check"
+  ],
+  "story": [
+    {
+      "id": "crowd",
+      "rail": "Crowd",
+      "title": "Ask a crowd, not one expert",
+      "body": "In the last lesson one decision tree learned to classify points, but it was jumpy: move a few points and it can change completely. A **random forest** grows many trees, each a little different, and lets them vote. Individual mistakes tend to cancel out.",
+      "keyIdea": "Many imperfect, different models voting together beat one model.",
+      "frameTag": "start",
+      "reveal": ["points"]
+    },
+    {
+      "id": "bootstrap",
+      "rail": "Bootstrap",
+      "title": "Each tree gets its own sample",
+      "body": "To make the trees different, each one trains on a **bootstrap sample**: draw points at random, with replacement, as many times as there are points. Some points get drawn twice or more (the ×2 badges), and roughly a third are never drawn at all (faded).",
+      "keyIdea": "Same data, different random samples, different trees.",
+      "math": "The chance a point is never drawn in `n` draws is `(1 − 1/n)ⁿ ≈ e⁻¹ ≈ 37 %`.",
+      "frameTag": "first-sample",
+      "reveal": ["points", "sample", "thumbs"]
+    },
+    {
+      "id": "random-questions",
+      "rail": "Random Qs",
+      "title": "Random questions, too",
+      "body": "A second dose of randomness: at every node, the tree may only ask about **one randomly chosen feature**, x or y. This stops every tree from asking the same strong first question, so the trees really disagree. Here is the first tree's map on its own.",
+      "keyIdea": "Different samples plus different questions make trees that make different mistakes.",
+      "frameTag": "first-tree",
+      "reveal": ["points", "tree", "thumbs"]
+    },
+    {
+      "id": "vote",
+      "rail": "Vote",
+      "title": "Let the trees vote",
+      "body": "With five trees, every spot gets five votes. The shading shows the share of trees voting for each class: strong colour where they agree, pale where they are split. The small maps on the right are the individual trees: each one is blocky and odd in its own way.",
+      "keyIdea": "The forest's answer is the majority vote; the vote share works as a confidence.",
+      "frameTag": "five-trees",
+      "reveal": ["points", "forest", "thumbs"]
+    },
+    {
+      "id": "many",
+      "rail": "Many trees",
+      "title": "More trees, smoother map",
+      "body": "After fifteen trees the map is smoother than any single tree's staircase, and the islands around noisy points have mostly been voted away. Adding trees never makes a forest overfit more; it just makes the vote steadier, at the cost of more computing.",
+      "keyIdea": "Averaging many high-variance models lowers the variance. This is called **bagging**.",
+      "frameTag": "done",
+      "reveal": ["points", "forest", "thumbs"]
+    },
+    {
+      "id": "oob",
+      "rail": "Out-of-bag",
+      "title": "A free test: out-of-bag",
+      "body": "Every point was left out by about a third of the trees. Ask only *those* trees to classify it, and you get an honest guess for a point they never saw. Averaged over all points this is the **out-of-bag accuracy** (OOB): a test score without setting aside any data.",
+      "keyIdea": "Training accuracy flatters; out-of-bag accuracy tells the truth.",
+      "frameTag": "done",
+      "reveal": ["points", "forest", "thumbs"]
+    }
+  ],
+  "events": {
+    "init": {
+      "title": "An empty forest",
+      "body": "Press play to grow the trees one by one."
+    },
+    "sample": {
+      "title": "Tree {trees}: draw a bootstrap sample",
+      "body": "Badges show points drawn more than once; faded points weren't drawn for this tree."
+    },
+    "grow": {
+      "title": "Grow the tree",
+      "body": "This tree's own map: it only saw its sample, and each question used a random feature."
+    },
+    "vote": {
+      "title": "The forest votes",
+      "body": "{trees} trees so far; the forest gets {accuracy} of the training points right."
+    },
+    "done": {
+      "title": "The finished forest",
+      "body": "Training accuracy {accuracy}, out-of-bag accuracy {oob}. Try 1 tree versus 50."
+    }
+  },
+  "stats": {
+    "trees": "TREES",
+    "accuracy": "ACCURACY",
+    "oob": "OUT-OF-BAG"
+  },
+  "lab": {
+    "breakIt": "On **Overlapping**, set **Max depth 8** and **Trees 1**: a single deep tree carves islands around every noisy point. Now slide to **50 trees**: the islands fade into a smooth border, and the out-of-bag accuracy is the honest score to compare. Press **New random forest** to see how much one tree changes from seed to seed, and how little 50 trees do.",
+    "presets": {
+      "overlap": "Overlapping",
+      "moons": "Moons",
+      "xor": "Checkerboard",
+      "circles": "Rings"
+    },
+    "params": {
+      "trees": {
+        "label": "Trees",
+        "hint": "How many trees vote."
+      },
+      "maxDepth": {
+        "label": "Max depth",
+        "hint": "How many questions each tree may ask in a row."
+      }
+    },
+    "errors": {
+      "tooFew": "Add at least four points.",
+      "oneClass": "Add points of both classes."
+    }
+  },
+  "article": {
+    "sections": [
+      {
+        "heading": "What is a random forest?",
+        "body": "A random forest is a collection of decision trees whose votes are combined. Each tree is trained on a random **bootstrap sample** of the data, and at each node only a random subset of the features may be used. The randomness makes the trees different; the vote combines them into a model that is far more stable and usually more accurate than any single tree."
+      },
+      {
+        "heading": "Why averaging helps",
+        "body": "A deep decision tree has low *bias* (it can fit almost any shape) but high *variance* (it changes a lot with the data). Averaging many models whose errors are not identical lowers the variance while keeping the bias low. That is **bagging** (bootstrap aggregating). The random feature choice makes the trees' errors less correlated, which makes averaging work even better."
+      },
+      {
+        "heading": "Out-of-bag evaluation",
+        "body": "Each bootstrap sample leaves out about 37 % of the points. For every point, the trees that didn't see it can classify it as if it were new. The share of points they get right is the **out-of-bag accuracy**, a fair estimate of how the forest does on unseen data, for free.",
+        "table": {
+          "headers": ["Setting", "Effect of raising it"],
+          "rows": [
+            ["Number of trees", "Steadier, smoother votes; never more overfitting; slower"],
+            ["Max depth", "Each tree fits more detail; the vote averages the noise away"],
+            ["Features per question", "More features = trees more alike = less benefit from voting"]
+          ]
+        }
+      },
+      {
+        "heading": "Strengths and weaknesses",
+        "body": "Random forests are among the most reliable methods for table-shaped data: little tuning, no feature scaling, robust to noise, and they report how much each feature helped. They are harder to read than one tree, larger to store, and like all tree methods they can't extrapolate beyond the range of values they saw."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Can a random forest overfit by adding more trees?",
+        "a": "No. More trees only make the average vote more stable. Forests can still overfit through very deep trees on very noisy data, but the number of trees isn't the cause."
+      },
+      {
+        "q": "Why pick a random feature at each question?",
+        "a": "Without it, every tree would pick the same strongest question first and the trees would be too similar. Restricting the choice makes them disagree, so their errors cancel when they vote."
+      },
+      {
+        "q": "With only two features, why one random feature?",
+        "a": "The usual rule is about the square root of the number of features per question; with two features that rounds to one. Real datasets often have hundreds."
+      },
+      {
+        "q": "How is this different from gradient boosting?",
+        "a": "A forest grows its trees independently and averages them. Boosting grows trees one after another, each fixing the mistakes of the ones before. Both are popular; boosting often wins competitions, forests need less tuning."
+      }
+    ]
+  }
+}
