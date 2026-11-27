@@ -28,7 +28,77 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  padding-block: 5px;
+  inline-size: 100%;
+  padding-block: 6px;
+  padding-inline: 4px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.chapter:hover {
+  background: color-mix(in srgb, var(--line) 55%, transparent);
+}
+
+.chapter:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+
+.chapterName {
+  flex: 1;
+}
+
+/* A small chevron that turns as the chapter opens. */
+.chevron {
+  flex: none;
+  inline-size: 7px;
+  block-size: 7px;
+  /* Physical borders on purpose: the corner always starts pointing down-right, then rotates. */
+  border-right: 1.5px solid var(--muted);
+  border-bottom: 1.5px solid var(--muted);
+  transform: rotate(-45deg); /* points right (closed, left-to-right) */
+  transition: transform 200ms ease;
+}
+
+:global(html[dir="rtl"]) .chevron {
+  transform: rotate(135deg); /* points left (closed, right-to-left) */
+}
+
+.chapter[aria-expanded="true"] .chevron,
+:global(html[dir="rtl"]) .chapter[aria-expanded="true"] .chevron {
+  transform: rotate(45deg); /* points down (open) */
+}
+
+/* Smooth open/close: animate the row height from 0fr to 1fr. */
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 240ms ease,
+    opacity 200ms ease;
+}
+
+.panel[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.panel > .lessons {
+  min-block-size: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .chevron {
+    transition: none;
+  }
 }
 
 .count {
