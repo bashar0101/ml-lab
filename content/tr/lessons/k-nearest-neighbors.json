@@ -159,5 +159,37 @@
         "a": "Çok, genellikle modern biçimiyle: bir gömme vektörünün en yakın komşularını bulmak, birçok öneri ve arama sisteminin çalışma şeklidir."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Dokuz ürünün iki ölçümü (X1 ve X2) ve bir kalite etiketi var: {good} ya da {bad}. Yeni bir ürün `X* = ({qx}, {qy})` noktasına geliyor. Öklid uzaklığını kullanarak `k = {k}` ile k-NN sınıflandırması yapın.",
+    "labels": {
+      "quality": "Kalite",
+      "good": "iyi",
+      "bad": "kötü",
+      "rank": "Sıra"
+    },
+    "steps": [
+      {
+        "id": "formula",
+        "title": "Uzaklık formülü",
+        "body": "Koordinatları çıkarın, karesini alın, toplayın ve karekökünü alın. İlk nokta `(9, 8)` için uzaklık {firstD}."
+      },
+      {
+        "id": "distances",
+        "title": "Her noktaya uzaklık",
+        "body": "Aynısını dokuz noktanın hepsi için yapın, sonra en yakından (1) en uzağa doğru sıralayın."
+      },
+      {
+        "id": "nearest",
+        "title": "En yakın {k} noktayı alın",
+        "body": "En küçük üç uzaklık {d1}, {d2} ve {d3}. İki nokta {d3} uzaklıkta berabere: `(7, 8)` ve `(5, 6)`. Listede önce geleni alıyoruz; karşılaştırma için bir sonraki nokta da gösteriliyor."
+      },
+      {
+        "id": "vote",
+        "title": "Oylama",
+        "body": "{k} komşunun etiketlerini sayın: {good} {goodVotes}, {bad} {badVotes}. Beraberlik `(5, 6)` lehine bozulsaydı bile {good} 2'ye 1 kazanırdı."
+      }
+    ],
+    "answer": "`X* = ({qx}, {qy})` **{winner}** olarak sınıflandırılır."
   }
 }

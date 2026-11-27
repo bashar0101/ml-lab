@@ -165,5 +165,38 @@
         "a": "Tek bir katmanın içinde bilginin nereye aktığını gösterirler, bu yararlıdır; ama büyük modellerde hikâyenin yalnızca bir parçasıdırlar: birçok katman ve kafa birlikte çalışır."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Üç kelimenin ({w1}, {w2} ve {w3}) her birinin bir anahtarı k ve bir değeri v var. {w3} kelimesinin sorgusu `q = (2, 1)` için ölçeklenmiş iç çarpım dikkatini hesaplayın: {w3} her kelimeye ne kadar bakmalı ve ne okur?",
+    "labels": {
+      "word": "Kelime",
+      "weight": "Ağırlık",
+      "w1": "kedi",
+      "w2": "minderde",
+      "w3": "oturdu"
+    },
+    "steps": [
+      {
+        "id": "scores",
+        "title": "İç çarpımlar",
+        "body": "Sorguyu her anahtarla çarpıp toplayın: daha büyük sayı daha iyi eşleşme demektir."
+      },
+      {
+        "id": "scale",
+        "title": "Ölçekleyin",
+        "body": "Vektörler uzadıkça puanlar makul bir aralıkta kalsın diye `√d = {root}` ile bölün."
+      },
+      {
+        "id": "softmax",
+        "title": "Softmax",
+        "body": "Puanları pozitif ve toplamı 1 olan ağırlıklara çevirin: {a1}, {a2} ve {a3}."
+      },
+      {
+        "id": "mix",
+        "title": "Değerleri karıştırın",
+        "body": "Çıktı, değer vektörlerinin ağırlıklı ortalamasıdır."
+      }
+    ],
+    "answer": "{w3} en çok kendisine ({a3}), sonra {w1} kelimesine ({a1}) dikkat eder ve `{out}` vektörünü okur."
   }
 }

@@ -177,5 +177,34 @@
         "a": "Kesin bir çizgi yok, ama derin ağların çok sayıda gizli katmanı vardır, çoğu zaman onlarca ya da yüzlerce. Bu dersteki fikirler her boyutta aynıdır."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Küçük bir ağın 2 girdisi, ReLU kullanan 2 gizli nöronu ve sigmoid kullanan bir çıktı nöronu var. Tablodaki ağırlıklarla `x = (1, 2)` girdisi için bir ileri geçiş yapın.",
+    "labels": {
+      "neuron": "Nöron"
+    },
+    "steps": [
+      {
+        "id": "sums",
+        "title": "Gizli katmandaki ağırlıklı toplamlar",
+        "body": "Her gizli nöron girdileri kendi ağırlıklarıyla çarpar, toplar ve yanlılığını ekler: `z1 = {z1}`, `z2 = {z2}`."
+      },
+      {
+        "id": "relu",
+        "title": "ReLU",
+        "body": "ReLU pozitif değerleri korur, negatifleri 0 yapar. Yani `h1 = {h1}`, `h2 = {h2}` ise: ikinci nöron bu girdi için sessiz kalır."
+      },
+      {
+        "id": "output",
+        "title": "Çıktı nöronu",
+        "body": "Çıktı nöronu, gizli değerleri girdi olarak kullanıp aynısını yapar: `z = {z}`."
+      },
+      {
+        "id": "sigmoid",
+        "title": "Sigmoid",
+        "body": "Sigmoid, z değerini 0 ile 1 arasında bir olasılığa sıkıştırır."
+      }
+    ],
+    "answer": "Ağın çıktısı `ŷ = {out}`: cevabın 1. sınıf olduğundan çok emin."
   }
 }

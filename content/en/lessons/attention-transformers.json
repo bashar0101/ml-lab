@@ -165,5 +165,38 @@
         "a": "They show where information flows inside one layer, which is useful, but in large models they are only part of the story; many layers and heads work together."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Three words, {w1}, {w2} and {w3}, each have a key k and a value v. Compute scaled dot-product attention for the query of {w3}, `q = (2, 1)`: how much should {w3} look at each word, and what does it read?",
+    "labels": {
+      "word": "Word",
+      "weight": "Weight",
+      "w1": "the",
+      "w2": "cat",
+      "w3": "sat"
+    },
+    "steps": [
+      {
+        "id": "scores",
+        "title": "Dot products",
+        "body": "Multiply the query with each key and add up: a bigger number means a better match."
+      },
+      {
+        "id": "scale",
+        "title": "Scale",
+        "body": "Divide by `√d = {root}` so the scores stay in a sensible range when the vectors get longer."
+      },
+      {
+        "id": "softmax",
+        "title": "Softmax",
+        "body": "Turn the scores into weights that are positive and add up to 1: {a1}, {a2} and {a3}."
+      },
+      {
+        "id": "mix",
+        "title": "Mix the values",
+        "body": "The output is the weighted average of the value vectors."
+      }
+    ],
+    "answer": "{w3} attends mostly to itself ({a3}), then to {w1} ({a1}), and reads the vector `{out}`."
   }
 }

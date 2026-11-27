@@ -178,5 +178,40 @@
         "a": "İkisi de. Doğrusal regresyon klasik bir istatistik aracıdır; onu gradyan inişiyle eğitmek ise makine öğrenmesinin temel fikridir. Bu yüzden ders 1'dir."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Bir ikinci el araba satıcısı dört arabayı yaşları (yıl) ve fiyatlarıyla listeliyor. Bu noktalardan geçen en iyi doğruyu, `ŷ = m·x + b`, bulun; sonra {newX} yaşındaki bir arabanın fiyatını tahmin edin.",
+    "labels": {
+      "age": "Yaş",
+      "price": "Fiyat"
+    },
+    "steps": [
+      {
+        "id": "means",
+        "title": "Ortalamaları bulun",
+        "body": "Her sütunu toplayıp araba sayısına bölün. En iyi doğru her zaman `(x̄, ȳ) = ({xMean}, {yMean})` noktasından geçer."
+      },
+      {
+        "id": "table",
+        "title": "Tabloyu doldurun",
+        "body": "Her araba için ortalamaları çıkarın. İki farkı birbiriyle çarpın ve yaş farkının karesini alın. Sonra son iki sütunu toplayın: `Σ(x − x̄)(y − ȳ) = {sxy}` ve `Σ(x − x̄)² = {sxx}`."
+      },
+      {
+        "id": "slope",
+        "title": "Eğim m",
+        "body": "İki toplamı bölün: `m = {slope}`. Fiyat her ek yılda {slope} kadar değişir. Eski arabalar daha ucuz olduğu için eğim negatiftir."
+      },
+      {
+        "id": "intercept",
+        "title": "Kesişim b",
+        "body": "Doğru ortalamalardan geçer, yani `ȳ = m·x̄ + b`. Buradan b'yi çözün: `b = {intercept}`. Bu, doğrunun sıfır kilometre bir araba (`x = 0`) için verdiği fiyattır."
+      },
+      {
+        "id": "predict",
+        "title": "Tahmin edin",
+        "body": "Doğruda `x = {newX}` yazın."
+      }
+    ],
+    "answer": "`ŷ = {slope}x + {intercept}`. {newX} yaşındaki bir araba yaklaşık **{prediction}** etmeli."
   }
 }

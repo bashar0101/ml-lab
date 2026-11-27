@@ -173,5 +173,37 @@
         "a": "Suç birçok katmandan geriye akarken küçüldüğünde, ilk katmanlar neredeyse hiç öğrenme sinyali almaz. ReLU aktivasyonları, iyi başlatma ve artık bağlantılar olağan çarelerdir."
       }
     ]
+  },
+  "byHand": {
+    "problem": "İki ağırlıklı bir ağ: `h = ReLU(w1 · x)`, `ŷ = w2 · h` ve kayıp `L = ½(ŷ − y)²`. Tek bir örnek için (`x = 2` ve `y = 1`) ileri geçişi yapın, zincir kuralıyla iki gradyanı bulun ve `η = {lr}` ile bir gradyan inişi adımı atın.",
+    "labels": {},
+    "steps": [
+      {
+        "id": "forward",
+        "title": "İleri geçiş",
+        "body": "Soldan sağa gidin: `h = {h}`, tahmin `ŷ = {yhat}` ve kayıp `L = {loss}`."
+      },
+      {
+        "id": "output",
+        "title": "w2 için gradyan",
+        "body": "Kayıptan başlayıp geriye gidin. Kayıp, ŷ'nin her birimi için `ŷ − y = {dy}` kadar, ŷ de w2'nin her birimi için h kadar değişir; yani `∂L/∂w2 = {gw2}`."
+      },
+      {
+        "id": "hidden",
+        "title": "w1 için gradyan",
+        "body": "Zincir boyunca çarpmaya devam edin: w2 üzerinden h'ye, ReLU üzerinden (eğim 1, çünkü `h > 0`) ve x üzerinden w1'e: `∂L/∂w1 = {gw1}`."
+      },
+      {
+        "id": "update",
+        "title": "Ağırlıkları güncelleyin",
+        "body": "Her ağırlığı gradyanının tersine taşıyın: `w1 = {w1new}`, `w2 = {w2new}`."
+      },
+      {
+        "id": "check",
+        "title": "Kaybı kontrol edin",
+        "body": "Yeni ağırlıklarla ileri geçişi tekrarlayın: tahmin artık {yhatNew}, y'ye çok yakın."
+      }
+    ],
+    "answer": "Tek bir geri yayılım adımı kaybı **{loss}** değerinden yaklaşık **{lossNew}** değerine düşürdü."
   }
 }

@@ -162,5 +162,32 @@
         "a": "Hayır. Adam harika bir varsayılandır, ama momentumlu düz gradyan inişi bazen daha iyi genelleşir ve hâlâ birçok görüntü modelini eğitmek için kullanılır."
       }
     ]
+  },
+  "byHand": {
+    "problem": "`L(w) = (w − {target})²` kaybını en küçük yapan w değerini doğrudan çözmeden bulun: `w = {w0}` ile başlayın ve öğrenme oranı `η = {lr}` ile {steps} gradyan inişi adımı atın.",
+    "labels": {},
+    "steps": [
+      {
+        "id": "derivative",
+        "title": "Türev alın",
+        "body": "Gradyan yokuşun hangi yönde olduğunu söyler. `w = {w0}` noktasında negatiftir, yani w büyüdükçe kayıp azalır."
+      },
+      {
+        "id": "rule",
+        "title": "İlk adımı atın",
+        "body": "Öğrenme oranıyla ölçeklenmiş gradyanın tersine gidin: `w₁ = {w1}`."
+      },
+      {
+        "id": "repeat",
+        "title": "Tekrarlayın",
+        "body": "Aynı kuralı her yeni w değerinden uygulayın. Her satır bir öncekinin bittiği yerden başlar: `w₂ = {w2}`, `w₃ = {w3}`."
+      },
+      {
+        "id": "converge",
+        "title": "Yakınsamayı izleyin",
+        "body": "Bu öğrenme oranıyla {target} değerine olan uzaklık her adımda yarıya iner ve kayıp {lossEnd} değerine düşer. Daha fazla adımla w, {target} değerine istediğimiz kadar yaklaşır."
+      }
+    ],
+    "answer": "{steps} adımdan sonra `w = {w3}`; gerçek minimum olan `w = {target}` noktasından yalnızca {gap} uzakta."
   }
 }

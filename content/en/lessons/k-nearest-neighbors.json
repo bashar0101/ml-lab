@@ -159,5 +159,37 @@
         "a": "Very much, often in its modern form: finding the nearest neighbours of an embedding vector is how many recommendation and search systems work."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Nine products have two measurements, X1 and X2, and a quality label: {good} or {bad}. A new product arrives at `X* = ({qx}, {qy})`. Classify it with k-NN, `k = {k}`, using the Euclidean distance.",
+    "labels": {
+      "quality": "Quality",
+      "good": "good",
+      "bad": "bad",
+      "rank": "Rank"
+    },
+    "steps": [
+      {
+        "id": "formula",
+        "title": "The distance formula",
+        "body": "Subtract the coordinates, square, add, then take the square root. For the first point, `(9, 8)`, the distance is {firstD}."
+      },
+      {
+        "id": "distances",
+        "title": "Distance to every point",
+        "body": "Do the same for all nine points, then rank them from the nearest (1) to the farthest."
+      },
+      {
+        "id": "nearest",
+        "title": "Keep the {k} nearest",
+        "body": "The three smallest distances are {d1}, {d2} and {d3}. Two points tie at {d3}: `(7, 8)` and `(5, 6)`. We keep the one listed first; the next point down is shown for comparison."
+      },
+      {
+        "id": "vote",
+        "title": "Vote",
+        "body": "Count the labels of the {k} neighbours: {good} {goodVotes}, {bad} {badVotes}. Even if the tie had gone to `(5, 6)`, {good} would still win 2 to 1."
+      }
+    ],
+    "answer": "`X* = ({qx}, {qy})` is classified as **{winner}**."
   }
 }

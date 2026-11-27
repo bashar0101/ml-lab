@@ -163,5 +163,44 @@
         "a": "Hayır. Regresyon, x'ten y'yi tahmin ederken dikey hataları küçültür. TBA tüm özelliklere eşit davranır ve doğruya olan dik uzaklığı küçültür."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Dört nokta kabaca bir köşegen boyunca uzanıyor. PCA ile en çok varyansı koruyan yönü bulun, noktaları bu yöne izdüşürün ve nokta başına tek bir sayının varyansın ne kadarını koruduğunu söyleyin.",
+    "labels": {
+      "point": "Nokta"
+    },
+    "steps": [
+      {
+        "id": "centre",
+        "title": "Veriyi merkezleyin",
+        "body": "Her noktadan ortalama `({mx}, {my})` değerini çıkarın. Sonra kareleri ve çarpımları doldurun: toplamları kovaryans matrisini oluşturur."
+      },
+      {
+        "id": "covariance",
+        "title": "Kovaryans matrisi",
+        "body": "Her toplamı `n − 1 = 3` ile bölün. İki özelliğin de varyansı {varX} ve kovaryans {cov} pozitif: x ve y birlikte büyür."
+      },
+      {
+        "id": "eigen",
+        "title": "Özdeğerler",
+        "body": "`det(Σ − λI) = 0` denklemini çözün. İki kökü, {l1} ve {l2}, iki ana yön boyuncaki varyanslardır."
+      },
+      {
+        "id": "vector",
+        "title": "Birinci temel bileşen",
+        "body": "Büyük özdeğerin özvektörü köşegen yön `{v}`: noktaların boyunca yayıldığı doğru."
+      },
+      {
+        "id": "project",
+        "title": "İzdüşürün",
+        "body": "Her noktanın yeni tek koordinatı z, noktanın temel bileşenle iç çarpımıdır."
+      },
+      {
+        "id": "explained",
+        "title": "Korunan varyans",
+        "body": "Birinci bileşen, toplam `λ1 + λ2` içinden λ1 kadarını korur."
+      }
+    ],
+    "answer": "`PC1 = {v}` varyansın **%{kept}** kadarını korur; nokta başına iki yerine tek sayı kullanmak çok az şey kaybettirir."
   }
 }

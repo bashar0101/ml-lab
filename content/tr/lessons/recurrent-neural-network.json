@@ -149,5 +149,34 @@
         "a": "Ağın eğitildiği görev budur: ilk harf a veya b, sonraki her harf c ile h arası. Başka başlangıçlar onun hiç görmediği şeylerin dışında kalır."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Tek sayılı bir RNN `x = (1, 2, −1)` dizisini okuyor. Her adımda yeni durum, mevcut girdiyi önceki durumla karıştırır: `h_t = tanh(wx · x_t + wh · h_(t−1))`; burada `wx = 0.5`, `wh = 1` ve `h0 = 0`.",
+    "labels": {
+      "sum": "Toplam"
+    },
+    "steps": [
+      {
+        "id": "t1",
+        "title": "Birinci girdi",
+        "body": "Henüz bellek yok (`h0 = 0`), yalnızca girdi sayılır: `h1 = {h1}`."
+      },
+      {
+        "id": "t2",
+        "title": "İkinci girdi",
+        "body": "Şimdi önceki durum da katılıyor: `h2 = {h2}`. tanh her durumu −1 ile 1 arasında tutar."
+      },
+      {
+        "id": "t3",
+        "title": "Üçüncü girdi",
+        "body": "Bu girdi negatif, ama ilk iki girdinin belleği durumu pozitif tutuyor: `h3 = {h3}`."
+      },
+      {
+        "id": "table",
+        "title": "Dizinin tamamı",
+        "body": "Her adımda aynı iki ağırlık kullanılır. Ağı tekrarlayan yapan budur."
+      }
+    ],
+    "answer": "Son durum `h3 = {h3}` tüm diziyi özetler; bir çıktı katmanı tahminini buradan okur."
   }
 }

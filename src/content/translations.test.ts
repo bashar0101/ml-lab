@@ -69,6 +69,14 @@ function texts(c: LessonContent): Record<string, string> {
     out[`faq.${i}.q`] = f.q;
     out[`faq.${i}.a`] = f.a;
   });
+  if (c.byHand) {
+    out["byHand.problem"] = c.byHand.problem;
+    out["byHand.answer"] = c.byHand.answer;
+    c.byHand.steps.forEach((s) => {
+      out[`byHand.${s.id}.title`] = s.title;
+      out[`byHand.${s.id}.body`] = s.body;
+    });
+  }
   return out;
 }
 
@@ -95,6 +103,8 @@ describe.each(pairs)("%s translation of %s", (locale, slug) => {
     expect(target.article.sections.map((s) => s.table && [s.table.headers.length, s.table.rows.map((r) => r.length)])).toEqual(
       source.article.sections.map((s) => s.table && [s.table.headers.length, s.table.rows.map((r) => r.length)]),
     );
+    expect(target.byHand?.steps.map((s) => s.id)).toEqual(source.byHand?.steps.map((s) => s.id));
+    expect(Object.keys(target.byHand?.labels ?? {}).sort()).toEqual(Object.keys(source.byHand?.labels ?? {}).sort());
   });
 
   it("keeps every {placeholder}, formula, **bold** pair and every number the English text states", () => {

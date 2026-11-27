@@ -177,5 +177,34 @@
         "a": "There is no strict line, but deep networks have many hidden layers, often dozens or hundreds. The ideas in this lesson are the same at any size."
       }
     ]
+  },
+  "byHand": {
+    "problem": "A tiny network has 2 inputs, 2 hidden neurons with ReLU and one output neuron with a sigmoid. Run one forward pass for the input `x = (1, 2)` with the weights in the table.",
+    "labels": {
+      "neuron": "Neuron"
+    },
+    "steps": [
+      {
+        "id": "sums",
+        "title": "Weighted sums in the hidden layer",
+        "body": "Each hidden neuron multiplies the inputs by its weights, adds them up and adds its bias: `z1 = {z1}`, `z2 = {z2}`."
+      },
+      {
+        "id": "relu",
+        "title": "ReLU",
+        "body": "ReLU keeps positive values and turns negative ones into 0. So `h1 = {h1}`, while `h2 = {h2}`: the second neuron stays silent for this input."
+      },
+      {
+        "id": "output",
+        "title": "The output neuron",
+        "body": "The output neuron does the same, with the hidden values as its inputs: `z = {z}`."
+      },
+      {
+        "id": "sigmoid",
+        "title": "Sigmoid",
+        "body": "The sigmoid squashes z into a probability between 0 and 1."
+      }
+    ],
+    "answer": "The network outputs `ŷ = {out}`: it is very confident the answer is class 1."
   }
 }

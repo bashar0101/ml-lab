@@ -174,5 +174,45 @@
         "a": "Bir lojistik regresyon, sigmoid aktivasyonlu bir yapay nörondur. Bir sinir ağı bunlardan pek çoğunu üst üste koyar; bu da eğri sınırlar çizmesini sağlar."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Çalışma saatleriyle eğitilmiş bir model, bir öğrencinin geçme olasılığını verir: `p = σ(2x − 5)`; burada x çalışılan saattir. Dört öğrenci için p'yi hesaplayın, {pass} ya da {fail} kararı verin, log kaybını ölçün ve modelin cevabını nerede değiştirdiğini bulun.",
+    "labels": {
+      "hours": "Saat",
+      "result": "Sonuç",
+      "pass": "geçti",
+      "fail": "kaldı",
+      "prediction": "Tahmin",
+      "logLoss": "Kayıp",
+      "average": "ortalama"
+    },
+    "steps": [
+      {
+        "id": "score",
+        "title": "Her öğrenciye puan verin",
+        "body": "Önce doğrusal kısım, `z = 2x − 5`. 2.5 saatten az çalışan öğrenciler negatif puan alır."
+      },
+      {
+        "id": "sigmoid",
+        "title": "Sigmoid ile sıkıştırın",
+        "body": "Sigmoid her puanı 0 ile 1 arasında bir olasılığa çevirir. Önce `e^(−z)` değerini bulun, 1 ekleyin, sonra 1'i sonuca bölün. İlk öğrenci `p = {p1}`, sonuncusu `p = {p4}` alır."
+      },
+      {
+        "id": "decide",
+        "title": "Karar verin",
+        "body": "`p ≥ 0.5` olduğunda {pass} tahmin edin. Dört tahminin dördü de gerçek sonuçlarla aynı."
+      },
+      {
+        "id": "loss",
+        "title": "Log kaybı",
+        "body": "Kayıp, emin olunan hataları cezalandırır. Sonuç {pass} ise `−ln(p)`, {fail} ise `−ln(1 − p)` kullanın. Dört öğrencinin ortalaması {loss}."
+      },
+      {
+        "id": "boundary",
+        "title": "Karar sınırı",
+        "body": "p tam olarak 0.5 olduğunda `z = 0` olur. `2x − 5 = 0` denklemini çözünce modelin {boundary} saatte {fail} cevabından {pass} cevabına geçtiği görülür."
+      }
+    ],
+    "answer": "{p1} ile {p4} arasında olasılıklar, tüm tahminler doğru, ortalama log kaybı **{loss}** ve karar sınırı **{boundary} saat**."
   }
 }

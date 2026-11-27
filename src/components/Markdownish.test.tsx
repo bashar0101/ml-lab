@@ -12,6 +12,12 @@ describe("Markdownish", () => {
     expect(screen.getByText(/<img src=x/)).toBeInTheDocument();
   });
 
+  it("lets the caller render what is inside `code`", () => {
+    render(<Markdownish text={"see `a+b` here"} code={(s) => <b>{s.toUpperCase()}</b>} />);
+    expect(screen.getByText("A+B").tagName).toBe("B");
+    expect(screen.getByText("A+B").parentElement?.tagName).toBe("CODE");
+  });
+
   it("splits blank-line paragraphs in block mode", () => {
     const { container } = render(<Markdownish text={"First.\n\nSecond."} />);
     expect(container.querySelectorAll("p")).toHaveLength(2);

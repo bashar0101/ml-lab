@@ -178,5 +178,40 @@
         "a": "Both. Linear regression is a classic statistics tool, and training it by gradient descent is the core idea of machine learning. That is why it is lesson 1."
       }
     ]
+  },
+  "byHand": {
+    "problem": "A used-car dealer lists four cars with their age in years and their price. Find the best straight line `ŷ = m·x + b` through these points, then predict the price of a car that is {newX} years old.",
+    "labels": {
+      "age": "Age",
+      "price": "Price"
+    },
+    "steps": [
+      {
+        "id": "means",
+        "title": "Find the averages",
+        "body": "Add up each column and divide by the number of cars. The best line always passes through the point `(x̄, ȳ) = ({xMean}, {yMean})`."
+      },
+      {
+        "id": "table",
+        "title": "Fill in the table",
+        "body": "For every car, subtract the averages. Multiply the two differences together, and square the age difference. Then add up the last two columns: `Σ(x − x̄)(y − ȳ) = {sxy}` and `Σ(x − x̄)² = {sxx}`."
+      },
+      {
+        "id": "slope",
+        "title": "Slope m",
+        "body": "Divide the two sums: `m = {slope}`. The price changes by {slope} for every extra year. Older cars are cheaper, so the slope is negative."
+      },
+      {
+        "id": "intercept",
+        "title": "Intercept b",
+        "body": "The line passes through the averages, so `ȳ = m·x̄ + b`. Solve for b: `b = {intercept}`. It is the price the line gives a brand-new car (`x = 0`)."
+      },
+      {
+        "id": "predict",
+        "title": "Predict",
+        "body": "Put `x = {newX}` into the line."
+      }
+    ],
+    "answer": "`ŷ = {slope}x + {intercept}`. A {newX}-year-old car should cost about **{prediction}**."
   }
 }

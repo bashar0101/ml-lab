@@ -393,5 +393,13 @@
   "tour.breakIt.title": "Bilerek boz",
   "tour.breakIt.body": "Her derste algoritmayı başarısız kılan bir ayar vardır. Deneyin: başarısız olmasını izlemek, neden işe yaradığını görmenin en hızlı yoludur.",
   "tour.search.title": "Her şeyi bul",
-  "tour.search.body": "Tüm derslerde aramak için Ctrl K'ye basın. Kısayollar: ← → adımlar, Space oynat, R yeniden oynat, L Öğren ile Laboratuvar arasında geçiş. Ders başlığının yanındaki ? düğmesi bu turu yeniden başlatır."
+  "tour.search.body": "Tüm derslerde aramak için Ctrl K'ye basın. Kısayollar: ← → adımlar, Space oynat, R yeniden oynat, L Öğren ile Laboratuvar arasında geçiş. Ders başlığının yanındaki ? düğmesi bu turu yeniden başlatır.",
+  "byHand.heading": "Elle çözün",
+  "byHand.lead": "Kâğıt kalem alın. Her adımı önce kendiniz hesaplayın, sonra cevabınızı kontrol etmek için adımı açın.",
+  "byHand.problem": "Problem",
+  "byHand.step": "Adım {n}",
+  "byHand.next": "{n}. adımı göster",
+  "byHand.all": "Tüm adımları göster",
+  "byHand.reset": "Baştan başla",
+  "byHand.answer": "Cevap"
 }

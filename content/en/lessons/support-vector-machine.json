@@ -212,5 +212,37 @@
         "a": "Yes, especially on small and medium datasets with many features, such as text classification and bioinformatics. On huge datasets of images or text, neural networks have mostly taken over."
       }
     ]
+  },
+  "byHand": {
+    "problem": "A linear SVM has been trained on six points from two classes, +1 and −1. Its line is `w = (1, 1)`, `b = {b}`. Find the support vectors, measure the margin, work out the hinge loss and classify the new point `{qx}`.",
+    "labels": {},
+    "steps": [
+      {
+        "id": "score",
+        "title": "Score every point",
+        "body": "`f(x) = w · x + b` gives each point a signed score. Multiply it by the true label y: `y · f(x)` is positive when the point is on the correct side."
+      },
+      {
+        "id": "supports",
+        "title": "Find the support vectors",
+        "body": "A trained SVM keeps `y · f(x) ≥ 1` for every point. Where it is exactly 1, the point touches the edge of the margin. These {supports} support vectors, {supportList}, are the only points that decide the line."
+      },
+      {
+        "id": "width",
+        "title": "Measure the margin",
+        "body": "The street between the two margin lines is `2 / ‖w‖ = {width}` wide. Training an SVM means making it as wide as possible."
+      },
+      {
+        "id": "hinge",
+        "title": "Hinge loss",
+        "body": "Each point pays `max(0, 1 − y · f(x))`. Every point here has `y · f(x) ≥ 1`, so the total loss is 0."
+      },
+      {
+        "id": "classify",
+        "title": "Classify the new point",
+        "body": "The new point scores {score}. Its sign is the class."
+      }
+    ],
+    "answer": "Support vectors {supportList}, a margin **{width}** wide, zero hinge loss, and `{qx}` belongs to class **{winner}**."
   }
 }

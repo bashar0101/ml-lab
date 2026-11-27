@@ -156,5 +156,36 @@
         "a": "Aynı fikir muazzam ölçüde büyütülmüş hâliyle: milyonlarca ağırlık, onlarca katman, milyonlarca eğitim görüntüsü ve artık bağlantılar ile dikkat gibi daha yeni tasarımlar."
       }
     ]
+  },
+  "byHand": {
+    "problem": "4×4 gri tonlamalı bir görüntünün ortasında parlak dikey bir şerit var (1 = parlak, 0 = koyu); ikinci ızgara 3×3 bir kenar filtresi. Filtreyi görüntü üzerinde kaydırın, ReLU uygulayın, sonra {size} sonucu maksimum havuzlamayla tek bir sayıya indirin.",
+    "labels": {
+      "image": "Görüntü",
+      "filter": "Filtre",
+      "featureMap": "Özellik haritası"
+    },
+    "steps": [
+      {
+        "id": "first",
+        "title": "İlk konum",
+        "body": "Filtreyi sol üstteki 3×3 pencereye koyun, karşılıklı sayıları çarpın ve dokuz çarpımın hepsini toplayın. Sonuç {first} negatif: soldan sağa bu pencere koyudan parlağa geçiyor."
+      },
+      {
+        "id": "slide",
+        "title": "Filtreyi kaydırın",
+        "body": "Her seferinde bir piksel kayın ve tekrarlayın. Çıktı {size} bir özellik haritası. Sağdaki pencereler {second} verir: parlaktan koyuya bir kenar."
+      },
+      {
+        "id": "relu",
+        "title": "ReLU",
+        "body": "Negatif değerler 0 olur, böylece yalnızca parlaktan koyuya geçen kenarlar kalır."
+      },
+      {
+        "id": "pool",
+        "title": "Maksimum havuzlama",
+        "body": "2×2 maksimum havuzlama her 2×2 bloktaki en büyük değeri tutar. Haritamız tam olarak tek bir blok."
+      }
+    ],
+    "answer": "Filtre şeridin sağ kenarını buldu: ReLU ve havuzlamadan sonra çıktı **{pooled}**."
   }
 }

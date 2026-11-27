@@ -158,5 +158,47 @@
         "a": "Evet. Regresyon ağaçları her yaprağa noktalarının ortalama değerini koyar ve Gini yerine varyansı azaltan bölmeleri seçer."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Altı günlük kayıt, dışarıda oynayıp oynamadığımızı iki özellikle birlikte veriyor: hava durumu ve rüzgârlı olup olmadığı. İlk soruyu Gini safsızlığıyla seçin, ağacı büyütün ve rüzgârsız yağmurlu bir gün için karar verin.",
+    "labels": {
+      "day": "Gün",
+      "outlook": "Hava",
+      "windy": "Rüzgârlı",
+      "play": "Oyun",
+      "sunny": "güneşli",
+      "rainy": "yağmurlu",
+      "yes": "evet",
+      "no": "hayır",
+      "branch": "Dal"
+    },
+    "steps": [
+      {
+        "id": "root",
+        "title": "Bölmeden önceki safsızlık",
+        "body": "{yesDays} günün cevabı {yes}, {noDays} günün cevabı {no}. Gini bir grubun ne kadar karışık olduğunu ölçer: 0 saf demektir, 0.5 ise iki sınıfın olabileceği en karışık hâldir. Burada Gini = {root}."
+      },
+      {
+        "id": "outlook",
+        "title": "Havaya göre bölmeyi deneyin",
+        "body": "Her dalda {yes} ve {no} sayısını bulun ve her dalın Gini değerini hesaplayın. Sonra her dalı gün payıyla ağırlıklandırın: ağırlıklı Gini = {giniOutlook}."
+      },
+      {
+        "id": "windy",
+        "title": "Rüzgâra göre bölmeyi deneyin",
+        "body": "Aynısını diğer özellikle yapın: ağırlıklı Gini = {giniWindy}."
+      },
+      {
+        "id": "choose",
+        "title": "En iyi soruyu seçin",
+        "body": "Ağırlıklı Gini değeri düşük olan kazanır, yani ilk soru **{best}**. Safsızlığı {gain} kadar azaltır."
+      },
+      {
+        "id": "grow",
+        "title": "Yağmurlu dalı büyütün",
+        "body": "Güneşli günler zaten saf: hepsi {yes}. Yağmurlu günler karışık, bu yüzden onları rüzgâra göre yeniden bölün. İki yeni dal da saf (Gini {giniRainy}), ağaç tamamlandı."
+      }
+    ],
+    "answer": "Rüzgârsız yağmurlu bir gün {outlook}: {rainy} → {windy}: {no} → **{play}: {yes}** yolunu izler."
   }
 }

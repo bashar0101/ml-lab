@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { ByHand } from "@/components/ByHand";
 import { LessonArticle } from "@/components/LessonArticle";
+import { byHandFor } from "@/lessons/byHand";
 import prose from "@/components/prose.module.css";
 import { LessonWorkspace } from "@/components/workspace/LessonWorkspace";
 import { loadLessonFor, loadUi } from "@/content/load";
@@ -25,6 +27,8 @@ export async function lessonMetadata(locale: Locale, slug: string): Promise<Meta
 export async function LessonView({ locale, slug }: { locale: Locale; slug: string }) {
   const [{ content, fallback }, ui] = await Promise.all([loadLessonFor(locale, slug), loadUi(locale)]);
   const entry = getLesson(slug)!;
+  // Computed here at build time, so the example's code never ships to the browser.
+  const example = byHandFor(slug);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LearningResource",
@@ -47,6 +51,7 @@ export async function LessonView({ locale, slug }: { locale: Locale; slug: strin
       )}
       <div lang={fallback ? "en" : undefined} dir={fallback ? "ltr" : undefined}>
         <LessonWorkspace slug={slug} content={content} tour={slug === "linear-regression"} />
+        {example && content.byHand && <ByHand example={example} text={content.byHand} />}
         <LessonArticle slug={slug} content={content} ui={ui} locale={locale} />
       </div>
     </main>

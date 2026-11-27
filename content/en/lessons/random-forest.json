@@ -193,5 +193,42 @@
         "a": "A forest grows its trees independently and averages them. Boosting grows trees one after another, each fixing the mistakes of the ones before. Both are popular; boosting often wins competitions, forests need less tuning."
       }
     ]
+  },
+  "byHand": {
+    "problem": "A random forest of {trees} small trees learns from the same six days as the decision-tree lesson. Build one bootstrap sample, then let the trees vote on a new day that is rainy and not windy.",
+    "labels": {
+      "newDay": "New day",
+      "outlook": "Outlook",
+      "windy": "Windy",
+      "sunny": "sunny",
+      "rainy": "rainy",
+      "yes": "yes",
+      "no": "no",
+      "draw": "Draw",
+      "row": "Row",
+      "sample": "Sample",
+      "outOfBag": "Out of bag",
+      "tree": "Tree",
+      "rule": "Rule",
+      "vote": "Vote"
+    },
+    "steps": [
+      {
+        "id": "bootstrap",
+        "title": "Draw a bootstrap sample",
+        "body": "Pick 6 rows at random **with replacement**: {draws}. Some rows come up twice, so only {unique} different rows are used. The rows never picked, {oob}, are out of bag and can test this tree."
+      },
+      {
+        "id": "trees",
+        "title": "Each tree answers",
+        "body": "Each tree was trained on its own sample, so each learned a slightly different rule. Follow every rule for the new day."
+      },
+      {
+        "id": "vote",
+        "title": "Count the votes",
+        "body": "{yesVotes} trees say {yes} and {noVotes} says {no}, so the forest's probability of {yes} is {share}."
+      }
+    ],
+    "answer": "The forest predicts **{winner}**, by {yesVotes} votes to {noVotes}."
   }
 }

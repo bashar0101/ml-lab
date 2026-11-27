@@ -162,5 +162,32 @@
         "a": "No. Adam is a great default, but plain gradient descent with momentum sometimes generalises better and is still used to train many image models."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Find the w that makes the loss `L(w) = (w − {target})²` as small as possible without solving it directly: start at `w = {w0}` and take {steps} gradient-descent steps with learning rate `η = {lr}`.",
+    "labels": {},
+    "steps": [
+      {
+        "id": "derivative",
+        "title": "Differentiate",
+        "body": "The gradient says which way is uphill. At `w = {w0}` it is negative, so the loss goes down when w grows."
+      },
+      {
+        "id": "rule",
+        "title": "Take the first step",
+        "body": "Move against the gradient, scaled by the learning rate: `w₁ = {w1}`."
+      },
+      {
+        "id": "repeat",
+        "title": "Repeat",
+        "body": "Apply the same rule from each new w. Every row starts where the previous one ended: `w₂ = {w2}`, `w₃ = {w3}`."
+      },
+      {
+        "id": "converge",
+        "title": "Watch it converge",
+        "body": "With this learning rate the distance to {target} halves at every step, and the loss falls to {lossEnd}. More steps would bring w as close to {target} as we like."
+      }
+    ],
+    "answer": "After {steps} steps `w = {w3}`, only {gap} away from the true minimum at `w = {target}`."
   }
 }

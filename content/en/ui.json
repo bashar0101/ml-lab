@@ -393,5 +393,13 @@
   "tour.breakIt.title": "Break it on purpose",
   "tour.breakIt.body": "Every lesson has one setting that makes the algorithm fail. Try it: watching it fail is the fastest way to see why it works.",
   "tour.search.title": "Find anything",
-  "tour.search.body": "Press Ctrl K to search every lesson. Shortcuts: ← → steps, Space play, R replay, L switches Learn and Lab. The ? button next to the lesson title replays this tour."
+  "tour.search.body": "Press Ctrl K to search every lesson. Shortcuts: ← → steps, Space play, R replay, L switches Learn and Lab. The ? button next to the lesson title replays this tour.",
+  "byHand.heading": "Solve it by hand",
+  "byHand.lead": "Grab a pen and paper. Work out each step yourself first, then reveal it to check your answer.",
+  "byHand.problem": "The problem",
+  "byHand.step": "Step {n}",
+  "byHand.next": "Show step {n}",
+  "byHand.all": "Show all steps",
+  "byHand.reset": "Start over",
+  "byHand.answer": "Answer"
 }

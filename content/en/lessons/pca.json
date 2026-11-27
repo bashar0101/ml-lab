@@ -205,5 +205,44 @@
         "a": "No. Regression minimises vertical errors when predicting y from x. PCA treats all features alike and minimises the perpendicular distance to the line."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Four points lie roughly along a diagonal. Use PCA to find the direction that keeps the most variance, project the points onto it, and say how much of the variance a single number per point keeps.",
+    "labels": {
+      "point": "Point"
+    },
+    "steps": [
+      {
+        "id": "centre",
+        "title": "Centre the data",
+        "body": "Subtract the mean `({mx}, {my})` from every point. Then fill in the squares and the products: their sums build the covariance matrix."
+      },
+      {
+        "id": "covariance",
+        "title": "Covariance matrix",
+        "body": "Divide each sum by `n − 1 = 3`. Both features have variance {varX}, and the covariance {cov} is positive: x and y grow together."
+      },
+      {
+        "id": "eigen",
+        "title": "Eigenvalues",
+        "body": "Solve `det(Σ − λI) = 0`. Its two roots, {l1} and {l2}, are the variances along the two principal directions."
+      },
+      {
+        "id": "vector",
+        "title": "First principal component",
+        "body": "The eigenvector of the larger eigenvalue is the diagonal direction `{v}`: the line the points spread along."
+      },
+      {
+        "id": "project",
+        "title": "Project",
+        "body": "Each point's new single coordinate z is its dot product with the principal component."
+      },
+      {
+        "id": "explained",
+        "title": "Variance kept",
+        "body": "The first component keeps λ1 out of the total `λ1 + λ2`."
+      }
+    ],
+    "answer": "`PC1 = {v}` keeps **{kept}%** of the variance, so one number per point instead of two loses very little."
   }
 }

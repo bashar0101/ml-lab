@@ -198,5 +198,47 @@
         "a": "Yes. Regression trees put the average value of their points in each leaf and pick splits that reduce the variance instead of the Gini."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Six days of records say whether we played outside, with two features: the outlook and whether it was windy. Use Gini impurity to choose the first question, grow the tree, then decide for a rainy day with no wind.",
+    "labels": {
+      "day": "Day",
+      "outlook": "Outlook",
+      "windy": "Windy",
+      "play": "Play",
+      "sunny": "sunny",
+      "rainy": "rainy",
+      "yes": "yes",
+      "no": "no",
+      "branch": "Branch"
+    },
+    "steps": [
+      {
+        "id": "root",
+        "title": "Impurity before any split",
+        "body": "{yesDays} days are {yes} and {noDays} are {no}. Gini measures how mixed a group is: 0 means pure, and 0.5 is as mixed as two classes can get. Here Gini = {root}."
+      },
+      {
+        "id": "outlook",
+        "title": "Try splitting on outlook",
+        "body": "Count {yes} and {no} in each branch and work out each branch's Gini. Then weight each branch by its share of the days: weighted Gini = {giniOutlook}."
+      },
+      {
+        "id": "windy",
+        "title": "Try splitting on wind",
+        "body": "Repeat with the other feature: weighted Gini = {giniWindy}."
+      },
+      {
+        "id": "choose",
+        "title": "Pick the best question",
+        "body": "The lower weighted Gini wins, so the first question is **{best}**. It lowers the impurity by {gain}."
+      },
+      {
+        "id": "grow",
+        "title": "Grow the rainy branch",
+        "body": "Sunny days are already pure: all {yes}. Rainy days are mixed, so split them again on wind. Both new branches are pure (Gini {giniRainy}), so the tree is finished."
+      }
+    ],
+    "answer": "A rainy day with no wind follows {outlook}: {rainy} → {windy}: {no} → **{play}: {yes}**."
   }
 }

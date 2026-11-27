@@ -149,5 +149,34 @@
         "a": "That is the task the network was trained on: the first letter is a or b, every later letter is c to h. Other starts are outside what it has ever seen."
       }
     ]
+  },
+  "byHand": {
+    "problem": "A one-number RNN reads the sequence `x = (1, 2, −1)`. At each step the new state mixes the current input with the previous state, `h_t = tanh(wx · x_t + wh · h_(t−1))`, with `wx = 0.5`, `wh = 1` and `h0 = 0`.",
+    "labels": {
+      "sum": "Sum"
+    },
+    "steps": [
+      {
+        "id": "t1",
+        "title": "The first input",
+        "body": "There is no memory yet (`h0 = 0`), so only the input counts: `h1 = {h1}`."
+      },
+      {
+        "id": "t2",
+        "title": "The second input",
+        "body": "Now the previous state joins in: `h2 = {h2}`. tanh keeps every state between −1 and 1."
+      },
+      {
+        "id": "t3",
+        "title": "The third input",
+        "body": "This input is negative, but the memory of the first two keeps the state positive: `h3 = {h3}`."
+      },
+      {
+        "id": "table",
+        "title": "The whole sequence",
+        "body": "The same two weights are used at every step. That is what makes the network recurrent."
+      }
+    ],
+    "answer": "The final state `h3 = {h3}` sums up the whole sequence; an output layer would read its prediction from it."
   }
 }

@@ -220,5 +220,45 @@
         "a": "One logistic regression is one artificial neuron with a sigmoid activation. A neural network stacks many of them, which lets it draw curved boundaries."
       }
     ]
+  },
+  "byHand": {
+    "problem": "A model trained on study hours gives the chance that a student passes: `p = σ(2x − 5)`, where x is the hours studied. Work out p for four students, decide {pass} or {fail}, measure the log loss, and find where the model changes its answer.",
+    "labels": {
+      "hours": "Hours",
+      "result": "Result",
+      "pass": "pass",
+      "fail": "fail",
+      "prediction": "Prediction",
+      "logLoss": "Loss",
+      "average": "average"
+    },
+    "steps": [
+      {
+        "id": "score",
+        "title": "Score each student",
+        "body": "First the straight-line part, `z = 2x − 5`. Students who studied less than 2.5 hours get a negative score."
+      },
+      {
+        "id": "sigmoid",
+        "title": "Squash with the sigmoid",
+        "body": "The sigmoid turns any score into a probability between 0 and 1. Work out `e^(−z)` first, add 1, then take one over the result. The first student gets `p = {p1}`, the last `p = {p4}`."
+      },
+      {
+        "id": "decide",
+        "title": "Decide",
+        "body": "Predict {pass} when `p ≥ 0.5`. All four predictions match the real results."
+      },
+      {
+        "id": "loss",
+        "title": "Log loss",
+        "body": "The loss punishes confident mistakes. For a {pass} use `−ln(p)`, for a {fail} use `−ln(1 − p)`. The average over the four students is {loss}."
+      },
+      {
+        "id": "boundary",
+        "title": "Decision boundary",
+        "body": "p is exactly 0.5 when `z = 0`. Solving `2x − 5 = 0` shows the model switches from {fail} to {pass} at {boundary} hours."
+      }
+    ],
+    "answer": "Probabilities from {p1} to {p4}, every prediction correct, an average log loss of **{loss}**, and the boundary at **{boundary} hours**."
   }
 }

@@ -14,6 +14,18 @@ export const StoryStepSchema = z.object({
   reveal: z.array(z.string()),
 });
 
+/**
+ * The words of a lesson's "solve it by hand" example. The numbers come from the lesson's
+ * byHand.ts; {var} placeholders are filled from it, {label} ones from `labels`.
+ */
+export const ByHandSchema = z.object({
+  problem: md,
+  /** Words that appear inside the example's tables and formulas (e.g. "good", "sunny"). */
+  labels: z.record(z.string(), z.string().min(1)),
+  steps: z.array(z.object({ id: z.string().min(1), title: z.string().min(1), body: md })).min(2),
+  answer: md,
+});
+
 export const LessonContentSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1).max(160),
@@ -42,9 +54,11 @@ export const LessonContentSchema = z.object({
       .min(3),
     faq: z.array(z.object({ q: z.string().min(1), a: md })).min(3),
   }),
+  byHand: ByHandSchema.optional(),
 });
 
 export type LessonContent = z.infer<typeof LessonContentSchema>;
+export type ByHandContent = z.infer<typeof ByHandSchema>;
 export type StoryStep = z.infer<typeof StoryStepSchema>;
 
 export const UiSchema = z.record(z.string(), z.string());

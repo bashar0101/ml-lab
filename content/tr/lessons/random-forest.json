@@ -159,5 +159,42 @@
         "a": "Bir orman ağaçlarını birbirinden bağımsız büyütür ve ortalamasını alır. Artırma ise ağaçları birbiri ardına büyütür, her biri öncekilerin hatalarını düzeltir. İkisi de popülerdir; artırma çoğu zaman yarışmaları kazanır, ormanlar daha az ayar ister."
       }
     ]
+  },
+  "byHand": {
+    "problem": "{trees} küçük ağaçtan oluşan bir rastgele orman, karar ağacı dersindeki aynı altı günden öğreniyor. Bir bootstrap örneklemi oluşturun, sonra ağaçların yağmurlu ve rüzgârsız yeni bir gün için oy vermesini sağlayın.",
+    "labels": {
+      "newDay": "Yeni gün",
+      "outlook": "Hava",
+      "windy": "Rüzgârlı",
+      "sunny": "güneşli",
+      "rainy": "yağmurlu",
+      "yes": "evet",
+      "no": "hayır",
+      "draw": "Çekiliş",
+      "row": "Satır",
+      "sample": "Örneklem",
+      "outOfBag": "Torba dışı",
+      "tree": "Ağaç",
+      "rule": "Kural",
+      "vote": "Oy"
+    },
+    "steps": [
+      {
+        "id": "bootstrap",
+        "title": "Bir bootstrap örneklemi çekin",
+        "body": "**Yerine koyarak** rastgele 6 satır seçin: {draws}. Bazı satırlar iki kez gelir, bu yüzden yalnızca {unique} farklı satır kullanılır. Hiç seçilmeyen satırlar ({oob}) torba dışıdır ve bu ağacı test edebilir."
+      },
+      {
+        "id": "trees",
+        "title": "Her ağaç cevap verir",
+        "body": "Her ağaç kendi örneklemiyle eğitildi, bu yüzden her biri biraz farklı bir kural öğrendi. Yeni gün için her kuralı izleyin."
+      },
+      {
+        "id": "vote",
+        "title": "Oyları sayın",
+        "body": "{yesVotes} ağaç {yes}, {noVotes} ağaç {no} diyor; ormanın {yes} olasılığı {share}."
+      }
+    ],
+    "answer": "Orman, {yesVotes} oya karşı {noVotes} oyla **{winner}** tahmin ediyor."
   }
 }

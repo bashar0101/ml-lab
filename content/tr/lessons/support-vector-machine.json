@@ -162,5 +162,37 @@
         "a": "Evet, özellikle metin sınıflandırma ve biyoinformatik gibi çok özellikli küçük ve orta ölçekli veri kümelerinde. Devasa görüntü veya metin veri kümelerinde ise yerlerini büyük ölçüde sinir ağları aldı."
       }
     ]
+  },
+  "byHand": {
+    "problem": "Doğrusal bir SVM, iki sınıftan (+1 ve −1) altı nokta üzerinde eğitildi. Doğrusu `w = (1, 1)`, `b = {b}`. Destek vektörlerini bulun, marjı ölçün, menteşe kaybını hesaplayın ve yeni nokta `{qx}` için sınıf belirleyin.",
+    "labels": {},
+    "steps": [
+      {
+        "id": "score",
+        "title": "Her noktayı puanlayın",
+        "body": "`f(x) = w · x + b` her noktaya işaretli bir puan verir. Bunu gerçek etiket y ile çarpın: nokta doğru taraftaysa `y · f(x)` pozitiftir."
+      },
+      {
+        "id": "supports",
+        "title": "Destek vektörlerini bulun",
+        "body": "Eğitilmiş bir SVM her nokta için `y · f(x) ≥ 1` koşulunu korur. Değer tam olarak 1 olduğunda nokta marjın kenarına değer. Bu {supports} destek vektörü ({supportList}) doğruyu belirleyen tek noktalardır."
+      },
+      {
+        "id": "width",
+        "title": "Marjı ölçün",
+        "body": "İki marj çizgisi arasındaki yolun genişliği `2 / ‖w‖ = {width}`. SVM eğitmek, bu yolu olabildiğince geniş yapmak demektir."
+      },
+      {
+        "id": "hinge",
+        "title": "Menteşe kaybı",
+        "body": "Her nokta `max(0, 1 − y · f(x))` öder. Buradaki her noktada `y · f(x) ≥ 1`, bu yüzden toplam kayıp 0."
+      },
+      {
+        "id": "classify",
+        "title": "Yeni noktayı sınıflandırın",
+        "body": "Yeni noktanın puanı {score}. İşareti sınıfını verir."
+      }
+    ],
+    "answer": "Destek vektörleri {supportList}, marj genişliği **{width}**, menteşe kaybı sıfır ve `{qx}` noktası **{winner}** sınıfında."
   }
 }

@@ -156,5 +156,36 @@
         "a": "The same idea scaled up enormously: millions of weights, dozens of layers, millions of training images, plus newer designs such as residual connections and attention."
       }
     ]
+  },
+  "byHand": {
+    "problem": "A 4×4 grayscale image has a bright vertical stripe in the middle (1 = bright, 0 = dark); the second grid is a 3×3 edge filter. Slide the filter over the image, apply ReLU, then max-pool the {size} result into one number.",
+    "labels": {
+      "image": "Image",
+      "filter": "Filter",
+      "featureMap": "Feature map"
+    },
+    "steps": [
+      {
+        "id": "first",
+        "title": "The first position",
+        "body": "Lay the filter on the top-left 3×3 window, multiply each pair of numbers and add all nine products. The result, {first}, is negative: from left to right this window goes from dark to bright."
+      },
+      {
+        "id": "slide",
+        "title": "Slide the filter",
+        "body": "Move one pixel at a time and repeat. The output is a {size} feature map. The right-hand windows give {second}: an edge from bright to dark."
+      },
+      {
+        "id": "relu",
+        "title": "ReLU",
+        "body": "Negative values become 0, so only the bright-to-dark edges survive."
+      },
+      {
+        "id": "pool",
+        "title": "Max pooling",
+        "body": "2×2 max pooling keeps the largest value in each 2×2 block. Our map is exactly one block."
+      }
+    ],
+    "answer": "The filter found the right edge of the stripe: after ReLU and pooling the output is **{pooled}**."
   }
 }
