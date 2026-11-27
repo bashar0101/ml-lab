@@ -2,12 +2,20 @@
   position: relative;
 }
 
-.toolbar {
-  position: absolute;
-  inset-block-start: 10px;
-  inset-inline-end: 10px;
-  z-index: 2;
+/* Stat chips and the view toolbar share the top row; on narrow screens the toolbar wraps
+   onto its own line instead of covering the chips. */
+.top {
   display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 8px;
+}
+
+.toolbar {
+  display: flex;
+  flex: none;
+  margin-block-start: 10px;
+  margin-inline: auto 10px;
   gap: 2px;
   padding: 3px;
   border: 1.5px solid var(--ink);
@@ -52,7 +60,8 @@
 
 .full {
   border-inline-start: 1px solid var(--line-2) !important;
-  border-radius: 0 7px 7px 0 !important;
+  border-start-start-radius: 0 !important;
+  border-end-start-radius: 0 !important;
 }
 
 /* The picture: scrolls when zoomed larger than its frame. */

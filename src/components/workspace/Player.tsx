@@ -12,7 +12,7 @@ export function Player({ state, dispatch }: { state: PlayerState; dispatch: Disp
   const atStart = state.index <= 0;
   const atEnd = state.index >= state.length - 1;
   return (
-    <div className={styles.player} role="group" aria-label={t("player.label")}>
+    <div className={styles.player} role="group" aria-label={t("player.label")} dir="ltr">
       <button type="button" className="btn" onClick={() => dispatch({ type: "first" })} disabled={atStart} aria-label={t("player.first")}>
         <span aria-hidden="true">⏮</span>
       </button>
