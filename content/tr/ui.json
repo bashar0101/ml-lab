@@ -1,5 +1,6 @@
 {
   "site.name": "ML Lab",
+  "meta.locale": "tr",
   "site.tagline": "Adım adım makine öğrenmesi",
   "og.siteFooter": "{n} ücretsiz etkileşimli ders",
   "og.lessonFooter": "Ders {n} / {total} · {minutes} dk",

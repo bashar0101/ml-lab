@@ -20,8 +20,15 @@ const others = LOCALES.filter((l) => l !== DEFAULT_LOCALE);
 describe.each(others)("%s interface strings", (locale) => {
   const ui = json(locale, "ui.json") as Record<string, string>;
 
-  it("has exactly the English keys", () => {
-    expect(Object.keys(ui).sort()).toEqual(Object.keys(en).sort());
+  it("has exactly the English keys (plus plural variants of them)", () => {
+    const variants = Object.keys(ui).filter((k) => k.includes("|"));
+    expect(Object.keys(ui).filter((k) => !k.includes("|")).sort()).toEqual(Object.keys(en).sort());
+    for (const k of variants) {
+      const [base, category] = k.split("|");
+      expect(base in en, k).toBe(true);
+      expect(["zero", "one", "two", "few", "many", "other"], k).toContain(category);
+      for (const p of placeholders(ui[k])) expect(placeholders(en[base]), k).toContain(p);
+    }
   });
 
   it("keeps every {placeholder} and **bold** pair", () => {
