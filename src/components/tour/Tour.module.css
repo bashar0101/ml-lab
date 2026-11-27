@@ -1,0 +1,122 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+}
+
+/* Clicks outside the card do nothing while the tour is open. */
+.blocker {
+  position: absolute;
+  inset: 0;
+}
+
+/* The lit part: a rounded hole made by a huge shadow that dims everything else. */
+.spot {
+  position: fixed;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 3px var(--green-2),
+    0 0 0 200vmax rgb(20 18 15 / 0.55);
+  pointer-events: none;
+  transition:
+    top 280ms ease,
+    left 280ms ease,
+    width 280ms ease,
+    height 280ms ease;
+}
+
+.dim {
+  position: absolute;
+  inset: 0;
+  background: rgb(20 18 15 / 0.55);
+}
+
+.card {
+  position: fixed;
+  inline-size: min(340px, calc(100vw - 24px));
+  padding-block: 14px 12px;
+  padding-inline: 16px;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+  transition:
+    top 280ms ease,
+    left 280ms ease;
+}
+
+.progress {
+  margin: 0;
+  color: var(--muted);
+  font: 600 10.5px var(--font-ui);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-block: 6px 4px;
+  font: 700 16px/1.3 var(--font-ui);
+}
+
+.body {
+  margin: 0;
+  font: 14px/1.55 var(--font-body);
+}
+
+.dots {
+  display: flex;
+  gap: 5px;
+  margin-block: 12px 10px;
+}
+
+.dots i {
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: var(--line-2);
+  transition: inline-size 200ms ease;
+}
+
+.dots i[data-on="true"] {
+  inline-size: 18px;
+  border-radius: 3px;
+  background: var(--ink);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.skip {
+  margin-inline-end: auto;
+  padding: 4px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: 600 12px var(--font-ui);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Phones: the card is a sheet along the bottom edge. */
+@media (max-width: 640px) {
+  .card {
+    inset-block-end: 12px;
+    inset-inline: 12px;
+    inline-size: auto;
+    top: auto !important;
+    left: 12px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spot,
+  .card,
+  .dots i {
+    transition: none;
+  }
+}

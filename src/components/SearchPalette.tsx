@@ -138,6 +138,7 @@ export function SearchPalette({ loadIndex, navigate = goTo }: SearchPaletteProps
         ref={button}
         type="button"
         className={bar.search}
+        data-tour="search"
         aria-haspopup="dialog"
         aria-keyshortcuts="Control+K Meta+K /"
         aria-label={t("nav.search")}

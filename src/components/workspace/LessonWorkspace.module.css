@@ -98,6 +98,31 @@
   background: var(--green);
 }
 
+/* "?" replays the guided tour. */
+.help {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 24px;
+  block-size: 24px;
+  padding: 0;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: 0 1.5px 0 var(--ink);
+  color: var(--ink);
+  font: 700 12px/1 var(--font-ui);
+  cursor: pointer;
+}
+
+.help:hover {
+  background: var(--blue-soft);
+}
+
+.help:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
 .modeSlot {
   margin-inline-start: auto;
 }

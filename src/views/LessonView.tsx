@@ -46,7 +46,7 @@ export async function LessonView({ locale, slug }: { locale: Locale; slug: strin
         </p>
       )}
       <div lang={fallback ? "en" : undefined} dir={fallback ? "ltr" : undefined}>
-        <LessonWorkspace slug={slug} content={content} />
+        <LessonWorkspace slug={slug} content={content} tour={slug === "linear-regression"} />
         <LessonArticle slug={slug} content={content} ui={ui} locale={locale} />
       </div>
     </main>

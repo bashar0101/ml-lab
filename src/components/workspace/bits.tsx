@@ -8,7 +8,7 @@ import styles from "./bits.module.css";
 export function ModeSwitch({ mode, onMode }: { mode: Mode; onMode(m: Mode): void }) {
   const t = useT();
   return (
-    <div className={styles.mode} role="group" aria-label={t("mode.label")}>
+    <div className={styles.mode} role="group" aria-label={t("mode.label")} data-tour="mode">
       {(["learn", "lab"] as const).map((m) => (
         <button key={m} type="button" aria-pressed={mode === m} onClick={() => onMode(m)}>
           {t(`mode.${m}`)}
@@ -46,7 +46,7 @@ export function StatChips({ chips, labels }: { chips: StatChip[]; labels: Record
 export function StepRail({ rails, step, onStep }: { rails: string[]; step: number; onStep(i: number): void }) {
   const t = useT();
   return (
-    <ol className={styles.rail} aria-label={t("story.rail")}>
+    <ol className={styles.rail} aria-label={t("story.rail")} data-tour="rail">
       {rails.map((r, i) => (
         <li key={i}>
           <button
