@@ -1,0 +1,109 @@
+.stage {
+  position: relative;
+}
+
+.toolbar {
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  z-index: 2;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1.5px solid var(--ink);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  box-shadow: 0 1.5px 0 var(--ink);
+  backdrop-filter: blur(4px);
+}
+
+.toolbar button {
+  min-inline-size: 28px;
+  block-size: 26px;
+  padding-inline: 6px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--ink);
+  font: 700 14px/1 var(--font-ui);
+  cursor: pointer;
+}
+
+.toolbar button:hover:not(:disabled) {
+  background: var(--green);
+}
+
+.toolbar button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+
+.toolbar button:disabled {
+  color: var(--muted);
+  cursor: default;
+  opacity: 0.5;
+}
+
+.toolbar .readout {
+  min-inline-size: 46px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.full {
+  border-inline-start: 1px solid var(--line-2) !important;
+  border-radius: 0 7px 7px 0 !important;
+}
+
+/* The picture: scrolls when zoomed larger than its frame. */
+.viewport {
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--muted) 55%, transparent) transparent;
+}
+
+.canvas {
+  margin-inline: auto;
+}
+
+.stage[data-zoom]:not([data-zoom="1"]) .viewport {
+  max-block-size: max(260px, calc(100vh - 360px));
+}
+
+.stage[data-zoom]:not([data-zoom="1"]) .canvas :global(svg) {
+  max-block-size: none;
+}
+
+/* Full screen: the browser's own, or the full-window fallback. */
+.stage:fullscreen,
+.stage[data-expanded="true"] {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: var(--stage);
+}
+
+.stage[data-expanded="true"] {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  border-radius: 0;
+}
+
+.stage:fullscreen .viewport,
+.stage[data-expanded="true"] .viewport {
+  flex: 1;
+  min-block-size: 0;
+  max-block-size: none;
+}
+
+.stage:fullscreen[data-zoom="1"] .canvas :global(svg),
+.stage[data-expanded="true"][data-zoom="1"] .canvas :global(svg) {
+  max-block-size: calc(100vh - 140px);
+}
+
+.stage:fullscreen:not([data-zoom="1"]) .viewport,
+.stage[data-expanded="true"]:not([data-zoom="1"]) .viewport {
+  max-block-size: none;
+}

@@ -112,6 +112,12 @@
   "player.speed": "السرعة",
   "player.scrubber": "خطوة التدريب",
   "player.counter": "{n} / {total}",
+  "zoom.label": "العرض",
+  "zoom.in": "تكبير",
+  "zoom.out": "تصغير",
+  "zoom.reset": "إعادة التكبير ({pct}%)",
+  "zoom.fullscreen": "ملء الشاشة",
+  "zoom.exitFullscreen": "الخروج من ملء الشاشة",
 
   "lab.yourData": "بياناتك",
   "lab.settings": "الإعدادات",
