@@ -33,6 +33,8 @@
   --ch-generative: #5c6b73;
 
   --font-ui: var(--font-mono), ui-monospace, "Cascadia Mono", Consolas, monospace;
+  /* Code stays monospaced in every language. */
+  --font-code: var(--font-mono), ui-monospace, "Cascadia Mono", Consolas, monospace;
   --font-display: var(--font-serif), Georgia, "Times New Roman", serif;
   --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
@@ -67,9 +69,10 @@
   --stage: #201d1a;
 }
 
-/* Arabic: every stack falls through to an Arabic face (Latin letters and digits keep the site's fonts). */
+/* Arabic: the Arabic face comes first so digits and letters in one label share a baseline
+   (mixing it with the mono font left "8 دقائق" uneven). Code keeps --font-code. */
 :root[lang="ar"] {
-  --font-ui: var(--font-mono), var(--font-arabic), ui-monospace, Consolas, monospace;
+  --font-ui: var(--font-arabic), var(--font-mono), ui-monospace, Consolas, monospace;
   --font-display: var(--font-serif), var(--font-arabic), Georgia, serif;
   --font-body: var(--font-arabic), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }

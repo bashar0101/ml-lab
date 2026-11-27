@@ -1,5 +1,6 @@
 {
   "site.name": "ML Lab",
+  "meta.locale": "en",
   "site.tagline": "Machine learning, step by step",
   "og.siteFooter": "{n} free interactive lessons",
   "og.lessonFooter": "Lesson {n} of {total} · {minutes} min",
