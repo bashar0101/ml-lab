@@ -24,6 +24,23 @@
 .tree > .card {
   max-block-size: calc(100vh - 84px);
   overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* A slim scrollbar that only shows while the menu is hovered or focused. */
+.tree > .card,
+.tree {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  scrollbar-gutter: stable;
+  transition: scrollbar-color 200ms ease;
+}
+
+.tree > .card:hover,
+.tree > .card:focus-within,
+.tree:hover,
+.tree:focus-within {
+  scrollbar-color: color-mix(in srgb, var(--muted) 55%, transparent) transparent;
 }
 
 /* In Lab the left column holds the data panel; the course tree stays in the phone menu. */
