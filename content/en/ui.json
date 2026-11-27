@@ -106,6 +106,12 @@
   "player.speed": "Speed",
   "player.scrubber": "Training step",
   "player.counter": "{n} / {total}",
+  "zoom.label": "View",
+  "zoom.in": "Zoom in",
+  "zoom.out": "Zoom out",
+  "zoom.reset": "Reset zoom ({pct}%)",
+  "zoom.fullscreen": "Full screen",
+  "zoom.exitFullscreen": "Exit full screen",
 
   "lab.yourData": "Your data",
   "lab.settings": "Settings",

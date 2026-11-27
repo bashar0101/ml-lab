@@ -106,6 +106,12 @@
   "player.speed": "Hız",
   "player.scrubber": "Eğitim adımı",
   "player.counter": "{n} / {total}",
+  "zoom.label": "Görünüm",
+  "zoom.in": "Yakınlaştır",
+  "zoom.out": "Uzaklaştır",
+  "zoom.reset": "Yakınlaştırmayı sıfırla (%{pct})",
+  "zoom.fullscreen": "Tam ekran",
+  "zoom.exitFullscreen": "Tam ekrandan çık",
 
   "lab.yourData": "Verileriniz",
   "lab.settings": "Ayarlar",

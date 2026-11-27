@@ -13,6 +13,7 @@ import { usePlayer } from "@/state/player";
 import { browserStorage, createProgressStore } from "@/state/progress";
 import { ModeSwitch, StatChips, StepRail } from "./bits";
 import { keepsFrame } from "./keepFrame";
+import { ZoomStage } from "./ZoomStage";
 import { CourseTree } from "./CourseTree";
 import { CodePanel, LabPanel, NowCard } from "./LabParts";
 import styles from "./LessonWorkspace.module.css";
@@ -261,10 +262,13 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
           </div>
         </div>
 
-        <div className={styles.stage}>
+        <ZoomStage
+          className={styles.stage}
+          enabled={mode === "lab" && !!(mod && trace && frame)}
+          header={mod && trace && frame ? <StatChips chips={mod.stats(frame, params)} labels={content.stats} /> : null}
+        >
           {mod && trace && frame ? (
             <>
-              <StatChips chips={mod.stats(frame, params)} labels={content.stats} />
               <mod.Scene
                 trace={trace}
                 index={index}
@@ -279,7 +283,7 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
               {t("lesson.loading")}
             </div>
           )}
-        </div>
+        </ZoomStage>
 
         {mode === "learn" ? (
           <StepRail rails={story.map((s) => s.rail)} step={step} onStep={goStep} />
