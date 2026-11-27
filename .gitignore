@@ -45,3 +45,6 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 __pycache__/
+
+# graphify knowledge graph output
+graphify-out/
