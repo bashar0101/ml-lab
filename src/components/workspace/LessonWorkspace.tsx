@@ -7,7 +7,7 @@ import { frameIndexOfTag, type Trace } from "@/engine/types";
 import { useT } from "@/i18n/ui-context";
 import { loadLessonModule } from "@/lessons/registry";
 import type { AnyLessonModule } from "@/lessons/types";
-import { formatHash, parseHash, type Mode } from "@/state/hash";
+import { BY_HAND_HASH, formatHash, isByHandHash, parseHash, type Mode } from "@/state/hash";
 import { useLessonKeys } from "@/state/keys";
 import { usePlayer } from "@/state/player";
 import { browserStorage, createProgressStore } from "@/state/progress";
@@ -24,6 +24,13 @@ import { Tour } from "@/components/tour/Tour";
 
 function writeHash(h: string) {
   window.history.replaceState(window.history.state, "", h || window.location.pathname + window.location.search);
+}
+
+/** The Lab state for a module's paper example ("solve it by hand"), or null when it has none. */
+function paperLab(m: AnyLessonModule): LabState | null {
+  if (!m.byHand) return null;
+  const { data, params } = m.byHand;
+  return { params, data, trace: m.run(data, params), runParams: params, error: null };
 }
 
 interface LabState {
@@ -50,6 +57,8 @@ export function LessonWorkspace({ slug, content, tour = false }: { slug: string;
   const [step, setStep] = useState(0);
   const [lab, setLab] = useState<LabState | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  /** True while the Lab shows the paper example unchanged. */
+  const [onPaper, setOnPaper] = useState(false);
   const [completed, setCompleted] = useState<ReadonlySet<string>>(() => new Set());
   const progress = useMemo(() => createProgressStore(typeof window === "undefined" ? null : browserStorage()), []);
 
@@ -79,13 +88,17 @@ export function LessonWorkspace({ slug, content, tour = false }: { slug: string;
     loadLessonModule(slug).then((m) => {
       if (!alive) return;
       setMod(m);
-      setLab({
-        params: m.defaultParams,
-        data: m.defaultData,
-        trace: m.run(m.defaultData, m.defaultParams),
-        runParams: m.defaultParams,
-        error: null,
-      });
+      const paper = isByHandHash(window.location.hash) ? paperLab(m) : null;
+      setOnPaper(!!paper);
+      setLab(
+        paper ?? {
+          params: m.defaultParams,
+          data: m.defaultData,
+          trace: m.run(m.defaultData, m.defaultParams),
+          runParams: m.defaultParams,
+          error: null,
+        },
+      );
     });
     return () => {
       alive = false;
@@ -106,9 +119,11 @@ export function LessonWorkspace({ slug, content, tour = false }: { slug: string;
   const keepIndexRef = useRef<number | null>(null);
   const indexRef = useRef(0);
   const labRef = useRef<LabState | null>(null);
+  const onPaperRef = useRef(false);
   useEffect(() => {
     indexRef.current = player.index;
     labRef.current = lab;
+    onPaperRef.current = onPaper;
   });
 
   // A new trace (or mode) resets the player; in Learn it jumps straight to the step's moment.
@@ -150,6 +165,10 @@ export function LessonWorkspace({ slug, content, tour = false }: { slug: string;
       if (!mod) return;
       // Any edit stops playback, even when the data is invalid and the old run stays on screen.
       dispatch({ type: "pause" });
+      if (onPaperRef.current) {
+        setOnPaper(false);
+        writeHash(formatHash("lab", 0));
+      }
       const prev = labRef.current;
       keepIndexRef.current = keepsFrame(mod, prev, patch) ? indexRef.current : null;
       setLab((prev) => {
@@ -168,6 +187,31 @@ export function LessonWorkspace({ slug, content, tour = false }: { slug: string;
 
   // Keyboard shortcuts only apply while the workspace is on screen.
   const rootRef = useRef<HTMLDivElement>(null);
+
+  /** Shows the paper example in the Lab ("solve it by hand" → "Try this example in the Lab"). */
+  const openPaper = useCallback(() => {
+    const paper = mod ? paperLab(mod) : null;
+    if (!paper) return;
+    dispatch({ type: "pause" });
+    keepIndexRef.current = null;
+    setLab(paper);
+    setOnPaper(true);
+    setMode("lab");
+    writeHash(BY_HAND_HASH);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mod]);
+
+  // The paper example's link sets #lab-by-hand while the page is open: switch and bring the Lab into view.
+  useEffect(() => {
+    const onHash = () => {
+      if (!isByHandHash(window.location.hash)) return;
+      openPaper();
+      const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+      rootRef.current?.scrollIntoView?.({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, [openPaper]);
   const inView = useRef(true);
   useEffect(() => {
     const el = rootRef.current;
@@ -226,6 +270,8 @@ export function LessonWorkspace({ slug, content, tour = false }: { slug: string;
     const id = window.setTimeout(() => setTourOpen(true), 300);
     return () => window.clearTimeout(id);
   }, [tour]);
+  // The Lab's Paper example button exists only where the Lab can show the paper example.
+  const tourSteps = useMemo(() => LESSON_TOUR.filter((s) => s.id !== "paper" || !!mod?.byHand), [mod]);
   const closeTour = (finished: boolean) => {
     setTourOpen(false);
     try {
@@ -241,7 +287,7 @@ export function LessonWorkspace({ slug, content, tour = false }: { slug: string;
 
   return (
     <div ref={rootRef} className={styles.workspace} data-mode={mode}>
-      {tourOpen && <Tour steps={LESSON_TOUR} onClose={closeTour} onEnterStep={(s) => s.mode && switchMode(s.mode)} />}
+      {tourOpen && <Tour steps={tourSteps} onClose={closeTour} onEnterStep={(s) => s.mode && switchMode(s.mode)} />}
       <aside className={`${styles.tree} ${menuOpen ? styles.open : ""}`} aria-label={t("course.heading")}>
         <button type="button" className={`${styles.closeMenu} btn`} onClick={() => setMenuOpen(false)}>
           {t("menu.close")}
@@ -254,7 +300,7 @@ export function LessonWorkspace({ slug, content, tour = false }: { slug: string;
 
       {mode === "lab" && mod && lab && (
         <aside className={styles.labSide}>
-          <LabPanel lab={content.lab} error={lab.error}>
+          <LabPanel lab={content.lab} error={lab.error} paper={mod.byHand ? { on: onPaper, open: openPaper } : undefined}>
             <mod.LabControls
               params={lab.params}
               data={lab.data}

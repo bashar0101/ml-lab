@@ -401,5 +401,14 @@
   "byHand.next": "Show step {n}",
   "byHand.all": "Show all steps",
   "byHand.reset": "Start over",
-  "byHand.answer": "Answer"
+  "byHand.answer": "Answer",
+  "lab.byHand": "Paper example",
+  "byHand.lab": "Try this example in the Lab",
+  "km.init.first": "First k points",
+  "lr.axis.age": "car age (years)",
+  "lr.axis.carPrice": "price",
+  "tour.byHand.title": "Solve it by hand",
+  "tour.byHand.body": "Below the lesson is a small problem to solve on paper. Work out each step yourself, then reveal it to check. After the answer, \"Try this example in the Lab\" opens the Lab on the same numbers.",
+  "tour.paper.title": "The paper example in the Lab",
+  "tour.paper.body": "This button loads that same example whenever you like, so you can watch the algorithm reach the numbers you worked out by hand."
 }

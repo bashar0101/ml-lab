@@ -19,5 +19,8 @@ export const LESSON_TOUR: TourStep[] = [
   { id: "stage", target: "stage", mode: "lab" },
   { id: "code", target: "code", mode: "lab" },
   { id: "breakIt", target: "break-it", mode: "lab" },
+  { id: "byHand", target: "by-hand" },
+  // Only on lessons whose Lab can open the paper example (the workspace drops it elsewhere).
+  { id: "paper", target: "paper", mode: "lab" },
   { id: "search", target: "search" },
 ];

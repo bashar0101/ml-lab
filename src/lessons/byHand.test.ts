@@ -60,8 +60,8 @@ describe("worked examples", () => {
     expect(vars("k-means")).toMatchObject({ rounds: "2", c1: "(1.33, 1.33)", c2: "(5.33, 4.67)" });
   });
 
-  it("PCA: eigenvalues 3.67 and 0.33, the first keeps 91.7%", () => {
-    expect(vars("pca")).toMatchObject({ l1: "3.67", l2: "0.33", kept: "91.7" });
+  it("PCA: eigenvalues 2.75 and 0.25 (dividing by n, like the Lab), the first keeps 91.7%", () => {
+    expect(vars("pca")).toMatchObject({ l1: "2.75", l2: "0.25", kept: "91.7" });
   });
 
   it("neural network: the forward pass ends at 0.97", () => {

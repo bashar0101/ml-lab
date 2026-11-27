@@ -72,6 +72,7 @@ function texts(c: LessonContent): Record<string, string> {
   if (c.byHand) {
     out["byHand.problem"] = c.byHand.problem;
     out["byHand.answer"] = c.byHand.answer;
+    if (c.byHand.labNote) out["byHand.labNote"] = c.byHand.labNote;
     c.byHand.steps.forEach((s) => {
       out[`byHand.${s.id}.title`] = s.title;
       out[`byHand.${s.id}.body`] = s.body;

@@ -193,6 +193,7 @@
         "body": "Yeni noktanın puanı {score}. İşareti sınıfını verir."
       }
     ],
-    "answer": "Destek vektörleri {supportList}, marj genişliği **{width}**, menteşe kaybı sıfır ve `{qx}` noktası **{winner}** sınıfında."
+    "answer": "Destek vektörleri {supportList}, marj genişliği **{width}**, menteşe kaybı sıfır ve `{qx}` noktası **{winner}** sınıfında.",
+    "labNote": "Laboratuvar aynı altı noktayla açılır (+1, B sınıfıdır), ama w ve b verilmek yerine SVM'yi kendisi eğitir. Sonuç kâğıda yakındır: `y · f(x)` {supportList} için yaklaşık 1, diğerleri için yaklaşık 2. Destek sayacı başta doğruyu iten noktaları da saydığı için {supports} sayısından fazlasını gösterebilir."
   }
 }

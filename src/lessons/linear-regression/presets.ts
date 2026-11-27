@@ -1,6 +1,8 @@
 import type { Point } from "./algorithm";
 
-export type PresetId = "study-hours" | "house-prices" | "outlier";
+import { PAPER_AGES, PAPER_PRICES } from "./paper";
+
+export type PresetId = "study-hours" | "house-prices" | "outlier" | "car-prices";
 
 export interface Preset {
   id: PresetId;
@@ -36,6 +38,13 @@ export const PRESETS: Preset[] = [
     points: [...STUDY, { x: 8.5, y: 15 }],
     xLabelKey: "lr.axis.hours",
     yLabelKey: "lr.axis.score",
+  },
+  {
+    // The "solve it by hand" example.
+    id: "car-prices",
+    points: PAPER_AGES.map((x, i) => ({ x, y: PAPER_PRICES[i] })),
+    xLabelKey: "lr.axis.age",
+    yLabelKey: "lr.axis.carPrice",
   },
 ];
 

@@ -234,6 +234,7 @@
         "body": "Assigning with the new centres gives exactly the same clusters, so the centres would not move again. k-means has converged after {rounds} updates."
       }
     ],
-    "answer": "Two clusters: `C1 = {c1}` holds the three bottom-left points and `C2 = {c2}` the three top-right points."
+    "answer": "Two clusters: `C1 = {c1}` holds the three bottom-left points and `C2 = {c2}` the three top-right points.",
+    "labNote": "The Lab opens on the same six points with `k = 2`, starting from the first two points. Step through it: `(2, 1)` switches cluster in the second round, and the centres settle at {c1} and {c2}."
   }
 }

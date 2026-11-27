@@ -98,16 +98,25 @@ export function CodePanel({ code, active }: { code: { python: CodeLine[]; pseudo
 export function LabPanel({
   lab,
   error,
+  paper,
   children,
 }: {
   lab: LessonContent["lab"];
   error: string | null;
+  /** The lesson's "solve it by hand" example: whether it is showing, and how to load it. */
+  paper?: { on: boolean; open(): void };
   children: ReactNode;
 }) {
   const t = useT();
   return (
     <div className={styles.card} data-tour="lab-data">
       <h2 className={styles.sec}>{t("lab.yourData")}</h2>
+      {paper && (
+        <button type="button" className={styles.paper} aria-pressed={paper.on} onClick={paper.open} data-tour="paper">
+          <span aria-hidden="true">✍ </span>
+          {t("lab.byHand")}
+        </button>
+      )}
       {children}
       {error && (
         <p className={styles.error} role="alert">

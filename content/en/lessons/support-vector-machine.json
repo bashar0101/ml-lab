@@ -243,6 +243,7 @@
         "body": "The new point scores {score}. Its sign is the class."
       }
     ],
-    "answer": "Support vectors {supportList}, a margin **{width}** wide, zero hinge loss, and `{qx}` belongs to class **{winner}**."
+    "answer": "Support vectors {supportList}, a margin **{width}** wide, zero hinge loss, and `{qx}` belongs to class **{winner}**.",
+    "labNote": "The Lab opens on the same six points (+1 is class B), but it trains the SVM itself instead of being given w and b. It ends close to the paper: `y · f(x)` is about 1 for {supportList} and about 2 for the others. Its supports counter also counts points that pushed the line early on, so it can show more than {supports}."
   }
 }

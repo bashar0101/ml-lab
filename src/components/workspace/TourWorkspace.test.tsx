@@ -5,7 +5,8 @@ import ui from "../../../content/en/ui.json";
 import lrJson from "../../../content/en/lessons/linear-regression.json";
 import { LessonContentSchema } from "@/content/schema";
 import { UiProvider } from "@/i18n/ui-context";
-import { TOUR_DONE_KEY } from "@/components/tour/steps";
+import { LESSON_TOUR, TOUR_DONE_KEY } from "@/components/tour/steps";
+import lgJson from "../../../content/en/lessons/logistic-regression.json";
 import { LessonWorkspace } from "./LessonWorkspace";
 
 const lr = LessonContentSchema.parse(lrJson);
@@ -48,9 +49,36 @@ describe("guided tour in the lesson", () => {
     expect(localStorage.getItem(TOUR_DONE_KEY)).toBe("1");
     expect(screen.queryByRole("dialog")).toBeNull();
     await userEvent.click(screen.getByRole("button", { name: ui["tour.start"] }));
-    for (let i = 0; i < 9; i++) await next();
+    for (let i = 1; i < LESSON_TOUR.length; i++) await next();
     await userEvent.click(screen.getByRole("button", { name: ui["tour.done"] }));
     expect(screen.getByRole("button", { name: "Learn" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByText("Step 1 / 6")).toBeInTheDocument();
+  });
+
+  it("shows Solve it by hand, then the Lab's Paper example button, after Break it", async () => {
+    renderWorkspace(false);
+    await screen.findByText("Step 1 / 6");
+    await userEvent.click(screen.getByRole("button", { name: ui["tour.start"] }));
+    const next = () => userEvent.click(screen.getByRole("button", { name: ui["tour.next"] }));
+    const at = (id: string) => LESSON_TOUR.findIndex((s) => s.id === id);
+    for (let i = 0; i < at("byHand"); i++) await next();
+    expect(screen.getByRole("dialog", { name: ui["tour.byHand.title"] })).toBeInTheDocument();
+    await next();
+    expect(screen.getByRole("dialog", { name: ui["tour.paper.title"] })).toBeInTheDocument();
+    // The stop lights up the Lab's Paper example button.
+    expect(screen.getByRole("button", { name: ui["lab.byHand"] }).closest("[data-tour='paper']")).not.toBeNull();
+    expect(screen.getByRole("dialog")).toHaveTextContent(`${at("paper") + 1} / ${LESSON_TOUR.length}`);
+  });
+
+  it("skips the Paper example stop on lessons whose Lab cannot show the paper example", async () => {
+    const lg = LessonContentSchema.parse(lgJson);
+    render(
+      <UiProvider strings={ui}>
+        <LessonWorkspace slug="logistic-regression" content={lg} />
+      </UiProvider>,
+    );
+    await screen.findByText("Step 1 / 6");
+    await userEvent.click(screen.getByRole("button", { name: ui["tour.start"] }));
+    expect(screen.getByRole("dialog")).toHaveTextContent(`1 / ${LESSON_TOUR.length - 1}`);
   });
 });

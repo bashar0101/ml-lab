@@ -99,7 +99,8 @@
       "bowl": "Çanak",
       "ravine": "Dar vadi",
       "saddle": "Eyer",
-      "two-valleys": "İki vadi"
+      "two-valleys": "İki vadi",
+      "paper": "Kâğıt: (w − 3)²"
     },
     "params": {
       "learningRate": {
@@ -188,6 +189,7 @@
         "body": "Bu öğrenme oranıyla {target} değerine olan uzaklık her adımda yarıya iner ve kayıp {lossEnd} değerine düşer. Daha fazla adımla w, {target} değerine istediğimiz kadar yaklaşır."
       }
     ],
-    "answer": "{steps} adımdan sonra `w = {w3}`; gerçek minimum olan `w = {target}` noktasından yalnızca {gap} uzakta."
+    "answer": "{steps} adımdan sonra `w = {w3}`; gerçek minimum olan `w = {target}` noktasından yalnızca {gap} uzakta.",
+    "labNote": "Laboratuvardaki Kâğıt arazisi bu kaybın kendisidir; `w = {w0}` noktasından `η = {lr}` ile başlar. Adım adım ilerleyin: top {w1}, {w2} ve {w3} noktalarına iner; tablonuzdaki sayılar."
   }
 }

@@ -53,3 +53,26 @@ test("the Arabic page keeps formulas and numbers left to right", async ({ page }
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(0);
 });
+
+test("after solving on paper, one click opens the Lab on the same example", async ({ page }) => {
+  await page.goto("/lessons/k-nearest-neighbors/");
+  const section = page.locator("section[aria-labelledby='by-hand']");
+  await section.getByRole("button", { name: "Show all steps" }).click();
+  await section.getByRole("link", { name: /Try this example in the Lab/ }).click();
+
+  await expect(page).toHaveURL(/#lab-by-hand$/);
+  await expect(page.getByRole("button", { name: /Paper example/ })).toHaveAttribute("aria-pressed", "true");
+  // The paper's new point X* = (7, 6) is the Lab's query.
+  await expect(page.getByLabel("New point x")).toHaveValue("7");
+  await expect(page.getByLabel("New point y")).toHaveValue("6");
+  // The workspace scrolled into view.
+  await expect(page.getByRole("button", { name: /Paper example/ })).toBeInViewport();
+});
+
+test("a lesson whose Lab cannot show the paper example offers no Lab link", async ({ page }) => {
+  await page.goto("/lessons/logistic-regression/");
+  const section = page.locator("section[aria-labelledby='by-hand']");
+  await section.getByRole("button", { name: "Show all steps" }).click();
+  await expect(section.getByTestId("answer")).toBeVisible();
+  await expect(section.getByRole("link", { name: /Try this example in the Lab/ })).toHaveCount(0);
+});

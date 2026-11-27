@@ -16,6 +16,8 @@ SURFACES = {
     "ravine": (lambda x, y: 0.5 * x * x + 5 * y * y, lambda x, y: (x, 10 * y), (-2.6, 1.2), 0.18),
     "saddle": (lambda x, y: x * x - y * y + 0.25 * y**4, lambda x, y: (2 * x, -2 * y + y**3), (-2.5, 0.05), 0.1),
     "two-valleys": (lambda x, y: (x * x - 1) ** 2 + 0.4 * x + y * y, lambda x, y: (4 * x * (x * x - 1) + 0.4, 2 * y), (2.0, 1.5), 0.05),
+    # The "solve it by hand" loss (w - 3)^2 along x; y only adds a bowl so the picture has two axes.
+    "paper": (lambda x, y: (x - 3) ** 2 + y * y, lambda x, y: (2 * (x - 3), 2 * y), (0.0, 0.0), 0.25),
 }
 
 

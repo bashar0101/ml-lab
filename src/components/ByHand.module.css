@@ -216,6 +216,23 @@
   font-size: 17px;
 }
 
+/* After the answer: what the Lab shows, and the way there. */
+.lab {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  margin-block-start: 14px;
+  padding-block: 12px;
+  padding-inline: 16px;
+  border: 1.5px dashed var(--pen);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--blue-soft) 70%, var(--card));
+}
+
+.lab p {
+  margin: 0;
+}
+
 .controls {
   display: flex;
   flex-wrap: wrap;

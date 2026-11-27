@@ -190,6 +190,7 @@
         "body": "{k} komşunun etiketlerini sayın: {good} {goodVotes}, {bad} {badVotes}. Beraberlik `(5, 6)` lehine bozulsaydı bile {good} 2'ye 1 kazanırdı."
       }
     ],
-    "answer": "`X* = ({qx}, {qy})` **{winner}** olarak sınıflandırılır."
+    "answer": "`X* = ({qx}, {qy})` **{winner}** olarak sınıflandırılır.",
+    "labNote": "Laboratuvar aynı dokuz nokta, `({qx}, {qy})` noktasındaki X* ve `k = {k}` ile açılır. {good} noktalar A sınıfı, {bad} noktalar B sınıfıdır. Son kare en yakın üç noktayı vurgular ve oylamayı gösterir."
   }
 }

@@ -59,6 +59,25 @@ describe("ByHand", () => {
     expect(document.body.textContent).not.toMatch(/[\u0304\u0233]/);
   });
 
+  it("after the answer, links to the Lab on the same example and says what it shows", () => {
+    render(
+      <UiProvider strings={ui}>
+        <ByHand example={byHandFor("linear-regression")!} text={lr} inLab />
+      </UiProvider>,
+    );
+    expect(screen.queryByRole("link", { name: "Try this example in the Lab" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Show all steps" }));
+    const link = screen.getByRole("link", { name: "Try this example in the Lab" });
+    expect(link.getAttribute("href")).toBe("#lab-by-hand");
+    expect(plain(screen.getByTestId("lab-note").textContent)).toContain("settle at exactly −72");
+  });
+
+  it("has no Lab link when the Lab cannot show the example", () => {
+    show("linear-regression", lr);
+    fireEvent.click(screen.getByRole("button", { name: "Show all steps" }));
+    expect(screen.queryByRole("link", { name: "Try this example in the Lab" })).toBeNull();
+  });
+
   it("moves focus to the step it just revealed", () => {
     show("linear-regression", lr);
     fireEvent.click(screen.getByRole("button", { name: "Show step 1" }));

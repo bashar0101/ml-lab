@@ -188,6 +188,7 @@
         "body": "Yeni merkezlerle atama tamamen aynı kümeleri verir, yani merkezler bir daha hareket etmez. k-means {rounds} güncellemeden sonra yakınsadı."
       }
     ],
-    "answer": "İki küme: `C1 = {c1}` sol alttaki üç noktayı, `C2 = {c2}` sağ üstteki üç noktayı içerir."
+    "answer": "İki küme: `C1 = {c1}` sol alttaki üç noktayı, `C2 = {c2}` sağ üstteki üç noktayı içerir.",
+    "labNote": "Laboratuvar aynı altı noktayla, `k = 2` ve ilk iki noktadan başlayarak açılır. Adım adım ilerleyin: `(2, 1)` noktası ikinci turda küme değiştirir ve merkezler {c1} ile {c2} noktalarına oturur."
   }
 }

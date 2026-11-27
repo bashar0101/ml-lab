@@ -106,7 +106,8 @@
     "presets": {
       "study-hours": "Çalışma saatleri",
       "house-prices": "Ev fiyatları",
-      "outlier": "Tek aykırı değer"
+      "outlier": "Tek aykırı değer",
+      "car-prices": "Araba fiyatları"
     },
     "params": {
       "learningRate": {
@@ -212,6 +213,7 @@
         "body": "Doğruda `x = {newX}` yazın."
       }
     ],
-    "answer": "`ŷ = {slope}x + {intercept}`. {newX} yaşındaki bir araba yaklaşık **{prediction}** etmeli."
+    "answer": "`ŷ = {slope}x + {intercept}`. {newX} yaşındaki bir araba yaklaşık **{prediction}** etmeli.",
+    "labNote": "Laboratuvar aynı dört arabayla açılır, ama doğruyu başka bir yolla bulur: gradyan inişi eğimi ve kesişimi her adımda biraz değiştirir. Oynatın ve eğimin tam olarak {slope} değerine oturmasını izleyin."
   }
 }

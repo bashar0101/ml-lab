@@ -190,6 +190,7 @@
         "body": "Count the labels of the {k} neighbours: {good} {goodVotes}, {bad} {badVotes}. Even if the tie had gone to `(5, 6)`, {good} would still win 2 to 1."
       }
     ],
-    "answer": "`X* = ({qx}, {qy})` is classified as **{winner}**."
+    "answer": "`X* = ({qx}, {qy})` is classified as **{winner}**.",
+    "labNote": "The Lab opens with the same nine points, X* at `({qx}, {qy})` and `k = {k}`. {good} points are class A and {bad} points class B. The last frame lights up the three nearest and shows the vote."
   }
 }

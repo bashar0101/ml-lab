@@ -1,4 +1,5 @@
 import { fmt, mean, type HandBlock, type HandExample, type HandStep } from "../shared/hand";
+import { PAPER_K, PAPER_POINTS } from "./paper";
 
 type P = [number, number];
 const pt = (p: P) => `(${fmt(p[0])}, ${fmt(p[1])})`;
@@ -6,18 +7,9 @@ const dist = (a: P, b: P) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 
 /** Six points, k = 2, starting from two badly placed centres; assign, move, repeat until nothing changes. */
 export function kMeansByHand(): HandExample {
-  const pts: P[] = [
-    [1, 1],
-    [2, 1],
-    [1, 2],
-    [5, 4],
-    [6, 5],
-    [5, 5],
-  ];
-  let centres: P[] = [
-    [1, 1],
-    [2, 1],
-  ];
+  const pts: P[] = PAPER_POINTS.map(([x, y]) => [x, y]);
+  // Start from the first k points, as the Lab's "first points" start does.
+  let centres: P[] = pts.slice(0, PAPER_K);
   const steps: HandStep[] = [];
   let prev: number[] | null = null;
   let rounds = 0;
@@ -54,7 +46,7 @@ export function kMeansByHand(): HandExample {
 
   steps[steps.length - 1].vars = { ...steps[steps.length - 1].vars, rounds: String(rounds), c1: pt(centres[0]), c2: pt(centres[1]) };
   return {
-    given: [{ table: { headers: ["{point}", "x", "y"], rows: pts.map((p, i) => [`P${i + 1}`, fmt(p[0]), fmt(p[1])]) } }, { math: ["k = 2", `C1 = (1, 1)    C2 = (2, 1)`] }],
+    given: [{ table: { headers: ["{point}", "x", "y"], rows: pts.map((p, i) => [`P${i + 1}`, fmt(p[0]), fmt(p[1])]) } }, { math: [`k = ${PAPER_K}`, `C1 = ${pt(pts[0])}    C2 = ${pt(pts[1])}`] }],
     vars: {},
     steps,
   };

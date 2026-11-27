@@ -106,7 +106,8 @@
     "presets": {
       "study-hours": "Study hours",
       "house-prices": "House prices",
-      "outlier": "One outlier"
+      "outlier": "One outlier",
+      "car-prices": "Car prices"
     },
     "params": {
       "learningRate": {
@@ -212,6 +213,7 @@
         "body": "Put `x = {newX}` into the line."
       }
     ],
-    "answer": "`ŷ = {slope}x + {intercept}`. A {newX}-year-old car should cost about **{prediction}**."
+    "answer": "`ŷ = {slope}x + {intercept}`. A {newX}-year-old car should cost about **{prediction}**.",
+    "labNote": "The Lab opens on the same four cars, but finds the line a different way: gradient descent nudges the slope and the intercept a little at each step. Play it and watch the slope settle at exactly {slope}."
   }
 }

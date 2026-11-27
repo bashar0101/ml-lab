@@ -1,20 +1,11 @@
 import { fmt, type HandExample } from "../shared/hand";
+import { PAPER_K, PAPER_POINTS, PAPER_QUERY } from "./paper";
 
 /** Nine labelled points and a new one at (7, 6); classify it with k = 3 and Euclidean distance. */
 export function kNearestNeighborsByHand(): HandExample {
-  const pts: { x1: number; x2: number; label: "good" | "bad" }[] = [
-    { x1: 9, x2: 8, label: "good" },
-    { x1: 7, x2: 8, label: "good" },
-    { x1: 5, x2: 6, label: "bad" },
-    { x1: 6, x2: 5, label: "good" },
-    { x1: 8, x2: 7, label: "good" },
-    { x1: 7, x2: 9, label: "good" },
-    { x1: 9, x2: 7, label: "good" },
-    { x1: 3, x2: 3, label: "bad" },
-    { x1: 4.6, x2: 3.2, label: "bad" },
-  ];
-  const q = { x1: 7, x2: 6 };
-  const k = 3;
+  const pts = PAPER_POINTS;
+  const q = { x1: PAPER_QUERY.x, x2: PAPER_QUERY.y };
+  const k = PAPER_K;
   const rows = pts.map((p, i) => {
     const a = (p.x1 - q.x1) ** 2;
     const b = (p.x2 - q.x2) ** 2;

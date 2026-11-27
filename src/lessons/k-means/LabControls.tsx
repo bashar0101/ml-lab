@@ -8,7 +8,7 @@ import type { LabControlsProps } from "../types";
 import { KMEANS_LIMITS, type KMeansInit, type KMeansParams } from "./algorithm";
 import type { KMeansData } from "./Scene";
 
-const INITS: KMeansInit[] = ["random", "plus-plus"];
+const INITS: KMeansInit[] = ["random", "plus-plus", "first"];
 
 export function LabControls({ params, data, onParams, onData, labels }: LabControlsProps<KMeansParams, KMeansData>) {
   const t = useT();

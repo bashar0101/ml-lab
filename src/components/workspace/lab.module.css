@@ -13,6 +13,27 @@
   color: var(--muted);
 }
 
+/* Loads the "solve it by hand" example: drawn like a note in pen. */
+.paper {
+  display: block;
+  inline-size: 100%;
+  margin-block-end: 10px;
+  padding-block: 8px;
+  padding-inline: 10px;
+  border: 1.5px dashed var(--blue-ink);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--blue-ink);
+  font: 600 12px/1.3 var(--font-ui);
+  text-align: start;
+  cursor: pointer;
+}
+
+.paper[aria-pressed="true"] {
+  border-style: solid;
+  background: var(--blue-soft);
+}
+
 .now {
   border-inline-start: 4px solid var(--blue);
 }

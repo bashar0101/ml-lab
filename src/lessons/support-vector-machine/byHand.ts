@@ -1,17 +1,11 @@
 import { fmt, MINUS, type HandExample } from "../shared/hand";
+import { PAPER_B, PAPER_POINTS, PAPER_W } from "./paper";
 
 /** A trained linear SVM, w = (1, 1) and b = −5: check the margins, measure the street, classify. */
 export function supportVectorMachineByHand(): HandExample {
-  const w = [1, 1];
-  const b = -5;
-  const pts = [
-    { x: [3, 3], y: 1 },
-    { x: [4, 3], y: 1 },
-    { x: [3, 5], y: 1 },
-    { x: [2, 2], y: -1 },
-    { x: [1, 2], y: -1 },
-    { x: [1, 1], y: -1 },
-  ];
+  const w = PAPER_W;
+  const b = PAPER_B;
+  const pts = PAPER_POINTS;
   const f = (x: number[]) => w[0] * x[0] + w[1] * x[1] + b;
   const rows = pts.map((p) => ({ ...p, f: f(p.x), yf: p.y * f(p.x) }));
   const supports = rows.filter((r) => Math.abs(r.yf - 1) < 1e-9);

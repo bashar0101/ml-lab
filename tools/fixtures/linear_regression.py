@@ -19,6 +19,8 @@ PRESETS = {
     "house-prices": [(50, 150), (60, 180), (70, 195), (80, 230), (90, 240),
                      (100, 275), (110, 290), (120, 330), (130, 345), (140, 370)],
     "outlier": STUDY + [(8.5, 15)],
+    # The "solve it by hand" example: car age (years) and price.
+    "car-prices": [(1, 900), (3, 740), (5, 620), (7, 460)],
 }
 
 

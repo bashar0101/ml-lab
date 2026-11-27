@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatHash, parseHash } from "./hash";
+import { BY_HAND_HASH, formatHash, isByHandHash, parseHash } from "./hash";
 
 describe("parseHash", () => {
   it.each([
@@ -13,6 +13,14 @@ describe("parseHash", () => {
     ["#whatever", "learn", 0],
   ])("parseHash(%s)", (h, mode, step) => {
     expect(parseHash(h, 6)).toEqual({ mode, step });
+  });
+
+  it("opens the Lab on the paper example for #lab-by-hand", () => {
+    expect(parseHash(BY_HAND_HASH, 6)).toEqual({ mode: "lab", step: 0 });
+    expect(isByHandHash("#lab-by-hand")).toBe(true);
+    expect(isByHandHash("#LAB-BY-HAND")).toBe(true);
+    expect(isByHandHash("#lab")).toBe(false);
+    expect(isByHandHash("")).toBe(false);
   });
 
   it("round-trips with formatHash", () => {

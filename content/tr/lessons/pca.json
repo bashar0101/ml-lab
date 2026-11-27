@@ -178,7 +178,7 @@
       {
         "id": "covariance",
         "title": "Kovaryans matrisi",
-        "body": "Her toplamı `n − 1 = 3` ile bölün. İki özelliğin de varyansı {varX} ve kovaryans {cov} pozitif: x ve y birlikte büyür."
+        "body": "Her toplamı `n = 4` ile bölün. İki özelliğin de varyansı {varX} ve kovaryans {cov} pozitif: x ve y birlikte büyür."
       },
       {
         "id": "eigen",
@@ -201,6 +201,7 @@
         "body": "Birinci bileşen, toplam `λ1 + λ2` içinden λ1 kadarını korur."
       }
     ],
-    "answer": "`PC1 = {v}` varyansın **%{kept}** kadarını korur; nokta başına iki yerine tek sayı kullanmak çok az şey kaybettirir."
+    "answer": "`PC1 = {v}` varyansın **%{kept}** kadarını korur; nokta başına iki yerine tek sayı kullanmak çok az şey kaybettirir.",
+    "labNote": "Laboratuvar aynı dört noktayla açılır. Merkez etrafında bir doğruyu döndürür ve her açıdaki yayılımı çizer: en yüksek yayılım ({l1}) 45° açıda, yani {v} yönündedir ve birinci bileşen %{kept} korur."
   }
 }

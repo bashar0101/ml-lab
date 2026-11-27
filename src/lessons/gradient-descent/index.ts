@@ -2,6 +2,7 @@ import type { LessonModule } from "../types";
 import { GD_DEFAULTS, runGradientDescent, type GdParams, type GdState } from "./algorithm";
 import { pseudo, python } from "./code";
 import { LabControls } from "./LabControls";
+import { getSurface } from "./surfaces";
 import { Scene, type GdData } from "./Scene";
 
 const TOO_BIG = 1e6;
@@ -16,6 +17,7 @@ const gradientDescent: LessonModule<GdState, GdParams, GdData> = {
   Scene,
   LabControls,
   code: { python, pseudo },
+  byHand: { data: { start: null }, params: { ...GD_DEFAULTS, surface: "paper", learningRate: getSurface("paper").lr, steps: 10 } },
   stats: (frame, params) => [
     { labelKey: "step", value: frame.metrics.step, suffix: params ? `/ ${params.steps}` : undefined },
     { labelKey: "height", value: sane(frame.metrics.f) },

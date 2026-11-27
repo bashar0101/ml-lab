@@ -24,6 +24,8 @@ export const ByHandSchema = z.object({
   labels: z.record(z.string(), z.string().min(1)),
   steps: z.array(z.object({ id: z.string().min(1), title: z.string().min(1), body: md })).min(2),
   answer: md,
+  /** What the Lab shows when it opens on this example; only for lessons whose Lab can (see LAB_EXAMPLES). */
+  labNote: md.optional(),
 });
 
 export const LessonContentSchema = z.object({

@@ -10,6 +10,13 @@ test("a first visit to lesson 1 gets the guided tour, once", async ({ page }) =>
   await expect(dialog).toContainText("Your data and settings");
   await expect(page.getByRole("group", { name: "Lesson mode" }).getByRole("button", { name: "Lab" })).toHaveAttribute("aria-pressed", "true");
   for (let i = 0; i < 5; i++) await dialog.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(dialog).toContainText("Solve it by hand");
+  // The paper section below the lesson is scrolled into view and lit up.
+  await expect(page.locator("section[aria-labelledby='by-hand']")).toBeInViewport();
+  await dialog.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(dialog).toContainText("The paper example in the Lab");
+  await expect(page.getByRole("button", { name: /Paper example/ })).toBeInViewport();
+  await dialog.getByRole("button", { name: "Next", exact: true }).click();
   await expect(dialog).toContainText("Find anything");
   await dialog.getByRole("button", { name: "Start learning" }).click();
   await expect(dialog).toHaveCount(0);

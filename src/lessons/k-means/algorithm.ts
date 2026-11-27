@@ -2,7 +2,7 @@ import { mulberry32, shuffled } from "@/engine/random";
 import type { Frame, Trace } from "@/engine/types";
 import type { LabeledPoint } from "../shared/datasets2d";
 
-export type KMeansInit = "random" | "plus-plus";
+export type KMeansInit = "random" | "plus-plus" | "first";
 
 export interface KMeansParams {
   k: number;
@@ -36,6 +36,8 @@ const d2 = (a: Centroid, b: Centroid) => (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
 
 function initCentroids(points: LabeledPoint[], k: number, kind: KMeansInit, rand: () => number): Centroid[] {
   const n = points.length;
+  // "first": the first k points, as a worked example on paper starts.
+  if (kind === "first") return points.slice(0, k).map((p) => ({ x: p.x, y: p.y }));
   if (kind === "random") return shuffled(n, rand).slice(0, k).map((i) => ({ x: points[i].x, y: points[i].y }));
   // k-means++: each next centre is drawn with probability ∝ squared distance to the nearest chosen one.
   const first = points[Math.floor(rand() * n)];

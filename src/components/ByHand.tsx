@@ -5,6 +5,7 @@ import type { ByHandContent } from "@/content/schema";
 import { interpolate } from "@/engine/text";
 import { useT } from "@/i18n/ui-context";
 import type { HandBlock, HandExample, HandTable } from "@/lessons/shared/hand";
+import { BY_HAND_HASH, isByHandHash } from "@/state/hash";
 import styles from "./ByHand.module.css";
 import { Markdownish } from "./Markdownish";
 
@@ -98,7 +99,7 @@ function Block({ block, word }: { block: HandBlock; word: Fill }) {
  * out on paper. The numbers are computed at build time (lessons/<slug>/byHand.ts); the words
  * come from the lesson content.
  */
-export function ByHand({ example, text }: { example: HandExample; text: ByHandContent }) {
+export function ByHand({ example, text, inLab = false }: { example: HandExample; text: ByHandContent; inLab?: boolean }) {
   const t = useT();
   const total = example.steps.length;
   const [shown, setShown] = useState(0);
@@ -124,7 +125,7 @@ export function ByHand({ example, text }: { example: HandExample; text: ByHandCo
   const prose: Fill = (s) => word(interpolate(s, isolated));
 
   return (
-    <section className={styles.byHand} aria-labelledby="by-hand">
+    <section className={styles.byHand} aria-labelledby="by-hand" data-tour="by-hand">
       <div className={styles.paper}>
         <h2 id="by-hand" className={styles.heading}>
           <span aria-hidden="true">✍ </span>
@@ -170,6 +171,26 @@ export function ByHand({ example, text }: { example: HandExample; text: ByHandCo
           <div className={styles.answer} data-testid="answer">
             <h3 className={styles.label}>{t("byHand.answer")}</h3>
             <Markdownish text={prose(text.answer)} code={notation} />
+          </div>
+        )}
+
+        {shown === total && inLab && (
+          <div className={styles.lab}>
+            {text.labNote && (
+              <div data-testid="lab-note">
+                <Markdownish text={prose(text.labNote)} code={notation} />
+              </div>
+            )}
+            <a
+              href={BY_HAND_HASH}
+              className="btn btn-ink"
+              onClick={() => {
+                // Already on #lab-by-hand (e.g. after editing the data): the hash will not change, so say it again.
+                if (isByHandHash(window.location.hash)) window.dispatchEvent(new HashChangeEvent("hashchange"));
+              }}
+            >
+              {t("byHand.lab")} <span aria-hidden="true" className="flip-rtl">→</span>
+            </a>
           </div>
         )}
 

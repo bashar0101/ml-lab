@@ -3,7 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { liveLessons } from "@/course/manifest";
 import { LOCALES } from "@/i18n/locales";
-import { byHandFor } from "@/lessons/byHand";
+import { byHandFor, LAB_EXAMPLES } from "@/lessons/byHand";
 import type { HandBlock } from "@/lessons/shared/hand";
 import { LessonContentSchema } from "./schema";
 
@@ -32,9 +32,21 @@ describe.each(cases)("%s %s: solve it by hand", (locale, slug) => {
   it("fills every {placeholder} in the prose", () => {
     const vars = Object.assign({}, example.vars, ...example.steps.map((s) => s.vars ?? {}));
     const known = new Set([...Object.keys(vars), ...Object.keys(text.labels)]);
-    for (const s of [text.problem, text.answer, ...text.steps.flatMap((s) => [s.title, s.body])]) {
+    for (const s of [text.problem, text.answer, text.labNote ?? "", ...text.steps.flatMap((s) => [s.title, s.body])]) {
       for (const k of keys(s)) expect(known.has(k), `{${k}} in "${s}"`).toBe(true);
     }
+  });
+
+  it("keeps coordinates in formula marks, so right-to-left text cannot reverse them", () => {
+    // In Arabic "(2, 1)" outside `code` is laid out as "(1 ,2)". Inside backticks it stays one left-to-right unit.
+    for (const s of [text.problem, text.answer, text.labNote ?? "", ...text.steps.flatMap((s) => [s.title, s.body])]) {
+      const outside = s.replace(/`[^`]*`/g, "");
+      expect(outside, s).not.toMatch(/\(\s*[−-]?\d[\d.]*\s*,\s*[−-]?\d/);
+    }
+  });
+
+  it("says what the Lab shows exactly when the Lab can open on the example", () => {
+    expect(!!text.labNote).toBe(LAB_EXAMPLES.has(slug));
   });
 
   it("never uses one name for both a number and a word", () => {

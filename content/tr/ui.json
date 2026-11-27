@@ -401,5 +401,14 @@
   "byHand.next": "{n}. adımı göster",
   "byHand.all": "Tüm adımları göster",
   "byHand.reset": "Baştan başla",
-  "byHand.answer": "Cevap"
+  "byHand.answer": "Cevap",
+  "lab.byHand": "Kâğıt örneği",
+  "byHand.lab": "Bu örneği Laboratuvarda deneyin",
+  "km.init.first": "İlk k nokta",
+  "lr.axis.age": "araba yaşı (yıl)",
+  "lr.axis.carPrice": "fiyat",
+  "tour.byHand.title": "Elle çözün",
+  "tour.byHand.body": "Dersin altında kâğıtta çözeceğiniz küçük bir problem var. Her adımı önce kendiniz hesaplayın, sonra kontrol etmek için açın. Cevaptan sonra \"Bu örneği Laboratuvarda deneyin\" düğmesi Laboratuvarı aynı sayılarla açar.",
+  "tour.paper.title": "Laboratuvarda kâğıt örneği",
+  "tour.paper.body": "Bu düğme aynı örneği istediğiniz zaman yükler; algoritmanın elle bulduğunuz sayılara nasıl ulaştığını izleyebilirsiniz."
 }

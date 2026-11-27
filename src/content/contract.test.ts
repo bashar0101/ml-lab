@@ -37,7 +37,7 @@ describe("linear regression content", () => {
     const c = await loadLesson("en", "linear-regression");
     expect(Object.keys(c.events)).toEqual(expect.arrayContaining(["init", "predict", "error", "update", "overshoot", "diverged", "done"]));
     expect(c.lab.errors).toMatchObject({ tooFew: expect.any(String), sameX: expect.any(String) });
-    expect(Object.keys(c.lab.presets)).toEqual(["study-hours", "house-prices", "outlier"]);
+    expect(Object.keys(c.lab.presets)).toEqual(["study-hours", "house-prices", "outlier", "car-prices"]);
     expect(Object.keys(c.lab.params).sort()).toEqual(["learningRate", "steps"]);
   });
 

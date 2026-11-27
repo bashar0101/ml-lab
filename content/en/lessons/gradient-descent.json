@@ -99,7 +99,8 @@
       "bowl": "Bowl",
       "ravine": "Ravine",
       "saddle": "Saddle",
-      "two-valleys": "Two valleys"
+      "two-valleys": "Two valleys",
+      "paper": "Paper: (w − 3)²"
     },
     "params": {
       "learningRate": {
@@ -188,6 +189,7 @@
         "body": "With this learning rate the distance to {target} halves at every step, and the loss falls to {lossEnd}. More steps would bring w as close to {target} as we like."
       }
     ],
-    "answer": "After {steps} steps `w = {w3}`, only {gap} away from the true minimum at `w = {target}`."
+    "answer": "After {steps} steps `w = {w3}`, only {gap} away from the true minimum at `w = {target}`.",
+    "labNote": "The Lab's Paper landscape is this same loss, started at `w = {w0}` with `η = {lr}`. Step through it: the ball lands on {w1}, {w2} and {w3}, the numbers in your table."
   }
 }

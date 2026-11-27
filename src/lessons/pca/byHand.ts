@@ -1,13 +1,9 @@
 import { fmt, mean, sum, type HandExample } from "../shared/hand";
+import { PAPER_POINTS } from "./paper";
 
 /** Four 2-D points: centre them, build the covariance matrix, find its eigenvalues, project onto PC1. */
 export function pcaByHand(): HandExample {
-  const pts = [
-    [1, 1],
-    [4, 3],
-    [3, 4],
-    [4, 4],
-  ];
+  const pts = PAPER_POINTS;
   const n = pts.length;
   const mx = mean(pts.map((p) => p[0]));
   const my = mean(pts.map((p) => p[1]));
@@ -15,9 +11,10 @@ export function pcaByHand(): HandExample {
   const sxx = sum(c.map((p) => p[0] * p[0]));
   const syy = sum(c.map((p) => p[1] * p[1]));
   const sxy = sum(c.map((p) => p[0] * p[1]));
-  const a = sxx / (n - 1);
-  const d = syy / (n - 1);
-  const bc = sxy / (n - 1);
+  // Divide by n, as the Lab does; n − 1 would scale every variance alike and change neither the direction nor the % kept.
+  const a = sxx / n;
+  const d = syy / n;
+  const bc = sxy / n;
   // Eigenvalues of [[a, b], [b, d]]: λ = (a + d)/2 ± √(((a − d)/2)² + b²)
   const mid = (a + d) / 2;
   const rad = Math.sqrt(((a - d) / 2) ** 2 + bc ** 2);
@@ -54,7 +51,7 @@ export function pcaByHand(): HandExample {
         blocks: [
           {
             math: [
-              `var(x) = ${fmt(sxx)} / ${n - 1} = ${fmt(a)}    var(y) = ${fmt(syy)} / ${n - 1} = ${fmt(d)}    cov(x, y) = ${fmt(sxy)} / ${n - 1} = ${fmt(bc)}`,
+              `var(x) = ${fmt(sxx)} / ${n} = ${fmt(a)}    var(y) = ${fmt(syy)} / ${n} = ${fmt(d)}    cov(x, y) = ${fmt(sxy)} / ${n} = ${fmt(bc)}`,
               `Σ = [ ${fmt(a)}  ${fmt(bc)} ; ${fmt(bc)}  ${fmt(d)} ]`,
             ],
           },

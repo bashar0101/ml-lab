@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ByHand } from "@/components/ByHand";
 import { LessonArticle } from "@/components/LessonArticle";
-import { byHandFor } from "@/lessons/byHand";
+import { byHandFor, LAB_EXAMPLES } from "@/lessons/byHand";
 import prose from "@/components/prose.module.css";
 import { LessonWorkspace } from "@/components/workspace/LessonWorkspace";
 import { loadLessonFor, loadUi } from "@/content/load";
@@ -51,7 +51,7 @@ export async function LessonView({ locale, slug }: { locale: Locale; slug: strin
       )}
       <div lang={fallback ? "en" : undefined} dir={fallback ? "ltr" : undefined}>
         <LessonWorkspace slug={slug} content={content} tour={slug === "linear-regression"} />
-        {example && content.byHand && <ByHand example={example} text={content.byHand} />}
+        {example && content.byHand && <ByHand example={example} text={content.byHand} inLab={LAB_EXAMPLES.has(slug)} />}
         <LessonArticle slug={slug} content={content} ui={ui} locale={locale} />
       </div>
     </main>

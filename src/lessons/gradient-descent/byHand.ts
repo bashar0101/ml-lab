@@ -1,11 +1,12 @@
 import { fmt, term, type HandExample } from "../shared/hand";
+import { PAPER_LR, PAPER_START, PAPER_TARGET } from "./paper";
 
 /** Minimise L(w) = (w − 3)² from w = 0 with learning rate 0.25, three steps. */
 export function gradientDescentByHand(): HandExample {
-  const target = 3;
-  const lr = 0.25;
+  const target = PAPER_TARGET;
+  const lr = PAPER_LR;
   const steps = 3;
-  const ws = [0];
+  const ws = [PAPER_START];
   for (let t = 0; t < steps; t++) {
     const w = ws[t];
     ws.push(w - lr * 2 * (w - target));

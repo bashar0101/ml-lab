@@ -1,4 +1,6 @@
-export type SurfaceId = "bowl" | "ravine" | "saddle" | "two-valleys";
+import { PAPER_LR, PAPER_START, PAPER_TARGET } from "./paper";
+
+export type SurfaceId = "bowl" | "ravine" | "saddle" | "two-valleys" | "paper";
 
 export interface Surface {
   id: SurfaceId;
@@ -49,6 +51,17 @@ export const SURFACES: Surface[] = [
     y: DOMAIN,
     start: [2, 1.5],
     lr: 0.05,
+  },
+  {
+    // The "solve it by hand" loss L(w) = (w − 3)² along x, started on y = 0 so the ball moves
+    // only in w; the y² term just gives the picture a second axis.
+    id: "paper",
+    f: (x, y) => (x - PAPER_TARGET) ** 2 + y * y,
+    grad: (x, y) => [2 * (x - PAPER_TARGET), 2 * y],
+    x: [-1, 5],
+    y: DOMAIN,
+    start: [PAPER_START, 0],
+    lr: PAPER_LR,
   },
 ];
 

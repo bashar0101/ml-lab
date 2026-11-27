@@ -1,9 +1,10 @@
 import { fmt, mean, sum, term, type HandExample } from "../shared/hand";
+import { PAPER_AGES, PAPER_PRICES } from "./paper";
 
 /** Car age (years) against price: fit y = m·x + b with the closed-form least-squares formulas. */
 export function linearRegressionByHand(): HandExample {
-  const x = [1, 3, 5, 7];
-  const y = [900, 740, 620, 460];
+  const x = PAPER_AGES;
+  const y = PAPER_PRICES;
   const xm = mean(x);
   const ym = mean(y);
   const dx = x.map((v) => v - xm);

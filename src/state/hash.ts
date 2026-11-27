@@ -1,9 +1,16 @@
 export type Mode = "learn" | "lab";
 
-/** Reads "#lab" or "#step-<n>" (1-based). Anything else means Learn, step 1. */
+/** Opens the Lab on the lesson's "solve it by hand" example. */
+export const BY_HAND_HASH = "#lab-by-hand";
+
+export function isByHandHash(hash: string): boolean {
+  return hash.toLowerCase() === BY_HAND_HASH;
+}
+
+/** Reads "#lab", "#lab-by-hand" or "#step-<n>" (1-based). Anything else means Learn, step 1. */
 export function parseHash(hash: string, storyLength: number): { mode: Mode; step: number } {
   const h = hash.replace(/^#/, "").toLowerCase();
-  if (h === "lab") return { mode: "lab", step: 0 };
+  if (h === "lab" || isByHandHash(hash)) return { mode: "lab", step: 0 };
   const m = /^step-(\d+)$/.exec(h);
   if (!m) return { mode: "learn", step: 0 };
   const n = Number(m[1]);

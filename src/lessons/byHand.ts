@@ -35,6 +35,19 @@ const BY_HAND: Record<string, () => HandExample> = {
   "attention-transformers": attentionTransformersByHand,
 };
 
+/**
+ * Lessons whose Lab can open on the paper example (their module's `byHand`). A test keeps this
+ * list equal to the modules, so the lesson page can offer the button without loading the module.
+ */
+export const LAB_EXAMPLES: ReadonlySet<string> = new Set([
+  "linear-regression",
+  "gradient-descent",
+  "k-nearest-neighbors",
+  "support-vector-machine",
+  "k-means",
+  "pca",
+]);
+
 export function byHandFor(slug: string): HandExample | undefined {
   return BY_HAND[slug]?.();
 }

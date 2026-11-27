@@ -54,6 +54,11 @@ export interface LessonModule<S = unknown, P = unknown, D = unknown> {
   viewOnly?(prev: P, next: P): boolean;
   /** True when a data edit never changes the trace's shape, so the Lab can stay on the current frame (e.g. drawing a pixel). */
   keepFrameOnData?: boolean;
+  /**
+   * The lesson's "solve it by hand" example as Lab input: running it shows the same numbers
+   * the student worked out on paper. Only lessons whose Lab can reproduce the paper have one.
+   */
+  byHand?: { data: D; params: P };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
