@@ -65,9 +65,12 @@
   position: relative;
 }
 
+/* The line into each step is drawn by that step, so it would paint over the previous circle:
+   keep every line under every circle. */
 .rail li + li::before {
   content: "";
   position: absolute;
+  z-index: 0;
   inset-block-start: 13px;
   inset-inline-start: -50%;
   inline-size: 100%;
@@ -90,6 +93,8 @@
 }
 
 .rail b {
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
   inline-size: 27px;
