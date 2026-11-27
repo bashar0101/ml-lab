@@ -19,6 +19,8 @@ import { CodePanel, LabPanel, NowCard } from "./LabParts";
 import styles from "./LessonWorkspace.module.css";
 import { Player } from "./Player";
 import { StoryCard, YouWillLearn } from "./StoryCard";
+import { LESSON_TOUR, TOUR_DONE_KEY } from "@/components/tour/steps";
+import { Tour } from "@/components/tour/Tour";
 
 function writeHash(h: string) {
   window.history.replaceState(window.history.state, "", h || window.location.pathname + window.location.search);
@@ -33,7 +35,8 @@ interface LabState {
   error: string | null;
 }
 
-export function LessonWorkspace({ slug, content }: { slug: string; content: LessonContent }) {
+/** `tour`: start the guided tour by itself on a first visit (the first lesson sets it). */
+export function LessonWorkspace({ slug, content, tour = false }: { slug: string; content: LessonContent; tour?: boolean }) {
   const t = useT();
   const entry = getLesson(slug);
   if (!entry) throw new Error(`Unknown lesson: ${slug}`);
@@ -209,8 +212,36 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
   const sceneData = mode === "lab" ? lab?.data : mod?.defaultData;
   const params = mode === "lab" ? lab?.runParams : mod?.defaultParams;
 
+  // Guided tour: starts by itself once for a new visitor (never over a shared #step/#lab link).
+  const [tourOpen, setTourOpen] = useState(false);
+  useEffect(() => {
+    if (!tour || window.location.hash) return;
+    let done = false;
+    try {
+      done = localStorage.getItem(TOUR_DONE_KEY) === "1";
+    } catch {
+      done = false;
+    }
+    if (done) return;
+    const id = window.setTimeout(() => setTourOpen(true), 300);
+    return () => window.clearTimeout(id);
+  }, [tour]);
+  const closeTour = (finished: boolean) => {
+    setTourOpen(false);
+    try {
+      localStorage.setItem(TOUR_DONE_KEY, "1");
+    } catch {
+      /* the tour may show again next time */
+    }
+    if (finished) {
+      switchMode("learn");
+      goStep(0);
+    }
+  };
+
   return (
     <div ref={rootRef} className={styles.workspace} data-mode={mode}>
+      {tourOpen && <Tour steps={LESSON_TOUR} onClose={closeTour} onEnterStep={(s) => s.mode && switchMode(s.mode)} />}
       <aside className={`${styles.tree} ${menuOpen ? styles.open : ""}`} aria-label={t("course.heading")}>
         <button type="button" className={`${styles.closeMenu} btn`} onClick={() => setMenuOpen(false)}>
           {t("menu.close")}
@@ -257,6 +288,9 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
           <span className={styles.tag} data-tone="green">
             {t(`level.${entry.level}`)}
           </span>
+          <button type="button" className={styles.help} onClick={() => setTourOpen(true)} aria-label={t("tour.start")} title={t("tour.start")}>
+            ?
+          </button>
           <div className={styles.modeSlot}>
             <ModeSwitch mode={mode} onMode={switchMode} />
           </div>
@@ -294,7 +328,7 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
 
       <aside className={styles.right}>
         {mode === "learn" ? (
-          <div className={styles.card}>
+          <div className={styles.card} data-tour="story">
             <StoryCard
               step={story[step]}
               index={step}
@@ -312,7 +346,7 @@ export function LessonWorkspace({ slug, content }: { slug: string; content: Less
               <div className={styles.now}>
                 <NowCard frame={frame} events={content.events} playing={player.playing} />
               </div>
-              <div className={styles.codeSlot}>
+              <div className={styles.codeSlot} data-tour="code">
                 <CodePanel code={mod.code} active={frame.codeLine} />
               </div>
             </>

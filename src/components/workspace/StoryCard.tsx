@@ -32,7 +32,7 @@ export function StoryCard({
         <div className={styles.body}>
           <Markdownish text={step.body} />
         </div>
-        <div className={styles.idea}>
+        <div className={styles.idea} data-tour="key-idea">
           <small>{t("story.keyIdea")}</small>
           <Markdownish text={step.keyIdea} inline />
         </div>

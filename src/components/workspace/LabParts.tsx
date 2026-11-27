@@ -106,7 +106,7 @@ export function LabPanel({
 }) {
   const t = useT();
   return (
-    <div className={styles.card}>
+    <div className={styles.card} data-tour="lab-data">
       <h2 className={styles.sec}>{t("lab.yourData")}</h2>
       {children}
       {error && (
@@ -114,7 +114,7 @@ export function LabPanel({
           {lab.errors[error] ?? error}
         </p>
       )}
-      <div className={styles.breakIt}>
+      <div className={styles.breakIt} data-tour="break-it">
         <h3 className={styles.sec}>{t("lab.breakIt")}</h3>
         <Markdownish text={lab.breakIt} />
       </div>

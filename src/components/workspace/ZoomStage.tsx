@@ -130,6 +130,7 @@ export function ZoomStage({
       ref={root}
       className={`${className ?? ""} ${styles.stage}`}
       data-zoom={zoom}
+      data-tour="stage"
       data-expanded={expanded}
       data-full={full}
     >
