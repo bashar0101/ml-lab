@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Arabic, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { VercelInsights } from "@/components/VercelInsights";
 import { DEFAULT_LOCALE, loadUi } from "@/content/load";
 import { localeBootstrapScript } from "@/i18n/bootstrap";
 import { ogImage } from "@/og/images";
@@ -41,7 +42,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript + ";" + localeBootstrapScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <VercelInsights />
+      </body>
     </html>
   );
 }
