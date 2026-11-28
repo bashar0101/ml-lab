@@ -34,8 +34,10 @@ export function Slider({
       <label htmlFor={id} className={styles.label}>
         {label}
       </label>
-      <output className={styles.value} aria-hidden="true" dir="ltr">
-        {format(value)}
+      {/* The box follows the page's direction, so it sits at the line's end (the left in Arabic) and
+          clear of the label; only the number inside reads left to right. */}
+      <output className={styles.value} aria-hidden="true">
+        <span dir="ltr">{format(value)}</span>
       </output>
       <input
         id={id}
